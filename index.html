@@ -13,39 +13,51 @@
         .brand-text { color: #b21f2c; }
         .bright-gold-border { border-color: #FFD700; }
         
-        /* 手機版置中時間軸 */
-        .timeline-container { display: flex; flex-direction: column; position: relative; padding: 20px 0; align-items: center; }
+        /* 核心時間軸邏輯 */
+        .timeline-container { display: flex; flex-direction: column; position: relative; padding: 40px 0; align-items: center; }
         .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; background: #FFD700; z-index: 1; transform: translateX(-50%); }
-        .timeline-step { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; margin-bottom: 40px; width: 100%; text-align: center; }
-        .step-icon { width: 44px; height: 44px; flex-shrink: 0; background: #b21f2c; border: 3px solid #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #FFD700; font-weight: bold; margin-bottom: 12px; }
-        .step-content { background-color: #fff; padding: 8px 16px; border-radius: 12px; border: 1px solid #f5e1e1; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-
-        /* 電腦版橫向 */
-        @media (min-width: 768px) {
-            .timeline-container { flex-direction: row; justify-content: space-between; align-items: flex-start; }
-            .timeline-line { top: 22px; left: 10%; right: 10%; width: auto; height: 3px; transform: none; }
-            .timeline-step { width: 30%; margin-bottom: 0; }
-            .step-content { background-color: transparent; border: none; box-shadow: none; padding: 0; }
+        
+        /* 單個步驟容器 */
+        .timeline-step { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; width: 100%; }
+        
+        /* 數字圓圈：保證只有一個 */
+        .step-icon { 
+            width: 44px; height: 44px; 
+            background: #b21f2c; border: 3px solid #FFD700; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            color: #FFD700; font-weight: bold; font-size: 1.25rem;
+            margin-bottom: 15px; 
         }
 
-        .score-box { background: #ffffff; border: 1px solid #f5e1e1; border-left: 6px solid #b21f2c; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .hour-badge { background: #b21f2c; color: #FFD700; border: 2px solid #FFD700; padding: 4px 12px; border-radius: 999px; font-weight: 800; font-size: 1.1rem; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        /* 內容區塊 */
+        .step-content { text-align: center; background: white; padding: 10px 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #f5e1e1; }
+
+        /* 電腦版 (768px 以上) 覆寫為橫向 */
+        @media (min-width: 768px) {
+            .timeline-container { flex-direction: row; justify-content: space-between; align-items: flex-start; padding: 60px 5%; }
+            .timeline-line { top: 62px; left: 10%; right: 10%; width: auto; height: 3px; transform: none; }
+            .timeline-step { width: 30%; margin-bottom: 0; }
+            .step-content { background: transparent; box-shadow: none; border: none; padding: 0; }
+        }
+
+        /* 卡片樣式 */
+        .score-box { background: #ffffff; border: 1px solid #f5e1e1; border-left: 6px solid #b21f2c; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+        .hour-badge { background: #b21f2c; color: #FFD700; border: 2px solid #FFD700; padding: 4px 15px; border-radius: 999px; font-weight: 800; display: inline-block; }
     </style>
 </head>
 <body class="text-slate-800">
 
-    <header class="brand-bg text-white py-12 px-6 shadow-2xl border-b-8 bright-gold-border text-center">
-        <div class="max-w-5xl mx-auto">
-            <h1 class="text-3xl md:text-4xl font-bold mb-6 flex items-center justify-center gap-3">
-                <i class="fas fa-fish text-[#FFD700]"></i> 魚鮮會社：外場職能成長儀表板
-            </h1>
-        </div>
+    <header class="brand-bg text-white py-12 text-center border-b-8 bright-gold-border">
+        <h1 class="text-3xl md:text-4xl font-bold flex items-center justify-center gap-3">
+            <i class="fas fa-fish text-[#FFD700]"></i> 魚鮮會社：職能成長儀表板
+        </h1>
     </header>
 
-    <main class="max-w-5xl mx-auto p-4 md:p-6 space-y-12 mt-8">
+    <main class="max-w-5xl mx-auto p-4 md:p-8 space-y-16 mt-8">
         
-        <section class="bg-white p-8 md:p-10 rounded-2xl shadow-lg border-2 bright-gold-border">
-            <h3 class="text-2xl font-bold mb-10 text-center brand-text">考核週期時數里程碑</h3>
+        <section class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border-2 bright-gold-border">
+            <h3 class="text-2xl font-bold mb-12 text-center brand-text">考核週期時數里程碑</h3>
+            
             <div class="timeline-container">
                 <div class="timeline-line"></div>
                 
@@ -53,8 +65,8 @@
                     <div class="step-icon">1</div>
                     <div class="step-content">
                         <div class="font-bold brand-text text-lg">Level 1</div>
-                        <div class="text-xl font-bold mt-1">150 小時</div>
-                        <div class="text-xs text-gray-500 mt-2 italic">未過：每 100hr 覆核</div>
+                        <div class="text-2xl font-black mt-1">150 小時</div>
+                        <div class="text-sm text-gray-400 mt-2 italic">未過：每 100hr 覆核</div>
                     </div>
                 </div>
 
@@ -62,8 +74,8 @@
                     <div class="step-icon">2</div>
                     <div class="step-content">
                         <div class="font-bold brand-text text-lg">Level 2</div>
-                        <div class="text-xl font-bold mt-1">300 小時</div>
-                        <div class="text-xs text-gray-400 mt-2 italic">未過：每 150hr 覆核</div>
+                        <div class="text-2xl font-black mt-1">300 小時</div>
+                        <div class="text-sm text-gray-400 mt-2 italic">未過：每 150hr 覆核</div>
                     </div>
                 </div>
 
@@ -71,46 +83,42 @@
                     <div class="step-icon">3</div>
                     <div class="step-content">
                         <div class="font-bold brand-text text-lg">Level 3</div>
-                        <div class="text-xl font-bold mt-1">600 小時</div>
-                        <div class="text-xs text-gray-400 mt-2 italic">未過：每 300hr 覆核</div>
+                        <div class="text-2xl font-black mt-1">600 小時</div>
+                        <div class="text-sm text-gray-400 mt-2 italic">未過：每 300hr 覆核</div>
                     </div>
                 </div>
+
             </div>
         </section>
 
         <section>
-            <div class="flex flex-col md:flex-row justify-between items-center border-b-4 bright-gold-border pb-3 mb-8 gap-4">
-                <h3 class="text-3xl font-bold brand-text">L1 建立服務習慣</h3>
-                <span class="brand-bg text-white px-6 py-2 rounded-full font-bold shadow-xl border-2 bright-gold-border">$200/hr</span>
-            </div>
-            <div class="score-box"><b>1. 基本禮儀：</b>入店主動問候、使用敬語微笑、整潔儀態。</div>
-            <div class="score-box"><b>2. 外場流程：</b>依 SOP 執行倒茶、收桌、set 桌。</div>
-            <div class="score-box"><b>3. 出勤信任度：</b>準時到班；150小時內臨請/遲到不超過一次。</div>
-            <div class="mt-4 p-4 bg-green-50 rounded-xl text-green-800 font-bold border border-green-200 text-center text-lg">
-                晉升條件：平均評分 ≥ 4.0 ｜ 無營運異常 ｜ 外籍生中文 A2
-            </div>
-        </section>
-
-        <section>
-            <div class="flex flex-col md:flex-row justify-between items-center border-b-4 bright-gold-border pb-3 mb-6 gap-4">
-                <div class="flex flex-col items-center md:items-start">
+            <div class="flex flex-col md:flex-row justify-between items-center border-b-4 bright-gold-border pb-4 mb-8 gap-4">
+                <div class="text-center md:text-left">
                     <h3 class="text-3xl font-bold brand-text">L2 全場協調支援</h3>
-                    <div class="mt-2 hour-badge">每月標準時數：75 小時</div>
+                    <div class="mt-3 hour-badge shadow-md">每月標準時數：75 小時</div>
                 </div>
-                <span class="brand-bg text-white px-6 py-2 rounded-full font-bold shadow-xl border-2 bright-gold-border">$220/hr</span>
+                <div class="brand-bg text-white px-8 py-3 rounded-full font-black text-2xl shadow-lg border-2 bright-gold-border">
+                    $220/hr
+                </div>
             </div>
-            <div class="score-box"><b>1. 流程掌握：</b>高峰期調整收送順序，確保桌面整潔。</div>
-            <div class="score-box"><b>2. 顧客服務：</b>觀察需求續湯、舉手前察覺需求、離席道謝。</div>
-            <div class="score-box"><b>3. 餐點追蹤：</b>注意內場進度，延遲逾 20 分鐘主動回報。</div>
-            <div class="mt-4 p-4 bg-blue-50 rounded-xl text-blue-800 font-bold border border-blue-200 text-center text-lg">
-                晉升條件：平均評分 ≥ 4.25 ｜ 穩定帶新人 ｜ 外籍生中文 B2
+
+            <div class="space-y-4">
+                <div class="score-box shadow-sm"><b>1. 流程掌握：</b>高峰期依進度調整收送順序。</div>
+                <div class="score-box shadow-sm"><b>2. 顧客服務：</b>主動續湯、察覺需求、離席道謝。</div>
+                <div class="score-box shadow-sm"><b>3. 餐點追蹤：</b>注意出餐進度，延遲逾 20 分鐘回報主管。</div>
+                <div class="score-box shadow-sm"><b>4. 團隊合作：</b>即時支援他區、主動補位他區狀況。</div>
+                <div class="score-box shadow-sm"><b>5. 溝通態度：</b>即時回報異常狀況，表達清楚穩定。</div>
+            </div>
+
+            <div class="mt-8 p-6 bg-blue-50 rounded-2xl text-blue-900 font-bold border-2 border-blue-200 text-center text-xl shadow-inner">
+                晉升條件：平均評分 ≥ 4.0 ｜ 無營運異常 ｜ 外籍生中文 A2
             </div>
         </section>
 
     </main>
 
-    <footer class="text-center py-12 text-slate-400 text-xs border-t gold-border mt-10">
-        魚鮮會社 2025 職能發展系統
+    <footer class="text-center py-16 text-slate-400 text-sm border-t mt-20">
+        魚鮮會社 2025 職能發展系統｜讓每分努力都有亮眼的回報
     </footer>
 </body>
 </html>
