@@ -23,87 +23,91 @@
         .bg-brand-red { background-color: var(--brand-red); }
         .bg-brand-gold { background-color: var(--brand-gold); }
         
+        /* 輕量化質感小標籤 (Pills) */
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-right: 8px;
+            letter-spacing: 0.02em;
+        }
+        .pill-5 { background-color: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .pill-1 { background-color: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        
         .level-card {
             background: #fff; border: 1px solid #f0f0f0;
             transition: all 0.3s ease;
         }
-        /* Level 3 旗艦感 */
+        
+        /* Level 3 頂級視覺 */
         .level-3-platinum {
             border: 3px solid var(--brand-gold) !important;
-            box-shadow: 0 20px 40px rgba(178, 154, 31, 0.12) !important;
+            box-shadow: 0 25px 50px -12px rgba(178, 154, 31, 0.18) !important;
+            transform: scale(1.01);
+            background: linear-gradient(to bottom right, #ffffff, #fffef5);
             position: relative;
         }
-        /* 1分與5分的小標籤樣式 */
-        .score-pill {
-            display: inline-flex;
-            font-size: 0.85rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-left: 6px;
-            font-weight: bold;
-        }
-        .pill-5 { background: #e6fffa; color: #047857; border: 1px solid #34d399; }
-        .pill-1 { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
-        
-        .timeline-box { border-bottom: 6px solid #f0f0f0; }
-        .timeline-active-red { border-bottom-color: var(--brand-red); }
-        .timeline-active-gold { border-bottom-color: var(--brand-gold); }
     </style>
 </head>
 <body class="bg-gray-50/30 pb-20">
 
-    <header class="bg-white border-b-2 border-gray-100 py-12 px-6 shadow-sm text-center">
-        <h1 class="text-4xl font-black text-brand-red mb-4">魚鮮會社外場人才發展地圖</h1>
-        <p class="text-gray-500 mb-8 italic">透明、公平、專業：與公司共同成長的藍圖</p>
-        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-base">
-            <div class="p-4 bg-red-50/50 rounded-xl border border-red-100 font-bold text-brand-red">減少加班：熟練 SOP 提升人效</div>
-            <div class="p-4 bg-yellow-50/50 rounded-xl border border-yellow-100 font-bold text-brand-gold">主管專注：夥伴具備獨立能力</div>
-            <div class="p-4 bg-gray-100 rounded-xl border border-gray-200 font-bold text-gray-700">透明升遷：量化評分機制</div>
+    <header class="bg-white border-b-2 border-gray-100 py-16 px-6 text-center shadow-sm">
+        <h1 class="text-4xl font-black text-brand-red mb-6">魚鮮會社外場人才發展地圖</h1>
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+            <div class="p-6 bg-red-50/50 rounded-2xl border border-red-100 font-bold text-brand-red">減少加班：熟練 SOP 提升效率</div>
+            <div class="p-6 bg-yellow-50/50 rounded-2xl border border-yellow-100 font-bold text-brand-gold">主管專注：同仁具備獨立能力</div>
+            <div class="p-6 bg-gray-100 rounded-2xl border border-gray-200 font-bold text-gray-700">透明升遷：量化評分路徑</div>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 mt-16 space-y-16">
+    <main class="max-w-6xl mx-auto px-6 mt-16 space-y-20">
         
-        <div class="level-card rounded-3xl p-8 md:p-10" style="border-top: 8px solid var(--brand-red);">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-6 mb-8 gap-4">
+        <div class="level-card rounded-3xl p-8 md:p-12" style="border-top: 8px solid var(--brand-red);">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-8 mb-8 gap-4">
                 <div>
                     <h2 class="text-3xl font-black text-brand-red">LEVEL 1：建立服務習慣</h2>
-                    <p class="text-lg text-gray-500 font-bold">累積 150H 評核 | 未過每 100H 覆核</p>
+                    <p class="text-lg text-gray-500 font-bold">150H 評核 ｜ 未通過則每 100H 覆核</p>
                 </div>
-                <div class="text-left md:text-right">
-                    <div class="text-4xl font-black text-brand-gold">$200<span class="text-base font-normal text-gray-400">/hr</span></div>
-                </div>
+                <div class="text-left md:text-right text-4xl font-black text-brand-gold">$200<span class="text-base font-normal text-gray-400">/hr</span></div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-base">
-                <div class="md:col-span-2 space-y-4">
-                    <h4 class="font-black text-gray-800 border-l-4 border-brand-red pl-2 mb-4">五大職能標準 (對照表)</h4>
-                    <ul class="space-y-4">
-                        <li class="border-b pb-2">
-                            <span class="font-bold">1. 基本禮儀：</span> 主動問候、儀態整潔
-                            <span class="score-pill pill-5">5: 主動自然</span> <span class="score-pill pill-1">1: 冷淡無問候</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-base">
+                <div class="md:col-span-2 space-y-6">
+                    <h4 class="text-xl font-bold text-brand-gold border-l-4 border-brand-gold pl-3 mb-6 tracking-wide">五大職能標準對照</h4>
+                    <ul class="space-y-8">
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-red-200 decoration-4 underline-offset-4">1. 基本禮儀</div>
+                            <p class="text-gray-600 mb-2">主動問候顧客（歡迎光臨）、使用敬語儀態整潔</p>
+                            <span class="pill pill-5">5 卓越：主動自然</span><span class="pill pill-1">1 待改：冷淡無問候</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">2. 外場流程：</span> 倒茶、收桌、Set桌 SOP
-                            <span class="score-pill pill-5">5: 俐落主動</span> <span class="score-pill pill-1">1: 多次遺漏</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-red-200 decoration-4 underline-offset-4">2. 外場流程</div>
+                            <p class="text-gray-600 mb-2">倒茶、收桌、Set桌 SOP 與備品齊全檢查</p>
+                            <span class="pill pill-5">5 卓越：俐落主動</span><span class="pill pill-1">1 待改：多次遺漏</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">3. 出勤信任：</span> 準時到班、準備就緒
-                            <span class="score-pill pill-5">5: 全期準時</span> <span class="score-pill pill-1">1: 多次遲到</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-red-200 decoration-4 underline-offset-4">3. 出勤信任度</div>
+                            <p class="text-gray-600 mb-2">準時到班；150H 內無臨時請假或遲到逾一次</p>
+                            <span class="pill pill-5">5 卓越：全期準時</span><span class="pill pill-1">1 待改：多次遲到</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">4. 團隊支援：</span> 主動協助同仁收送餐
-                            <span class="score-pill pill-5">5: 反應迅速</span> <span class="score-pill pill-1">1: 拒絕消極</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-red-200 decoration-4 underline-offset-4">4. 團隊支援</div>
+                            <p class="text-gray-600 mb-2">主動協助收送餐；指派任務立即行動</p>
+                            <span class="pill pill-5">5 卓越：反應迅速</span><span class="pill pill-1">1 待改：拒絕消極</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">5. 清潔整理：</span> 完成區域清潔與備品整理
-                            <span class="score-pill pill-5">5: 離桌即收</span> <span class="score-pill pill-1">1: 未達標</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-red-200 decoration-4 underline-offset-4">5. 清潔整理</div>
+                            <p class="text-gray-600 mb-2">確實完成區域清潔、主管抽查合格</p>
+                            <span class="pill pill-5">5 卓越：離桌即收</span><span class="pill pill-1">1 待改：多次未達標</span>
                         </li>
                     </ul>
                 </div>
-                <div class="bg-red-50 p-6 rounded-2xl h-fit border border-red-100">
-                    <h5 class="font-black text-brand-red mb-3">升 L2 晉升條件</h5>
-                    <ul class="space-y-2 text-sm font-bold">
+                <div class="bg-red-50 p-8 rounded-3xl border border-red-100 h-fit sticky top-4">
+                    <h4 class="text-xl font-black text-brand-red mb-4">升 L2 晉升條件</h4>
+                    <ul class="text-base space-y-3 font-bold">
                         <li>● 平均評分 ≥ 4.0</li>
                         <li>● 無營運異常紀錄</li>
                         <li>● 外籍生中文檢定 A2</li>
@@ -112,45 +116,50 @@
             </div>
         </div>
 
-        <div class="level-card rounded-3xl p-8 md:p-10" style="border-top: 8px solid var(--brand-gold);">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-6 mb-8 gap-4">
+        <div class="level-card rounded-3xl p-8 md:p-12" style="border-top: 8px solid var(--brand-gold);">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-8 mb-8 gap-4">
                 <div>
-                    <h2 class="text-3xl font-black text-brand-gold">LEVEL 2：穩定支援與全場協調</h2>
-                    <p class="text-lg text-gray-500 font-bold">累積 300H 評核 | 未過每 150H 覆核</p>
-                    <div class="mt-2 text-xs bg-yellow-100 text-brand-gold px-3 py-1 rounded-full font-black inline-block">月標準時數：75 小時</div>
+                    <h2 class="text-3xl font-black text-brand-gold">LEVEL 2：穩定支援與協調</h2>
+                    <p class="text-lg text-gray-500 font-bold">300H 評核 ｜ 未通過則每 150H 覆核</p>
+                    <div class="mt-3 px-3 py-1 bg-yellow-100 text-brand-gold rounded-full text-xs font-black inline-block">月標準時數：75 小時</div>
                 </div>
-                <div class="text-left md:text-right text-4xl font-black text-brand-gold">$220<span class="text-base font-normal text-gray-400">/hr</span></div>
+                <div class="text-left md:text-right text-4xl font-black text-brand-gold">$220<span class="text-lg font-normal text-gray-400">/hr</span></div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-base">
-                <div class="md:col-span-2 space-y-4">
-                    <h4 class="font-black text-gray-800 border-l-4 border-brand-gold pl-2 mb-4">五大職能標準 (對照表)</h4>
-                    <ul class="space-y-4">
-                        <li class="border-b pb-2">
-                            <span class="font-bold">1. 流程掌握：</span> 調整收送順序、確保流暢
-                            <span class="score-pill pill-5">5: 自主調整</span> <span class="score-pill pill-1">1: 動線混亂</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-base">
+                <div class="md:col-span-2 space-y-6">
+                    <h4 class="text-xl font-bold text-brand-gold border-l-4 border-brand-gold pl-3 mb-6 tracking-wide">五大職能標準對照</h4>
+                    <ul class="space-y-8">
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-yellow-200 decoration-4 underline-offset-4">1. 流程掌握</div>
+                            <p class="text-gray-600 mb-2">調整收送順序、確保高峰期現場流暢</p>
+                            <span class="pill pill-5">5 卓越：自主調整</span><span class="pill pill-1">1 待改：動線混亂</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">2. 顧客服務：</span> 舉手前察覺需求、主動續湯
-                            <span class="score-pill pill-5">5: 持續主動</span> <span class="score-pill pill-1">1: 提醒才動</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-yellow-200 decoration-4 underline-offset-4">2. 顧客服務</div>
+                            <p class="text-gray-600 mb-2">舉手前察覺需求（如續湯）、道謝主動</p>
+                            <span class="pill pill-5">5 卓越：持續主動</span><span class="pill pill-1">1 待改：提醒才動</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">3. 餐點追蹤：</span> 監控進度並即時回報主管
-                            <span class="score-pill pill-5">5: 主動監控</span> <span class="score-pill pill-1">1: 未追蹤</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-yellow-200 decoration-4 underline-offset-4">3. 餐點追蹤</div>
+                            <p class="text-gray-600 mb-2">監控出餐進度、逾 20 分鐘即時回報</p>
+                            <span class="pill pill-5">5 卓越：主動監控</span><span class="pill pill-1">1 待改：未追蹤延誤</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">4. 團隊合作：</span> 即時補位支援、非己區亦助
-                            <span class="score-pill pill-5">5: 主動補位</span> <span class="score-pill pill-1">1: 不支援</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-yellow-200 decoration-4 underline-offset-4">4. 團隊合作</div>
+                            <p class="text-gray-600 mb-2">即時補位支援、非己區亦能主動協助</p>
+                            <span class="pill pill-5">5 卓越：主動補位</span><span class="pill pill-1">1 待改：不支援</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">5. 溝通態度：</span> 表達清楚、語氣冷靜穩定
-                            <span class="score-pill pill-5">5: 即時冷靜</span> <span class="score-pill pill-1">1: 未通報/語氣差</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-bold mb-2 text-gray-800 underline decoration-yellow-200 decoration-4 underline-offset-4">5. 溝通態度</div>
+                            <p class="text-gray-600 mb-2">即時回報異常、表達清楚且冷靜穩定</p>
+                            <span class="pill pill-5">5 卓越：冷靜清楚</span><span class="pill pill-1">1 待改：語氣欠佳</span>
                         </li>
                     </ul>
                 </div>
-                <div class="bg-yellow-50/50 p-6 rounded-2xl h-fit border border-yellow-200">
-                    <h5 class="font-black text-brand-gold mb-3">升 L3 晉升條件</h5>
-                    <ul class="space-y-2 text-sm font-bold">
+                <div class="bg-yellow-50/50 p-8 rounded-3xl border border-yellow-200 h-fit sticky top-4 text-center">
+                    <h4 class="text-xl font-black text-brand-gold mb-4">升 L3 晉升條件</h4>
+                    <ul class="text-base space-y-3 font-bold text-gray-700">
                         <li>● 平均評分 ≥ 4.25</li>
                         <li>● 穩定展現帶領新人行為</li>
                         <li>● 外籍生中文檢定 B2</li>
@@ -159,69 +168,86 @@
             </div>
         </div>
 
-        <div class="level-card level-3-platinum rounded-3xl p-8 md:p-12">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-gray-100 pb-8 mb-8 gap-4">
+        <div class="level-card level-3-platinum rounded-3xl p-8 md:p-14">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-gray-100 pb-10 mb-10 gap-4">
                 <div>
                     <h2 class="text-4xl font-black text-gray-800 italic underline decoration-brand-gold underline-offset-8">LEVEL 3：現場主導者</h2>
-                    <p class="text-xl text-gray-600 font-bold mt-2">累積 600H 評核 | 未過每 300H 覆核</p>
-                    <div class="mt-2 text-xs bg-gray-800 text-white px-3 py-1 rounded-full font-black inline-block">月標準時數：100 小時</div>
+                    <p class="text-xl text-gray-600 font-bold mt-2">600H 評核 ｜ 未通過則每 300H 覆核</p>
+                    <div class="mt-3 px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-black inline-block shadow-md">月標準時數：100 小時</div>
                 </div>
                 <div class="text-left md:text-right text-5xl font-black text-brand-gold">$250<span class="text-xl font-normal text-gray-400">/hr</span></div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-base">
-                <div class="md:col-span-2 space-y-5">
-                    <h4 class="font-black text-gray-800 border-l-4 border-brand-gold pl-2 mb-4">五大職能標準 (主導對照)</h4>
-                    <ul class="space-y-5">
-                        <li class="border-b pb-2">
-                            <span class="font-bold">1. 資訊掌握：</span> 觀察內場出單狀況、管理顧客預期
-                            <span class="score-pill pill-5">5: 即時傳遞</span> <span class="score-pill pill-1">1: 資訊錯誤</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-base">
+                <div class="md:col-span-2 space-y-6">
+                    <h4 class="text-xl font-bold text-brand-gold border-l-4 border-brand-gold pl-3 mb-6 tracking-widest">主導職能標準對照</h4>
+                    <ul class="space-y-8 font-medium">
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-black mb-2 text-gray-800 text-lg">1. 資訊掌握與預期管理</div>
+                            <p class="text-gray-600 mb-3 text-base">觀察內場出單、主動向同仁與顧客說明等待時間</p>
+                            <span class="pill pill-5">5 卓越：即時傳遞</span><span class="pill pill-1">1 待改：資訊錯誤</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">2. 團隊協調：</span> 明確分配任務、補位領奏
-                            <span class="score-pill pill-5">5: 順暢主動</span> <span class="score-pill pill-1">1: 分工不清</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-black mb-2 text-gray-800 text-lg">2. 團隊協調與合作</div>
+                            <p class="text-gray-600 mb-3 text-base">高峰時明確分配任務、穩定現場節奏與品質</p>
+                            <span class="pill pill-5">5 卓越：現場順暢</span><span class="pill pill-1">1 待改：分工不清</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">3. 溝通態度：</span> 冷靜說明、安撫顧客情緒
-                            <span class="score-pill pill-5">5: 安撫有效</span> <span class="score-pill pill-1">1: 情緒化</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-black mb-2 text-gray-800 text-lg">3. 溝通與態度</div>
+                            <p class="text-gray-600 mb-3 text-base">遇突發狀況冷靜安撫、同仁溝通語氣穩定</p>
+                            <span class="pill pill-5">5 卓越：安撫有效</span><span class="pill pill-1">1 待改：語氣急躁</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">4. 櫃檯應對：</span> 獨立結帳訂位、金額無誤
-                            <span class="score-pill pill-5">5: 100%正確</span> <span class="score-pill pill-1">1: 多次錯誤</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-black mb-2 text-gray-800 text-lg">4. 櫃檯與電話應對</div>
+                            <p class="text-gray-600 mb-3 text-base">獨立結帳訂位、金額正確且流程順暢</p>
+                            <span class="pill pill-5">5 卓越：正確流暢</span><span class="pill pill-1">1 待改：多次錯誤</span>
                         </li>
-                        <li class="border-b pb-2">
-                            <span class="font-bold">5. 責任感：</span> 無臨缺、主動承擔遞補支援
-                            <span class="score-pill pill-5">5: 穩定可靠</span> <span class="score-pill pill-1">1: 拒絕配合</span>
+                        <li class="border-b border-gray-100 pb-4">
+                            <div class="font-black mb-2 text-gray-800 text-lg">5. 責任感與出勤</div>
+                            <p class="text-gray-600 mb-3 text-base">無臨缺、能於他人請假時主動遞補支援</p>
+                            <span class="pill pill-5">5 卓越：穩定可靠</span><span class="pill pill-1">1 待改：拒絕配合</span>
                         </li>
                     </ul>
                 </div>
-                <div class="bg-gray-100 p-8 rounded-3xl h-fit border-2 border-gray-200 shadow-inner">
-                    <h5 class="font-black text-gray-800 mb-4 flex items-center">
-                        <i class="fas fa-exclamation-triangle text-brand-red mr-2"></i> 維持條件
-                    </h5>
-                    <ul class="space-y-3 text-sm font-bold">
-                        <li class="text-brand-red">● 評分 < 3.75 進入觀察期</li>
-                        <li>● 觀察期未改善則降級 L2</li>
-                        <li>● 重大事件啟動觀察/降級</li>
+                <div class="bg-gray-100 p-10 rounded-3xl border-2 border-gray-200 h-fit sticky top-4 shadow-inner">
+                    <h4 class="text-xl font-black text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-exclamation-triangle text-brand-red mr-3"></i> 維持條件
+                    </h4>
+                    <ul class="text-base space-y-6 font-bold">
+                        <li class="flex items-start text-brand-red">
+                            <i class="fas fa-angle-double-right mt-1 mr-2"></i> 平均評分 < 3.75 進入一個月觀察期
+                        </li>
+                        <li class="flex items-start text-gray-700">
+                            <i class="fas fa-angle-double-right mt-1 mr-2"></i> 觀察期結束若評分未達 4.0 → 降級 Level 2
+                        </li>
+                        <li class="flex items-start text-gray-700">
+                            <i class="fas fa-angle-double-right mt-1 mr-2"></i> 發生重大營運異常事件立即觀察
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </main>
 
-    <section class="max-w-6xl mx-auto px-6 mt-16 pb-20 grid grid-cols-1 md:grid-cols-2 gap-8 text-base">
-        <div class="p-8 bg-gray-800 text-white rounded-3xl">
-            <h4 class="text-brand-gold font-black text-xl mb-4 underline">營運異常</h4>
-            <p class="text-gray-300">指臨請、遲到或失誤致調班或影響客情。提前調班或具證明之突發事故不計入。</p>
-        </div>
-        <div class="p-8 bg-gray-800 text-white rounded-3xl">
-            <h4 class="text-brand-red font-black text-xl mb-4 underline">嚴重事件</h4>
-            <p class="text-gray-300">致營運中斷、顧客正式投訴之重大狀況。成立將立即啟動觀察期或降級評估。</p>
+    <section class="max-w-6xl mx-auto px-6 mt-24 mb-24">
+        <div class="bg-gray-800 text-white p-12 rounded-3xl shadow-xl grid grid-cols-1 md:grid-cols-2 gap-16 leading-relaxed">
+            <div>
+                <h4 class="text-brand-gold font-black text-2xl mb-6 italic underline underline-offset-8">營運異常定義</h4>
+                <p class="text-gray-300 text-lg font-bold mb-4">指因臨請、遲到或失誤致調班或影響客情之狀況。</p>
+                <p class="text-gray-400 text-sm italic">※ 已提前協調完成調班、或具證明之突發事故不在此限。</p>
+            </div>
+            <div>
+                <h4 class="text-brand-red font-black text-2xl mb-6 italic underline underline-offset-8">嚴重事件定義</h4>
+                <p class="text-gray-300 text-lg font-bold mb-6">致營運中斷、顧客投訴或同事負擔重大的重大狀況。</p>
+                <div class="bg-red-50/10 p-4 rounded-xl border border-brand-red/30 font-black text-brand-red">
+                    ⚠️ 事件成立將立即啟動觀察期或降級評估。
+                </div>
+            </div>
         </div>
     </section>
 
-    <footer class="text-center py-10 text-gray-400 border-t border-gray-100 bg-white text-sm font-bold">
-        © 2025 魚鮮會社 YUXIAN 內部管理文件
+    <footer class="text-center py-12 text-gray-400 border-t border-gray-200 bg-white font-bold text-sm">
+        © 2025 魚鮮會社 YUXIAN 內部管理系統
     </footer>
 
 </body>
