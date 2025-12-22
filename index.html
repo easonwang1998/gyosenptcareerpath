@@ -11,39 +11,44 @@
         body { font-family: 'Noto Sans TC', sans-serif; background-color: #fdf2f2; }
         .brand-bg { background-color: #b21f2c; }
         .brand-text { color: #b21f2c; }
-        .gold-border { border-color: #d4af37; }
-        .gold-text { color: #c5a028; }
-        .gold-bg { background-color: #d4af37; }
+        /* 亮金色設計 */
+        .bright-gold-border { border-color: #FFD700; }
+        .bright-gold-text { color: #D4AF37; }
+        .bright-gold-bg { background-color: #FFD700; }
+        
         .card { background: white; border-radius: 1rem; border: 1px solid #eecaca; }
+        
+        /* 橫向時間軸樣式 */
         .timeline-container { display: flex; justify-content: space-between; position: relative; padding: 20px 0; }
-        .timeline-line { position: absolute; top: 40px; left: 10%; right: 10%; height: 2px; background: #d4af37; z-index: 1; }
+        .timeline-line { position: absolute; top: 40px; left: 10%; right: 10%; height: 3px; background: #FFD700; z-index: 1; box-shadow: 0 0 8px rgba(255, 215, 0, 0.5); }
         .timeline-step { position: relative; z-index: 2; text-align: center; width: 30%; }
-        .step-icon { width: 40px; height: 40px; background: #b21f2c; border: 2px solid #d4af37; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: #d4af37; font-weight: bold; }
-        .score-box { background: #fffcfc; border: 1px solid #f5e1e1; border-left: 5px solid #b21f2c; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+        .step-icon { width: 44px; height: 44px; background: #b21f2c; border: 3px solid #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: #FFD700; font-weight: bold; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        
+        .score-box { background: #fffcfc; border: 1px solid #f5e1e1; border-left: 6px solid #b21f2c; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .kpi-title { font-weight: 700; color: #b21f2c; margin-right: 8px; }
     </style>
 </head>
 <body class="text-slate-800">
 
-    <header class="brand-bg text-white py-12 px-6 shadow-2xl border-b-4 gold-border text-center">
+    <header class="brand-bg text-white py-12 px-6 shadow-2xl border-b-8 bright-gold-border text-center">
         <div class="max-w-5xl mx-auto">
             <h1 class="text-4xl font-bold mb-6 flex items-center justify-center gap-3">
-                <i class="fas fa-fish text-[#d4af37]"></i> 魚鮮會社：外場職能成長儀表板
+                <i class="fas fa-fish text-[#FFD700]"></i> 魚鮮會社：外場職能成長儀表板
             </h1>
-            <div class="bg-black/20 p-8 rounded-2xl mt-8 border border-[#d4af37]/30 text-left">
-                <h2 class="text-xl font-bold mb-4 text-[#d4af37] italic underline underline-offset-8">推動初衷與預期成果</h2>
+            <div class="bg-black/30 p-8 rounded-2xl mt-8 border-2 bright-gold-border text-left">
+                <h2 class="text-xl font-bold mb-4 text-[#FFD700] italic underline decoration-2 underline-offset-8">推動初衷與預期成果</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-100 mt-6">
-                    <div class="bg-white/5 p-4 rounded-xl border-l-2 gold-border shadow-inner">
-                        <span class="gold-text font-bold block mb-2">主管專注管理</span>
-                        建立透明機制，減少瑣碎交辦，讓管理重心回到人才培育。
+                    <div class="bg-white/10 p-4 rounded-xl border-l-4 bright-gold-border">
+                        <span class="text-[#FFD700] font-bold block mb-2 text-lg">主管專注管理</span>
+                        建立透明機制，減少重複交辦 [cite: 14]，讓管理重心回到人才培育與現場品質控管 [cite: 27]。
                     </div>
-                    <div class="bg-white/5 p-4 rounded-xl border-l-2 gold-border shadow-inner">
-                        <span class="gold-text font-bold block mb-2">優化效率減少加班</span>
-                        提升熟練度減少非必要勞動，讓大家準時下班享受生活。
+                    <div class="bg-white/10 p-4 rounded-xl border-l-4 bright-gold-border">
+                        <span class="text-[#FFD700] font-bold block mb-2 text-lg">優化效率減少加班</span>
+                        提升團隊熟練度減少非必要勞動，讓大家準時下班享受平衡生活。
                     </div>
-                    <div class="bg-white/5 p-4 rounded-xl border-l-2 gold-border shadow-inner">
-                        <span class="gold-text font-bold block mb-2">透明晉升留住人才</span>
-                        提供明確調薪與成長路徑，打造穩定且專業的夥伴團隊。
+                    <div class="bg-white/10 p-4 rounded-xl border-l-4 bright-gold-border">
+                        <span class="text-[#FFD700] font-bold block mb-2 text-lg">透明晉升留住人才</span>
+                        提供明確調薪路徑，讓優秀夥伴看見在魚鮮發展的未來與價值 [cite: 3]。
                     </div>
                 </div>
             </div>
@@ -52,109 +57,111 @@
 
     <main class="max-w-5xl mx-auto p-6 space-y-12">
         
-        <section class="bg-white p-8 rounded-2xl shadow-sm border gold-border mt-8 text-center">
-            <h3 class="text-xl font-bold mb-6 brand-text">考核時數里程碑</h3>
+        <section class="bg-white p-10 rounded-2xl shadow-lg border-2 bright-gold-border mt-8">
+            <h3 class="text-2xl font-bold mb-8 text-center brand-text">考核週期時數里程碑</h3>
             <div class="timeline-container">
                 <div class="timeline-line"></div>
                 <div class="timeline-step">
                     <div class="step-icon">1</div>
-                    <div class="font-bold brand-text text-sm">Level 1 考核</div>
-                    <div class="text-lg font-bold">150 小時</div>
-                    <div class="text-xs text-gray-400 mt-1 italic">未過：每 100hr 覆核</div>
+                    <div class="font-bold brand-text text-md underline decoration-[#FFD700]">LEVEL 1 考核</div>
+                    <div class="text-xl font-bold mt-1">150 小時</div>
+                    <div class="text-xs text-gray-500 mt-2 italic">未通過覆核：每 100hr [cite: 3]</div>
                 </div>
                 <div class="timeline-step">
                     <div class="step-icon">2</div>
-                    <div class="font-bold brand-text text-sm">Level 2 考核</div>
-                    <div class="text-lg font-bold">300 小時</div>
-                    <div class="text-xs text-gray-400 mt-1 italic">未過：每 150hr 覆核</div>
+                    <div class="font-bold brand-text text-md underline decoration-[#FFD700]">LEVEL 2 考核</div>
+                    <div class="text-xl font-bold mt-1">300 小時</div>
+                    <div class="text-xs text-gray-500 mt-2 italic">未通過覆核：每 150hr [cite: 15]</div>
                 </div>
                 <div class="timeline-step">
                     <div class="step-icon">3</div>
-                    <div class="font-bold brand-text text-sm">Level 3 考核</div>
-                    <div class="text-lg font-bold">600 小時</div>
-                    <div class="text-xs text-gray-400 mt-1 italic">未過：每 300hr 覆核</div>
+                    <div class="font-bold brand-text text-md underline decoration-[#FFD700]">LEVEL 3 考核</div>
+                    <div class="text-xl font-bold mt-1">600 小時</div>
+                    <div class="text-xs text-gray-500 mt-2 italic">未通過覆核：每 300hr [cite: 28]</div>
                 </div>
             </div>
         </section>
 
         <section>
-            <div class="flex justify-between items-center border-b-2 gold-border pb-2 mb-6">
-                <h3 class="text-2xl font-bold brand-text flex items-center">
-                    <span class="gold-bg text-white w-10 h-10 rounded flex items-center justify-center mr-3 font-bold">L1</span>
-                    建立服務習慣與出勤責任
+            <div class="flex justify-between items-center border-b-4 bright-gold-border pb-3 mb-8">
+                <h3 class="text-3xl font-bold brand-text flex items-center">
+                    <span class="bright-gold-bg text-black w-12 h-12 rounded shadow-md flex items-center justify-center mr-4 font-bold">L1</span>
+                    建立服務習慣與出勤責任 [cite: 1]
                 </h3>
-                <span class="brand-bg text-white px-5 py-1 rounded-full font-bold">$200/hr</span>
+                <span class="brand-bg text-white px-6 py-2 rounded-full font-bold shadow-xl border-2 bright-gold-border">時薪：$200 [cite: 2]</span>
             </div>
             <div class="space-y-4">
-                <div class="score-box"><span class="kpi-title">1. 基本禮儀：</span>入店主動問候、使用敬語微笑、保持儀態整潔。 <span class="float-right text-xs gold-text">(5分：主動自然 | 1分：冷淡)</span></div>
-                <div class="score-box"><span class="kpi-title">2. 外場流程：</span>依 SOP 執行倒茶、收桌、set 桌，完成後檢查環境。 <span class="float-right text-xs gold-text">(5分：俐落檢查 | 1分：遺漏)</span></div>
-                <div class="score-box"><span class="kpi-title">3. 出勤信任度：</span>準時到班；150小時內臨請或遲到不超過一次。 <span class="float-right text-xs gold-text">(5分：全期準時 | 1分：多次遲到)</span></div>
-                <div class="score-box"><span class="kpi-title">4. 團隊支援：</span>忙碌時協助收桌送餐；被指派任務時立即行動。 <span class="float-right text-xs gold-text">(5分：反應迅速 | 1分：拒絕)</span></div>
-                <div class="score-box"><span class="kpi-title">5. 清潔與整理：</span>確實完成區域清潔，主管抽查未通過2次以下。 <span class="float-right text-xs gold-text">(5分：離桌即收 | 1分：不達標)</span></div>
+                <div class="score-box"><span class="kpi-title">1. 基本禮儀：</span>入店主動問候(歡迎/感謝光臨)、敬語微笑、整潔儀態 [cite: 4]。</div>
+                <div class="score-box"><span class="kpi-title">2. 外場流程：</span>依SOP執行倒茶、收桌、set桌，主動檢查環境備品 [cite: 4]。</div>
+                <div class="score-box"><span class="kpi-title">3. 出勤信任度：</span>準時到班就緒；150小時內臨請/遲到不超過一次 [cite: 4]。</div>
+                <div class="score-box"><span class="kpi-title">4. 團隊支援：</span>忙碌時協助收桌送餐；被指派任務時立即行動 [cite: 4]。</div>
+                <div class="score-box"><span class="kpi-title">5. 清潔整理：</span>確實完成區域清潔，主管抽查未通過2次以下 [cite: 4]。</div>
             </div>
-            <div class="mt-4 p-4 bg-green-50 rounded-xl text-green-800 text-sm">
-                <b>晉升條件：</b>平均評分 ≥ 4.0｜無營運異常紀錄｜外籍生中文 A2 通過
+            <div class="mt-6 p-5 bg-green-50 rounded-xl text-green-800 text-sm font-bold border border-green-200">
+                晉升條件：平均評分 ≥ 4.0 [cite: 7]｜無營運異常紀錄 [cite: 8]｜外籍生通過中文檢定 A2 [cite: 9]
             </div>
         </section>
 
         <section>
-            <div class="flex justify-between items-center border-b-2 gold-border pb-2 mb-6">
-                <h3 class="text-2xl font-bold brand-text flex items-center">
-                    <span class="gold-bg text-white w-10 h-10 rounded flex items-center justify-center mr-3 font-bold">L2</span>
-                    穩定支援與全場協調支援
+            <div class="flex justify-between items-center border-b-4 bright-gold-border pb-3 mb-8">
+                <h3 class="text-3xl font-bold brand-text flex items-center">
+                    <span class="bright-gold-bg text-black w-12 h-12 rounded shadow-md flex items-center justify-center mr-4 font-bold">L2</span>
+                    穩定支援與全場協調 [cite: 10]
                 </h3>
-                <span class="brand-bg text-white px-5 py-1 rounded-full font-bold">$220/hr</span>
+                <span class="brand-bg text-white px-6 py-2 rounded-full font-bold shadow-xl border-2 bright-gold-border">時薪：$220 [cite: 12]</span>
             </div>
             <div class="space-y-4">
-                <div class="score-box"><span class="kpi-title">1. 流程掌握：</span>高峰期調整收送順序，確保桌面整潔與餐具充足。 <span class="float-right text-xs gold-text">(5分：自主調整 | 1分：動線混亂)</span></div>
-                <div class="score-box"><span class="kpi-title">2. 顧客服務：</span>觀察續湯需求、舉手前察覺、離席主動道謝。 <span class="float-right text-xs gold-text">(5分：持續主動 | 1分：需提醒)</span></div>
-                <div class="score-box"><span class="kpi-title">3. 餐點追蹤：</span>注意出餐進度，延遲逾20分主動回報主管。 <span class="float-right text-xs gold-text">(5分：監控回報 | 1分：未追蹤)</span></div>
-                <div class="score-box"><span class="kpi-title">4. 團隊合作：</span>忙碌即時支援他區、狀況發生時能主動補位。 <span class="float-right text-xs gold-text">(5分：補位反應快 | 1分：不支援)</span></div>
-                <div class="score-box"><span class="kpi-title">5. 溝通態度：</span>即時回報異常狀況，表達清楚且語氣穩定。 <span class="float-right text-xs gold-text">(5分：清楚冷靜 | 1分：未通報)</span></div>
+                <div class="score-box"><span class="kpi-title">1. 流程掌握：</span>高峰期依出餐進度調整收送順序，確保餐具充足 [cite: 16]。</div>
+                <div class="score-box"><span class="kpi-title">2. 顧客服務：</span>觀察需求續湯、舉手前察覺需求、離席主動道謝 [cite: 16]。</div>
+                <div class="score-box"><span class="kpi-title">3. 餐點追蹤：</span>注意內場出餐進度，延遲逾20分鐘主動回報 [cite: 16]。</div>
+                <div class="score-box"><span class="kpi-title">4. 團隊合作：</span>即時支援他區(如代送餐/收桌)、狀況發生能主動補位 [cite: 16]。</div>
+                <div class="score-box"><span class="kpi-title">5. 溝通態度：</span>即時回報異常狀況，表達清楚且語氣穩定 [cite: 16]。</div>
             </div>
-            <div class="mt-4 p-4 bg-blue-50 rounded-xl text-blue-800 text-sm">
-                <b>晉升條件：</b>平均評分 ≥ 4.25｜穩定帶領新人｜外籍生中文 B2 通過
+            <div class="mt-6 p-5 bg-blue-50 rounded-xl text-blue-800 text-sm font-bold border border-blue-200">
+                晉升條件：平均評分 ≥ 4.25 [cite: 19]｜展現帶領新人行為 [cite: 20]｜外籍生通過中文檢定 B2 [cite: 22]
             </div>
         </section>
 
         <section>
-            <div class="flex justify-between items-center border-b-2 gold-border pb-2 mb-6">
-                <h3 class="text-2xl font-bold brand-text flex items-center">
-                    <span class="gold-bg text-white w-10 h-10 rounded flex items-center justify-center mr-3 font-bold">L3</span>
-                    現場主導與資訊協調
+            <div class="flex justify-between items-center border-b-4 bright-gold-border pb-3 mb-8">
+                <h3 class="text-3xl font-bold brand-text flex items-center">
+                    <span class="bright-gold-bg text-black w-12 h-12 rounded shadow-md flex items-center justify-center mr-4 font-bold">L3</span>
+                    現場主導與資訊協調 [cite: 23]
                 </h3>
-                <span class="brand-bg text-white px-5 py-1 rounded-full font-bold">$250/hr</span>
+                <span class="brand-bg text-white px-6 py-2 rounded-full font-bold shadow-xl border-2 bright-gold-border">時薪：$250 [cite: 25]</span>
             </div>
             <div class="space-y-4">
-                <div class="score-box"><span class="kpi-title">1. 預期管理：</span>掌握五台出單狀況，主動告知顧客需久候品項。 <span class="float-right text-xs gold-text">(5分：主動傳遞資訊 | 1分：未掌握)</span></div>
-                <div class="score-box"><span class="kpi-title">2. 團隊協調：</span>明確分配任務（誰收/set桌），穩定現場節奏。 <span class="float-right text-xs gold-text">(5分：分配任務順暢 | 1分：造成混亂)</span></div>
-                <div class="score-box"><span class="kpi-title">3. 溝通與態度：</span>遇突發狀況冷靜安撫顧客，語氣穩定明確。 <span class="float-right text-xs gold-text">(5分：冷靜安撫 | 1分：情緒化)</span></div>
-                <div class="score-box"><span class="kpi-title">4. 櫃檯應對：</span>獨立完成結帳、外帶與訂位，紀錄正確率 100%。 <span class="float-right text-xs gold-text">(5分：流程順暢正確 | 1分：多次錯誤)</span></div>
-                <div class="score-box"><span class="kpi-title">5. 責任感與出勤：</span>無臨時缺班，能於他人請假時主動遞補。 <span class="float-right text-xs gold-text">(5分：主動承擔 | 1分：拒絕支援)</span></div>
+                <div class="score-box"><span class="kpi-title">1. 預期管理：</span>掌控五台出單狀況，主動向同仁與顧客說明久候品項 [cite: 29]。</div>
+                <div class="score-box"><span class="kpi-title">2. 團隊協調：</span>明確分配任務(收桌/set桌)，穩定現場節奏與補位 [cite: 29]。</div>
+                <div class="score-box"><span class="kpi-title">3. 溝通與態度：</span>突發狀況冷靜安撫顧客，與同仁溝通語氣穩定 [cite: 29]。</div>
+                <div class="score-box"><span class="kpi-title">4. 櫃檯與電話：</span>獨立結帳、外帶與訂位，金額與紀錄完整無誤 [cite: 29]。</div>
+                <div class="score-box"><span class="kpi-title">5. 責任感與出勤：</span>無臨時缺班，並能於他人請假時主動遞補 [cite: 29]。</div>
             </div>
-            <div class="mt-4 p-4 bg-red-50 rounded-xl text-red-800 text-sm italic">
-                <b>維持規則：</b>評分低於 3.75 進入觀察期；發生重大事件啟動降級評估。
+            <div class="mt-6 p-5 bg-red-50 rounded-xl text-red-800 text-sm font-bold border border-red-200 italic">
+                維持條件：平均評分 < 3.75 進入觀察期；重大事件啟動降級評估 [cite: 33, 34]。
             </div>
         </section>
 
-        <section class="brand-bg text-white p-8 rounded-2xl border-2 gold-border shadow-lg">
-            <h4 class="text-xl font-bold mb-4 gold-text underline underline-offset-8">管理機制定義</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm opacity-90 leading-relaxed">
+        <section class="brand-bg text-white p-10 rounded-3xl border-4 bright-gold-border shadow-2xl">
+            <h4 class="text-2xl font-bold mb-6 text-[#FFD700] underline underline-offset-8">管理機制重要定義</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-md opacity-90 leading-relaxed">
                 <div>
-                    <p class="font-bold mb-2 text-white">營運異常定義</p>
-                    <p>指任何因臨時請假、遲到或現場失誤，造成團隊需臨時調整班表、或影響顧客體驗之情況。</p>
+                    <p class="font-bold mb-3 text-white text-xl border-b border-[#FFD700]/30 pb-2">營運異常定義 [cite: 39, 40]</p>
+                    <p>指因臨時請假、遲到或現場失誤，造成團隊需調整班表、或影響顧客體驗之情況。</p>
                 </div>
                 <div>
-                    <p class="font-bold mb-2 text-white">績效分級</p>
-                    <p>● 4.5 - 5.0：卓越 (升等維持) / ● 4.0 - 4.49：合格 (持續觀察)</p>
-                    <p>● 3.5 - 3.99：待強化 (暫緩升級) / ● 低於 3.5：不達標 (重訓降級)</p>
+                    <p class="font-bold mb-3 text-white text-xl border-b border-[#FFD700]/30 pb-2">績效分級說明 [cite: 38]</p>
+                    <p>● 4.5 - 5.0：卓越 (穩定升等或維持等級)</p>
+                    <p>● 4.0 - 4.49：合格 (符合標準，持續觀察)</p>
+                    <p>● 3.5 - 3.99：待強化 (暫緩升級，觀察期)</p>
+                    <p>● 低於 3.5：不達標 (需重新訓練或降級)</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="text-center py-12 text-slate-400 text-xs border-t gold-border">
-        魚鮮會社 2025 職能發展系統｜讓每分努力都有透明的回報
+    <footer class="text-center py-12 text-slate-500 text-sm border-t-2 bright-gold-border mt-10">
+        魚鮮會社 2025 職能發展系統｜讓每分努力都有亮眼的回報 [cite: 37]
     </footer>
 </body>
 </html>
