@@ -22,34 +22,37 @@
             line-height: 1.7; 
         }
 
-        /* Header 樣式 */
+        /* --- Header 視覺優化 --- */
         .hero-header {
             background: #ffffff;
-            padding: 60px 20px 40px;
+            padding: 80px 20px 140px; /* 增加底部內距，為懸浮卡片預留空間 */
             text-align: center;
         }
         .hero-title {
-            font-size: clamp(2rem, 8vw, 3rem);
+            font-size: clamp(2.2rem, 8vw, 3.5rem);
             font-weight: 900;
             letter-spacing: -0.02em;
             color: #1A202C;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
         .hero-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-muted);
             font-weight: 500;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
 
-        /* 晉升考核卡片 - 精緻小正方形佈局 */
+        /* --- 晉升考核卡片：懸浮設計 --- */
         .timeline-container {
             background: white;
-            border-radius: 24px;
-            padding: clamp(20px, 5vw, 40px);
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border-radius: 28px;
+            padding: clamp(24px, 5vw, 48px);
+            margin-top: -80px; /* 關鍵：負邊距產生重疊懸浮感 */
+            margin-bottom: 50px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.06);
             border: 1px solid #edf2f7;
+            position: relative;
+            z-index: 10;
         }
 
         .schedule-grid {
@@ -61,7 +64,7 @@
 
         .schedule-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -69,66 +72,42 @@
             text-align: center;
             border: 1px solid #E2E8F0;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 15px;
+            padding: 20px;
         }
 
         @media (min-width: 768px) {
-            .schedule-card { 
-                width: 180px; 
-                height: 180px; 
-                border-top: 5px solid #E2E8F0;
-            }
+            .schedule-card { width: 180px; height: 180px; border-top: 6px solid #E2E8F0; }
         }
 
         @media (max-width: 767px) {
             .schedule-grid { flex-direction: column; align-items: stretch; }
-            .schedule-card { border-left: 5px solid #E2E8F0; align-items: center; text-align: center; }
+            .schedule-card { border-left: 6px solid #E2E8F0; align-items: center; text-align: center; }
         }
 
-        .schedule-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
-        }
+        .schedule-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.08); }
 
-        .step-label {
-            font-size: 0.75rem;
-            font-weight: 900;
-            color: var(--text-muted);
-            letter-spacing: 0.05em;
-            margin-bottom: 5px;
-        }
+        .step-label { font-size: 0.75rem; font-weight: 900; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 8px; }
+        .schedule-card h5 { font-size: 1.25rem; font-weight: 900; color: #1A202C; line-height: 1.2; }
+        .schedule-card p { font-size: 0.8rem; margin-top: 6px; }
 
-        .schedule-card h5 {
-            font-size: 1.15rem;
-            font-weight: 900;
-            color: #1A202C;
-            line-height: 1.2;
-        }
-        
-        .schedule-card p {
-            font-size: 0.7rem;
-            margin-top: 4px;
-        }
-
-        /* 導覽按鈕 */
+        /* --- 導覽按鈕 --- */
         .tab-container {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-bottom: 40px;
             padding: 0 20px;
         }
         .tab-btn {
             flex: 1;
             max-width: 200px;
-            padding: 12px 20px;
+            padding: 14px 24px;
             border-radius: 50px;
             font-weight: 800;
-            text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
             border: 2px solid transparent;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
         .tab-btn.active {
             background-color: var(--brand-red);
@@ -141,27 +120,27 @@
             border-color: #EEF2F7;
         }
 
-        /* 內容顯示控制 */
+        /* --- 卡片與 Level 樣式 --- */
         .content-section { display: none; animation: fadeIn 0.5s ease; }
         .content-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 卡片與 Level 樣式 */
-        .level-container { max-width: 1150px; margin: 0 auto 60px; padding: 0 16px; }
+        .level-container { max-width: 1150px; margin: 0 auto 80px; padding: 0 16px; }
         .level-box { background: #ffffff; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.03); margin-bottom: 40px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); }
-        .level-top { padding: 30px 25px; border-bottom: 1px solid #F1F5F9; }
+        .level-top { padding: 35px 30px; border-bottom: 1px solid #F1F5F9; }
         
+        /* Level 3 質感強調 */
         .level-box-premium {
             border: 2px solid #1A202C !important;
-            box-shadow: 0 20px 40px rgba(26, 32, 44, 0.08) !important;
+            box-shadow: 0 25px 50px rgba(26, 32, 44, 0.08) !important;
         }
 
-        /* 職能條目排版優化：解決文字隱藏問題 */
+        /* 職能條目排版 */
         .standard-card {
             background: #ffffff;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 12px;
+            padding: 22px;
+            margin-bottom: 14px;
             border: 1px solid #EEF2F7;
             display: flex;
             flex-direction: column;
@@ -170,46 +149,19 @@
         }
         .standard-card:hover { border-color: #CBD5E0; background: #FBFCFE; }
         
-        .standard-header { 
-            display: flex; 
-            align-items: baseline; 
-            gap: 15px; 
-        }
-        .standard-label { 
-            font-weight: 800; 
-            color: #1A202C; 
-            min-width: 95px; 
-            font-size: 1.2rem; 
-            flex-shrink: 0;
-        }
-        .standard-desc { 
-            color: #4A5568; 
-            font-weight: 600; 
-            font-size: 1.05rem; 
-            line-height: 1.5;
-            /* 移除 white-space: nowrap，讓文字自然換行 */
-        }
-        .score-hint { 
-            font-size: 0.85rem; 
-            color: var(--text-muted); 
-            font-weight: 400; 
-            line-height: 1.5; 
-            padding-left: 2px;
-            border-top: 1px solid #F8FAFC;
-            padding-top: 8px;
-        }
+        .standard-header { display: flex; align-items: baseline; gap: 15px; }
+        .standard-label { font-weight: 800; color: #1A202C; min-width: 95px; font-size: 1.2rem; flex-shrink: 0; }
+        .standard-desc { color: #4A5568; font-weight: 600; font-size: 1.05rem; line-height: 1.5; }
+        .score-hint { font-size: 0.9rem; color: var(--text-muted); font-weight: 400; line-height: 1.5; padding-top: 8px; border-top: 1px solid #F8FAFC; }
 
-        .sidebar-box { background: #F8FAFC; padding: 25px; border-radius: 20px; height: fit-content; }
+        .sidebar-box { background: #F8FAFC; padding: 30px; border-radius: 20px; height: fit-content; }
 
         @media (max-width: 767px) {
             .level-top { flex-direction: column; align-items: flex-start; gap: 15px; }
             .level-top .text-4xl { font-size: 2rem; }
             .standard-card { padding: 18px; }
-            .sidebar-box { margin-top: 20px; }
-            /* 手機版讓標題與描述垂直對齊但保持層次感 */
-            .standard-header { gap: 10px; }
             .standard-label { min-width: 80px; font-size: 1.15rem; }
-            .standard-desc { font-size: 1rem; }
+            .sidebar-box { margin-top: 20px; }
         }
     </style>
 </head>
@@ -219,9 +171,9 @@
         <h1 class="hero-title">魚鮮會社夥伴職能地圖</h1>
         <p class="hero-subtitle px-4">讓每一分努力，都能轉化為帶得走的專業實力</p>
 
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-16 text-left px-4 md:px-8 mb-10">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-16 text-left px-4 md:px-8 mb-12">
             <div class="border-t-2 border-red-100 pt-6"><h4 class="font-black text-lg mb-2 text-brand-red">透明化發展路徑</h4><p class="text-slate-500 text-sm leading-relaxed">將成長具現化，讓每一份進步都有清晰對應的職級目標。</p></div>
-            <div class="border-t-2 border-yellow-100 pt-6"><h4 class="font-black text-lg mb-2 text-brand-gold">匹配努力與報酬</h4><p class="text-slate-500 text-sm leading-relaxed">量化考核確保專業度與收入成正比，讓付出更有價值。</p></div>
+            <div class="border-t-2 border-yellow-100 pt-6"><h4 class="font-black text-lg mb-2 text-brand-gold">匹配努力與報酬</h4><p class="text-slate-500 text-sm leading-relaxed">透過量化考核確保專業度與收入成正比，讓付出更有價值。</p></div>
             <div class="border-t-2 border-slate-100 pt-6"><h4 class="font-black text-lg mb-2 text-slate-700">具備職場競爭力</h4><p class="text-slate-500 text-sm leading-relaxed">確保你學到的應變與協調能力，讓你未來在任何職場都更具優勢。</p></div>
         </div>
         
@@ -232,8 +184,8 @@
     </header>
 
     <div class="level-container">
-        <div class="timeline-container text-center md:text-left">
-            <div class="flex items-center mb-8 justify-center md:justify-start">
+        <div class="timeline-container">
+            <div class="flex items-center mb-10 justify-center md:justify-start">
                 <div class="w-1.5 h-6 bg-brand-red rounded-full mr-3"></div>
                 <h3 class="text-xl md:text-2xl font-black text-slate-800">晉升考核作業時程</h3>
             </div>
@@ -261,8 +213,8 @@
                 </div>
             </div>
             
-            <div class="mt-8 bg-slate-50 p-5 rounded-2xl border border-slate-100 text-center md:text-left">
-                <p class="text-xs md:text-sm text-slate-500 leading-relaxed font-medium">
+            <div class="mt-10 bg-slate-50 p-6 rounded-2xl border border-slate-100 text-center md:text-left">
+                <p class="text-sm md:text-base text-slate-500 font-medium">
                     時數統計以月底結算為準。例如 <span class="font-bold text-slate-800">1/31</span> 達標 ➜ <span class="font-bold text-slate-800">2/10 前</span>面談 ➜ <span class="font-bold text-brand-red">2月整月</span>時薪調整 ➜ <span class="font-bold text-brand-gold">3/5</span> 領薪。
                 </p>
             </div>
@@ -279,11 +231,11 @@
                 </div>
                 <div class="p-5 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
                     <div class="md:col-span-2">
-                        <div class="standard-card"><div class="standard-header"><span class="standard-label">基本禮儀</span><span class="standard-desc">主動問候、儀態整潔</span></div><div class="score-hint">● 5: 全程主動態度親切 ｜ 1: 冷淡無問候</div></div>
-                        <div class="standard-card"><div class="standard-header"><span class="standard-label">外場流程</span><span class="standard-desc">執行倒茶、收桌、Set桌 SOP</span></div><div class="score-hint">● 5: 動作俐落主動完成 ｜ 1: 多次遺漏流程</div></div>
-                        <div class="standard-card"><div class="standard-header"><span class="standard-label">出勤信任</span><span class="standard-desc">準時到班、準備就緒</span></div><div class="score-hint">● 5: 全期準時穩定 ｜ 1: 慣性遲到或早退</div></div>
-                        <div class="standard-card"><div class="standard-header"><span class="standard-label">團隊支援</span><span class="standard-desc">主動協助收送餐、立即行動</span></div><div class="score-hint">● 5: 反應迅速主動支援 ｜ 1: 拒絕協助或消極</div></div>
-                        <div class="standard-card"><div class="standard-header"><span class="standard-label">清潔整理</span><span class="standard-desc">完成區域清潔與備品整理</span></div><div class="score-hint">● 5: 離桌即收環境整潔 ｜ 1: 清潔不實未達標</div></div>
+                        <div class="standard-card"><div class="standard-header"><span class="standard-label">基本禮儀</span><span class="standard-desc">主動問候、儀態整潔</span></div><div class="score-hint">● 5: 全程主動態度親切 ｜ 3: 偶需提醒但能修正 ｜ 1: 冷淡無問候</div></div>
+                        <div class="standard-card"><div class="standard-header"><span class="standard-label">外場流程</span><span class="standard-desc">執行倒茶、收桌、Set桌 SOP</span></div><div class="score-hint">● 5: 動作俐落主動完成 ｜ 3: 能執行但不穩定 ｜ 1: 多次遺漏流程</div></div>
+                        <div class="standard-card"><div class="standard-header"><span class="standard-label">出勤信任</span><span class="standard-desc">準時到班、準備就緒</span></div><div class="score-hint">● 5: 全期準時穩定 ｜ 3: 偶有延誤 ｜ 1: 慣性遲到或早退</div></div>
+                        <div class="standard-card"><div class="standard-header"><span class="standard-label">團隊支援</span><span class="standard-desc">主動協助收送餐、立即行動</span></div><div class="score-hint">● 5: 反應迅速主動支援 ｜ 3: 需指令才行動 ｜ 1: 拒絕協助或消極</div></div>
+                        <div class="standard-card"><div class="standard-header"><span class="standard-label">清潔整理</span><span class="standard-desc">完成區域清潔與備品整理</span></div><div class="score-hint">● 5: 離桌即收環境整潔 ｜ 3: 偶需提醒 ｜ 1: 清潔不實未達標</div></div>
                     </div>
                     <div class="sidebar-box">
                         <h5 class="text-brand-red font-black mb-4">晉升 L2 條件</h5>
@@ -297,7 +249,7 @@
                     <div>
                         <h2 class="text-2xl md:text-3xl font-black text-slate-800 mb-2">Level 2：穩定支援與協調</h2>
                         <p class="text-sm md:text-base text-slate-400 font-bold">300H 評核 ｜ 未過每 150H 覆核一次</p>
-                        <span class="mt-4 px-3 py-1 bg-yellow-50 text-brand-gold rounded-full text-xs font-black inline-block border border-yellow-200">月標準時數：75H</span>
+                        <span class="mt-4 px-3 py-1 bg-yellow-50 text-brand-gold rounded-full text-xs font-black inline-block border border-yellow-200">月標準時時數：75H</span>
                     </div>
                     <div class="text-3xl md:text-4xl font-black text-brand-gold">$220<span class="text-xl font-normal text-slate-300">/hr</span></div>
                 </div>
