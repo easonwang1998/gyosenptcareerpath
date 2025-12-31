@@ -56,7 +56,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            justify-content: center; /* 電腦版置中排列 */
+            justify-content: center;
         }
 
         .schedule-card {
@@ -72,7 +72,6 @@
             padding: 15px;
         }
 
-        /* 電腦版：精緻小正方形 */
         @media (min-width: 768px) {
             .schedule-card { 
                 width: 180px; 
@@ -81,7 +80,6 @@
             }
         }
 
-        /* 手機版：寬度自適應長方形 */
         @media (max-width: 767px) {
             .schedule-grid { flex-direction: column; align-items: stretch; }
             .schedule-card { border-left: 5px solid #E2E8F0; align-items: center; text-align: center; }
@@ -91,12 +89,6 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 15px rgba(0,0,0,0.05);
         }
-
-        /* 步驟顏色 */
-        .step-1 { border-color: #94A3B8; }
-        .step-2 { border-color: var(--brand-red); }
-        .step-3 { border-color: var(--brand-gold); }
-        .step-4 { border-color: #1A202C; }
 
         .step-label {
             font-size: 0.75rem;
@@ -164,6 +156,7 @@
             box-shadow: 0 20px 40px rgba(26, 32, 44, 0.08) !important;
         }
 
+        /* 職能條目排版優化 */
         .standard-card {
             background: #ffffff;
             border-radius: 12px;
@@ -172,13 +165,40 @@
             border: 1px solid #EEF2F7;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
+            transition: all 0.2s ease;
         }
         .standard-card:hover { border-color: #CBD5E0; background: #FBFCFE; }
-        .standard-header { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
-        .standard-label { font-weight: 800; color: #1A202C; min-width: 80px; font-size: 1.1rem; }
-        .standard-desc { color: #4A5568; font-weight: 500; font-size: 1rem; flex: 1; }
-        .score-hint { font-size: 0.85rem; color: var(--text-muted); font-weight: 400; line-height: 1.4; }
+        
+        .standard-header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-start;
+            gap: 12px; 
+            flex-wrap: nowrap; /* 確保不換行 */
+        }
+        .standard-label { 
+            font-weight: 800; 
+            color: #1A202C; 
+            min-width: 95px; 
+            font-size: 1.25rem; /* 手機版標題大一點 */
+            flex-shrink: 0;
+        }
+        .standard-desc { 
+            color: #4A5568; 
+            font-weight: 500; 
+            font-size: 1.05rem; 
+            white-space: nowrap; /* 盡量在一行 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .score-hint { 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            font-weight: 400; 
+            line-height: 1.4; 
+            padding-left: 2px;
+        }
 
         .sidebar-box { background: #F8FAFC; padding: 25px; border-radius: 20px; height: fit-content; }
 
@@ -187,6 +207,8 @@
             .level-top .text-4xl { font-size: 2rem; }
             .standard-card { padding: 16px; }
             .sidebar-box { margin-top: 20px; }
+            .standard-label { min-width: 85px; font-size: 1.15rem; }
+            .standard-desc { font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -216,25 +238,22 @@
             </div>
             
             <div class="schedule-grid">
-                <div class="schedule-card step-1">
+                <div class="schedule-card" style="border-color: #94A3B8;">
                     <span class="step-label">Step 01</span>
                     <h5 class="font-black">時數結算</h5>
                     <p class="text-slate-400 font-bold">【每月月底】</p>
                 </div>
-
-                <div class="schedule-card step-2">
+                <div class="schedule-card" style="border-color: var(--brand-red);">
                     <span class="step-label" style="color: var(--brand-red);">Step 02</span>
                     <h5 class="font-black">評核面談</h5>
                     <p class="text-brand-red font-bold">【次月 1-10 日】</p>
                 </div>
-
-                <div class="schedule-card step-3">
+                <div class="schedule-card" style="border-color: var(--brand-gold);">
                     <span class="step-label" style="color: var(--brand-gold);">Step 03</span>
                     <h5 class="font-black">薪資生效</h5>
                     <p class="text-brand-gold font-bold">【次月 1 日起】</p>
                 </div>
-
-                <div class="schedule-card step-4">
+                <div class="schedule-card" style="border-color: #1A202C;">
                     <span class="step-label" style="color: #1A202C;">Step 04</span>
                     <h5 class="font-black">領取加薪</h5>
                     <p class="text-slate-600 font-bold">【次次月 5 日】</p>
@@ -311,7 +330,7 @@
                 <div class="p-5 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
                     <div class="md:col-span-2">
                         <div class="standard-card"><div class="standard-header"><span class="standard-label">資訊掌握</span><span class="standard-desc">觀察出單、主動管理顧客預期</span></div><div class="score-hint">● 5: 即時傳遞精準掌握 ｜ 1: 資訊閉塞導致怨訴</div></div>
-                        <div class="standard-card"><div class="standard-content"><span class="standard-label">團隊協調</span><span class="standard-desc">明確分配任務、穩定現場節奏</span></div><div class="score-hint">● 5: 現場協調指揮得當 ｜ 1: 無法分工自顧不暇</div></div>
+                        <div class="standard-card"><div class="standard-header"><span class="standard-label">團隊協調</span><span class="standard-desc">明確分配任務、穩定現場節奏</span></div><div class="score-hint">● 5: 現場協調指揮得當 ｜ 1: 無法分工自顧不暇</div></div>
                         <div class="standard-card"><div class="standard-header"><span class="standard-label">溝通態度</span><span class="standard-desc">遇狀況冷靜安撫、語氣穩定</span></div><div class="score-hint">● 5: 處理老練專業度高 ｜ 1: 情緒波動影響團隊</div></div>
                         <div class="standard-card"><div class="standard-header"><span class="standard-label">櫃檯應對</span><span class="standard-desc">獨立結帳、電話訂位正確無誤</span></div><div class="score-hint">● 5: 帳務正確反應靈敏 ｜ 1: 多次造成營運損害</div></div>
                         <div class="standard-card"><div class="standard-header"><span class="standard-label">責任感</span><span class="standard-desc">無臨缺、主動承擔他人遞補</span></div><div class="score-hint">● 5: 團隊榜樣穩定度極高 ｜ 1: 出勤不穩且無意願</div></div>
@@ -337,8 +356,18 @@
         </div>
     </div>
 
-    <footer class="bg-slate-900 text-white py-12 text-center">
-        <div class="text-slate-500 text-[10px] font-bold tracking-widest uppercase px-4">
+    <footer class="bg-slate-900 text-white py-16 text-center mt-12">
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 text-left mb-12 px-8">
+            <div class="border-l-4 border-brand-gold pl-6">
+                <h4 class="text-brand-gold font-black text-xl mb-3">營運異常</h4>
+                <p class="text-slate-400 text-sm leading-relaxed">指臨請、遲到或失誤致調班或影響客情之情事。提前完成調班或具證明之突發事故不在此限。</p>
+            </div>
+            <div class="border-l-4 border-brand-red pl-6">
+                <h4 class="text-brand-red font-black text-xl mb-3">嚴重事件</h4>
+                <p class="text-slate-400 text-sm leading-relaxed">致營運中斷、顧客正式投訴或對同仁造成重大工作壓力。凡成立將立即啟動降級評估與覆核機制。</p>
+            </div>
+        </div>
+        <div class="text-slate-500 text-[10px] font-bold tracking-widest uppercase px-4 border-t border-slate-800 pt-8">
             © 2025 魚鮮會社 GYOSEN 內部管理文件
         </div>
     </footer>
