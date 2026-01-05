@@ -13,7 +13,7 @@
             --ui-gray: #F8F9FA;
             --text-main: #2D3436;
             --text-muted: #94A3B8;
-            --premium-dark: #1E293B; /* 深色背景 */
+            --level3-gray: #F1F5F9; /* 單純灰色背景 */
         }
         body { 
             background-color: var(--ui-gray); 
@@ -47,7 +47,7 @@
         .tab-btn.active { background-color: var(--brand-red); color: white; box-shadow: 0 4px 15px rgba(178, 31, 44, 0.3); }
         .tab-btn.inactive { background-color: white; color: var(--text-muted); border-color: #EEF2F7; }
 
-        /* 標準卡片格式 */
+        /* 標準卡片格式：標題-直線-右對齊說明 */
         .standard-card { background: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 18px; border: 1px solid #EEF2F7; }
         .standard-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .standard-label { font-weight: 800; color: #1A202C; font-size: 1.2rem; flex-shrink: 0; padding-right: 15px; }
@@ -55,29 +55,19 @@
         .standard-desc { color: #4A5568; font-weight: 600; font-size: 1.05rem; padding-left: 15px; text-align: right; }
         .score-hint { font-size: 0.95rem; color: var(--text-muted); background: #F8FAFC; padding: 12px 16px; border-radius: 8px; margin-top: 12px; }
 
-        /* Level 3 尊榮深色版面 */
+        /* Level 3 灰色質感強化 */
         .level-box-premium { 
-            background: var(--premium-dark) !important; 
-            border: 2px solid var(--brand-gold) !important; 
-            box-shadow: 0 25px 50px rgba(15, 23, 42, 0.4) !important; 
+            background: var(--level3-gray) !important; 
+            border: 2.5px solid #1A202C !important; 
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08) !important; 
             position: relative; 
         }
-        .level-box-premium h2, .level-box-premium .premium-price { color: white !important; }
-        .level-box-premium .text-slate-400 { color: #94A3B8 !important; }
-        .level-box-premium .standard-card { background: #334155 !important; border-color: #475569 !important; }
-        .level-box-premium .standard-label { color: #F1F5F9 !important; }
-        .level-box-premium .standard-divider { background: #475569 !important; }
-        .level-box-premium .standard-desc { color: #CBD5E1 !important; }
-        .level-box-premium .score-hint { background: #1E293B !important; color: #94A3B8 !important; }
-        .level-box-premium .sidebar-box { background: #334155 !important; color: #CBD5E1 !important; border: 1px solid #475569; }
-        .level-box-premium .sidebar-box h5 { color: var(--brand-gold) !important; }
-
+        .level-box-premium .standard-card { background: white !important; border-color: #E2E8F0 !important; }
         .premium-tag { 
             position: absolute; top: -15px; right: 30px; 
-            background: var(--brand-gold); color: white; 
+            background: #1A202C; color: white; 
             padding: 4px 16px; border-radius: 20px; 
             font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; 
-            box-shadow: 0 4px 10px rgba(178, 154, 31, 0.4);
         }
 
         .content-section { display: none; }
@@ -151,7 +141,7 @@
                 <div class="flex-grow">
                     <div class="flex justify-between items-center mb-8">
                         <div><h2 class="text-2xl font-black">Level 3：核心夥伴</h2><p class="text-slate-400 text-sm">600H 評核 ｜ 每 300H 定期覆核</p></div>
-                        <div class="text-3xl font-black premium-price">$250/hr</div>
+                        <div class="text-3xl font-black text-brand-gold">$250/hr</div>
                     </div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">資訊掌握</span><div class="standard-divider"></div><span class="standard-desc">觀察出單、主動管理顧客預期</span></div><div class="score-hint">● 5: 即時傳遞精準掌握 ｜ 3: 能初步管理客情 ｜ 1: 資訊閉塞導致怨訴</div></div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">團隊協調</span><div class="standard-divider"></div><span class="standard-desc">明確分配任務、穩定現場節奏</span></div><div class="score-hint">● 5: 現場協調指揮得當 ｜ 3: 配合主管分派任務 ｜ 1: 無法分工自顧不暇</div></div>
@@ -159,10 +149,7 @@
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">責任感</span><div class="standard-divider"></div><span class="standard-desc">無臨缺、主動承擔他人遞補</span></div><div class="score-hint">● 5: 團隊榜樣穩定度高 ｜ 3: 配合度佳無營運缺失 ｜ 1: 出勤不穩</div></div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">異常處置</span><div class="standard-divider"></div><span class="standard-desc">遇狀況冷靜安撫、即時回報</span></div><div class="score-hint">● 5: 處理老練專業度高 ｜ 3: 能初步安撫但需支援 ｜ 1: 情緒波動</div></div>
                 </div>
-                <div class="sidebar-box w-full md:w-72">
-                    <h5 class="font-black mb-4">維持資格</h5>
-                    <ul class="space-y-3 text-sm font-bold"><li>● 平均評分 < 3.75 觀察期</li><li>● 月時數不穩即降級</li></ul>
-                </div>
+                <div class="sidebar-box w-full md:w-72"><h5 class="text-slate-800 font-black mb-4">維持資格</h5><ul class="space-y-3 text-sm font-bold text-slate-600"><li>● 平均評分 < 3.75 觀察期</li><li>● 月時數不穩即降級</li></ul></div>
             </div>
         </div>
 
@@ -176,10 +163,10 @@
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">食材保存</span><div class="standard-divider"></div><span class="standard-desc">落實空間化先入先出管理</span></div><div class="score-hint">● 5: 收班死角完全清空 ｜ 3: 依固定空間位置存放 ｜ 1: 未確實先入先出</div></div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">出餐品質</span><div class="standard-divider"></div><span class="standard-desc">比例控管與口感品質穩定</span></div><div class="score-hint">● 5: 成品高度一致無缺失 ｜ 3: 熟度與風味穩定 ｜ 1: 熟度不穩未依 SOP</div></div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">作業熟練</span><div class="standard-divider"></div><span class="standard-desc">依 SOP 步驟完成製作流程</span></div><div class="score-hint">● 5: 動作流暢且連貫 ｜ 3: 能完成但節奏不穩 ｜ 1: 常出錯且動作遲緩</div></div>
-                    <div class="standard-card"><div class="standard-title-row"><span class="standard-label">安全衛生</span><div class="standard-divider"></div><span class="standard-desc">遵守操作規範與交叉汙染防護</span></div><div class="score-hint">● 5: 隨手清潔且完全達標 ｜ 3: 符合衛生與安全規範 ｜ 1: 區域雜亂不潔</div></div>
+                    <div class="standard-card"><div class="standard-title-row"><span class="standard-label">安全衛生</span><div class="standard-divider"></div><span class="standard-desc">遵守操作規範與檯面整潔</span></div><div class="score-hint">● 5: 隨手清潔且完全達標 ｜ 3: 符合衛生與安全規範 ｜ 1: 區域雜亂不潔</div></div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">出勤配合</span><div class="standard-divider"></div><span class="standard-desc">準時到班、服從調度指令</span></div><div class="score-hint">● 5: 積極支援服從度高 ｜ 3: 出勤率 ≥ 90% ｜ 1: 常臨請或遲到</div></div>
                 </div>
-                <div class="sidebar-box w-full md:w-72"><h5 class="text-slate-500 font-black mb-4">晉升條件</h5><ul class="space-y-3 text-sm font-bold text-slate-600"><li>● 累積滿 300 小時</li><li>● 平均評分 ≥ 4.0</li><li>● 能支援其他作業區</li></ul></div>
+                <div class="sidebar-box w-full md:w-72"><h5 class="text-slate-500 font-black mb-4">晉升條件</h5><ul class="space-y-3 text-sm font-bold text-slate-600"><li>● 累積滿 300 小時</li><li>● 平均評分 ≥ 4.0</li><li>● 能獨立操作一區並支援他區</li></ul></div>
             </div>
 
             <div class="bg-white rounded-3xl p-8 mb-10 border border-slate-100 flex flex-col md:flex-row gap-10">
@@ -202,18 +189,15 @@
                 <div class="flex-grow">
                     <div class="flex justify-between items-center mb-8">
                         <div><h2 class="text-2xl font-black">Level 3：生魚片台</h2><p class="text-slate-400 text-sm">1000H 評核 ｜ 每 500H 定期覆核</p></div>
-                        <div class="text-3xl font-black premium-price">$250/hr</div>
+                        <div class="text-3xl font-black text-brand-gold">$250/hr</div>
                     </div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">品質精準</span><div class="standard-divider"></div><span class="standard-desc">精確刀工美感與克數控管</span></div><div class="score-hint">● 5: 對成品美感有強迫症 ｜ 3: 誤差極低穩定 ｜ 1: 擺盤隨意規格不一</div></div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">衛生保鮮</span><div class="standard-divider"></div><span class="standard-desc">冷鏈鮮度鑑定與管理確實</span></div><div class="score-hint">● 5: 感官鑑定零缺失 ｜ 3: 每期檢查無缺失 ｜ 1: 判斷失誤</div></div>
-                    <div class="standard-card"><div class="standard-title-row"><span class="standard-label">現場掌控</span><div class="standard-divider"></div><span class="standard-desc">多單應對與全場節奏掌握</span></div><div class="score-hint">● 5: 高峰引領全場節奏 ｜ 3: 高峰表現穩定 ｜ 1: 製作回堵</div></div>
+                    <div class="standard-card"><div class="standard-title-row"><span class="standard-label">現場掌控</span><div class="standard-divider"></div><span class="standard-desc">多單應對與全場節奏掌握</span></div><div class="score-hint">● 5: 高峰引領全場節奏 ｜ 3: 高峰表現穩定 ｜ 1: 效率低落回堵</div></div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">管理調度</span><div class="standard-divider"></div><span class="standard-desc">確保備料完善與跨區支援</span></div><div class="score-hint">● 5: 掌握全場物料平衡 ｜ 3: 備料完善收班達標 ｜ 1: 備料疏失</div></div>
                     <div class="standard-card"><div class="standard-title-row"><span class="standard-label">責任指導</span><div class="standard-divider"></div><span class="standard-desc">指導 L1-2 並主動回報問題</span></div><div class="score-hint">● 5: 主動協助主管調度 ｜ 3: 教導紀錄良好 ｜ 1: 配合度低</div></div>
                 </div>
-                <div class="sidebar-box w-full md:w-72">
-                    <h5 class="font-black mb-4">維持資格</h5>
-                    <ul class="space-y-3 text-sm font-bold"><li>● 平均評分 < 3.75 觀察期</li><li>● 出勤不穩即降級調整</li></ul>
-                </div>
+                <div class="sidebar-box w-full md:w-72"><h5 class="text-slate-800 font-black mb-4">維持資格</h5><ul class="space-y-3 text-sm font-bold text-slate-600"><li>● 平均評分 < 3.75 觀察期</li><li>● 出勤或品質不穩即降級</li></ul></div>
             </div>
         </div>
     </div>
