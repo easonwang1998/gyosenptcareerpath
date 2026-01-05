@@ -54,7 +54,6 @@
         .level-top { padding: 35px 30px; border-bottom: 1px solid #F1F5F9; }
         .level-box-premium { border: 2px solid #1A202C !important; box-shadow: 0 25px 50px rgba(26, 32, 44, 0.08) !important; }
 
-        /* 修改：加大標題與說明的間距 */
         .standard-card { background: #ffffff; border-radius: 12px; padding: 28px; margin-bottom: 18px; border: 1px solid #EEF2F7; display: flex; flex-direction: column; gap: 16px; transition: all 0.2s ease; }
         .standard-card:hover { border-color: #CBD5E0; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
         .standard-label { font-weight: 800; color: #1A202C; font-size: 1.25rem; }
@@ -101,7 +100,41 @@
                     <div class="sidebar-box"><h5 class="text-brand-red font-black mb-4">晉升 L2 條件</h5><ul class="space-y-3 text-sm md:text-base font-bold text-slate-600"><li>● 平均評分 ≥ 4.0</li><li>● 無營運異常紀錄</li><li>● 外籍生中文 A2 通過</li></ul></div>
                 </div>
             </section>
-            </div>
+
+            <section class="level-box">
+                <div class="level-top flex justify-between items-center" style="border-top: 8px solid var(--brand-gold);">
+                    <div><h2 class="text-2xl md:text-3xl font-black text-slate-800 mb-2">Level 2：穩定支援與協調</h2><p class="text-sm md:text-base text-slate-400 font-bold">300H 評核 ｜ 未過每 150H 覆核一次</p><span class="mt-4 px-3 py-1 bg-yellow-50 text-brand-gold rounded-full text-xs font-black inline-block border border-yellow-200">月標準時時數：75H</span></div>
+                    <div class="text-3xl md:text-4xl font-black text-brand-gold">$220<span class="text-xl font-normal text-slate-300">/hr</span></div>
+                </div>
+                <div class="p-5 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+                    <div class="md:col-span-2">
+                        <div class="standard-card"><div><span class="standard-label">流程掌握</span><span class="standard-desc">調整收送順序、保持現場流暢</span></div><div class="score-hint">● 5: 自主調整現場順暢 ｜ 1: 動作遲緩動線混亂</div></div>
+                        <div class="standard-card"><div><span class="standard-label">顧客服務</span><span class="standard-desc">預判需求、主動續湯、熱情道謝</span></div><div class="score-hint">● 5: 持續主動服務優良 ｜ 1: 被動需人提醒</div></div>
+                        <div class="standard-card"><div><span class="standard-label">餐點追蹤</span><span class="standard-desc">監控出餐逾 20 分鐘即時回報</span></div><div class="score-hint">● 5: 主動監控反應迅速 ｜ 1: 完全未追蹤進度</div></div>
+                        <div class="standard-card"><div><span class="standard-label">團隊合作</span><span class="standard-desc">即時補位支援、非己區亦助</span></div><div class="score-hint">● 5: 全面支援主動補位 ｜ 1: 僅顧自己區域</div></div>
+                        <div class="standard-card"><div><span class="standard-label">溝通態度</span><span class="standard-desc">回報清晰、表達語氣冷靜穩定</span></div><div class="score-hint">● 5: 清楚準確語氣平和 ｜ 1: 語義不明或語氣佳</div></div>
+                    </div>
+                    <div class="sidebar-box"><h5 class="text-brand-gold font-black mb-4">晉升 L3 條件</h5><ul class="space-y-3 text-sm md:text-base font-bold text-slate-600"><li>● 平均評分 ≥ 4.25</li><li class="text-brand-red">● 連續兩月未達時數則降級</li><li>● 三期內無營運異常紀錄</li><li>● 外籍生中文 B2 通過</li></ul></div>
+                </div>
+            </section>
+
+            <section class="level-box level-box-premium">
+                <div class="level-top flex justify-between items-center" style="border-top: 8px solid #1A202C;">
+                    <div><h2 class="text-2xl md:text-3xl font-black text-slate-800 mb-2">Level 3：核心夥伴</h2><p class="text-sm md:text-base text-slate-400 font-bold">600H 評核 ｜ 每 300H 定期覆核</p><span class="mt-4 px-3 py-1 bg-slate-900 text-white rounded-full text-xs font-black inline-block shadow-sm">月標準時數：100H</span></div>
+                    <div class="text-3xl md:text-4xl font-black text-brand-gold">$250<span class="text-xl font-normal text-slate-300">/hr</span></div>
+                </div>
+                <div class="p-5 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+                    <div class="md:col-span-2">
+                        <div class="standard-card"><div><span class="standard-label">資訊掌握</span><span class="standard-desc">觀察出單、主動管理顧客預期</span></div><div class="score-hint">● 5: 即時傳遞精準掌握 ｜ 1: 資訊閉塞導致怨訴</div></div>
+                        <div class="standard-card"><div><span class="standard-label">團隊協調</span><span class="standard-desc">明確分配任務、穩定現場節奏</span></div><div class="score-hint">● 5: 現場協調指揮得當 ｜ 1: 無法分工自顧不暇</div></div>
+                        <div class="standard-card"><div><span class="standard-label">溝通態度</span><span class="standard-desc">遇狀況冷靜安撫、語氣穩定</span></div><div class="score-hint">● 5: 處理老練專業度高 ｜ 1: 情緒波動影響團隊</div></div>
+                        <div class="standard-card"><div><span class="standard-label">櫃檯應對</span><span class="standard-desc">獨立結帳、電話訂位正確無誤</span></div><div class="score-hint">● 5: 帳務正確反應靈敏 ｜ 1: 多次造成營運損害</div></div>
+                        <div class="standard-card"><div><span class="standard-label">責任感</span><span class="standard-desc">無臨缺、主動承擔他人遞補</span></div><div class="score-hint">● 5: 團隊榜樣穩定度極高 ｜ 1: 出勤不穩且無意願</div></div>
+                    </div>
+                    <div class="sidebar-box"><h5 class="text-slate-800 font-black mb-4">維持資格</h5><ul class="space-y-3 text-sm md:text-base font-bold text-slate-600"><li class="text-brand-red">● 平均評分 < 3.75 觀察期</li><li class="text-brand-red">● 連續兩月未達時數則降級</li><li>● 發生嚴重事件立即評估</li></ul></div>
+                </div>
+            </section>
+        </div>
 
         <div id="back-house-content" class="content-section">
             <section class="level-box">
@@ -111,47 +144,47 @@
                 </div>
                 <div class="p-5 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
                     <div class="md:col-span-2">
-                        <div class="standard-card"><div><span class="standard-label">食材保存</span><span class="standard-desc">落實空間化先入先出管理</span></div><div class="score-hint">● 5: 收班死角完全清空 ｜ 3: 依固定空間位置存取 (左入右出) ｜ 1: 新舊混放</div></div>
-                        <div class="standard-card"><div><span class="standard-label">出餐品質</span><span class="standard-desc">SOP 比例控管與口感呈現</span></div><div class="score-hint">● 5: 對成品美感有強迫症 ｜ 3: 比例、位置與口感完全符合標準 ｜ 1: 擺盤隨意憑感覺</div></div>
-                        <div class="standard-card"><div><span class="standard-label">出餐速度</span><span class="standard-desc">維持穩定輸出，高峰無嚴重延誤</span></div><div class="score-hint">● 5: 高壓下極速無廢動作 ｜ 3: 節奏穩定順暢完成 ｜ 1: 忙亂漏單需人催餐</div></div>
-                        <div class="standard-card"><div><span class="standard-label">備料確實</span><span class="standard-desc">份量計算準確，營業前備品充足</span></div><div class="score-hint">● 5: 預估精準極小化耗損 ｜ 3: 備品份量準確不影響營運 ｜ 1: 常缺料補做</div></div>
-                        <div class="standard-card"><div><span class="standard-label">出勤信任</span><span class="standard-desc">準時到班與團隊責任感</span></div><div class="score-hint">● 5: 出勤紀錄完美主動擔重責 ｜ 3: 準時穩定不造成負擔 ｜ 1: 常遲到或臨請</div></div>
+                        <div class="standard-card"><div><span class="standard-label">食材保存</span><span class="standard-desc">落實空間化先入先出管理</span></div><div class="score-hint">● 5: 收班死角完全清空 ｜ 3: 依固定空間位置存取 (左入右出)  ｜ 1: 新舊混放</div></div>
+                        <div class="standard-card"><div><span class="standard-label">出餐品質</span><span class="standard-desc">SOP 比例控管與口感呈現</span></div><div class="score-hint">● 5: 對成品美感有強迫症  ｜ 3: 比例、位置與口感完全符合標準  ｜ 1: 擺盤隨意憑感覺 </div></div>
+                        <div class="standard-card"><div><span class="standard-label">出餐速度</span><span class="standard-desc">維持穩定輸出，高峰無嚴重延誤</span></div><div class="score-hint">● 5: 高壓下極速無廢動作 ｜ 3: 節奏穩定順暢完成  ｜ 1: 忙亂漏單需人催餐 </div></div>
+                        <div class="standard-card"><div><span class="standard-label">備料確實</span><span class="standard-desc">份量計算準確，營業前備品充足</span></div><div class="score-hint">● 5: 預估精準極小化耗損 ｜ 3: 備品份量準確不影響營運  ｜ 1: 常缺料補做</div></div>
+                        <div class="standard-card"><div><span class="standard-label">出勤信任</span><span class="standard-desc">準時到班與團隊責任感</span></div><div class="score-hint">● 5: 出勤紀錄完美主動擔重責 ｜ 3: 準時穩定不造成負擔  ｜ 1: 常遲到或臨請 </div></div>
                     </div>
-                    <div class="sidebar-box"><h5 class="text-slate-500 font-black mb-4">晉升條件</h5><ul class="space-y-3 text-sm md:text-base font-bold text-slate-600"><li>● 累積時數 ≥ 300小時</li><li>● 平均評分 ≥ 4.0</li><li>● 能獨立操作一區並支援他區</li><li>● 無營運異常紀錄</li></ul></div>
+                    <div class="sidebar-box"><h5 class="text-slate-500 font-black mb-4">晉升條件</h5><ul class="space-y-3 text-sm md:text-base font-bold text-slate-600"><li>● 累積時數 ≥ 300小時 </li><li>● 平均評分 ≥ 4.0 </li><li>● 能獨立操作一區並支援他區 </li><li>● 無營運異常紀錄 </li></ul></div>
                 </div>
             </section>
 
             <section class="level-box">
                 <div class="level-top flex justify-between items-center" style="border-top: 8px solid var(--brand-gold);">
-                    <div><h2 class="text-2xl md:text-3xl font-black text-slate-800 mb-2">Level 2：進階 (熟手)</h2><p class="text-sm md:text-base text-slate-400 font-bold">負責站區：烤台、沙拉台</p><span class="mt-4 px-3 py-1 bg-yellow-50 text-brand-gold rounded-full text-xs font-black inline-block border border-yellow-200">600H 評核 ｜ 未過每 300H 覆核一次 ｜ 月標時：75H</span></div>
-                    <div class="text-3xl md:text-4xl font-black text-brand-gold">$220<span class="text-xl font-normal text-slate-300">/hr</span></div>
+                    <div><h2 class="text-2xl md:text-3xl font-black text-slate-800 mb-2">Level 2：進階 (熟手)</h2><p class="text-sm md:text-base text-slate-400 font-bold">負責站區：烤台、沙拉台</p><span class="mt-4 px-3 py-1 bg-yellow-50 text-brand-gold rounded-full text-xs font-black inline-block border border-yellow-200">600H 評核 ｜ 未過每 300H 覆核一次 ｜ 月標時：75H </span></div>
+                    <div class="text-3xl md:text-4xl font-black text-brand-gold">$220<span class="text-xl font-normal text-slate-300">/hr</span> </div>
                 </div>
                 <div class="p-5 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
                     <div class="md:col-span-2">
-                        <div class="standard-card"><div><span class="standard-label">食材保存</span><span class="standard-desc">冷藏冷凍符合標準，主動監測品質</span></div><div class="score-hint">● 5: 能預判品質異常並重整庫存 ｜ 3: 檢查合格率 ≥ 90% 並落實分區 ｜ 1: 生熟食堆疊</div></div>
-                        <div class="standard-card"><div><span class="standard-label">出餐品質</span><span class="standard-desc">掌握精確熟度與視覺呈現比例</span></div><div class="score-hint">● 5: 確保每份皆為品質標竿 ｜ 3: 熟度、位置與比例穩定一致 ｜ 1: 熟度不穩憑感覺</div></div>
-                        <div class="standard-card"><div><span class="standard-label">出餐速度</span><span class="standard-desc">優化操作動線，爆單時維持高產出</span></div><div class="score-hint">● 5: 動作簡潔俐落無廢動作 ｜ 3: 高峰期無嚴重延誤 (40分以上) ｜ 1: 節奏卡頓</div></div>
-                        <div class="standard-card"><div><span class="standard-label">備料確實</span><span class="standard-desc">根據預估客量精準備料，控管損耗</span></div><div class="score-hint">● 5: 預判精準並將損耗降至最低 ｜ 3: 依客量精準備料且規格正確 ｜ 1: 報廢率高</div></div>
-                        <div class="standard-card"><div><span class="standard-label">出勤信任</span><span class="standard-desc">穩定排班、交接清楚、責任感強</span></div><div class="score-hint">● 5: 關鍵時段主動承擔重責 ｜ 3: 出勤率 ≥ 95% 且交接詳盡 ｜ 1: 責任感低</div></div>
+                        <div class="standard-card"><div><span class="standard-label">食材保存</span><span class="standard-desc">冷藏冷凍符合標準，主動監測品質</span></div><div class="score-hint">● 5: 能預判品質異常並重整庫存 ｜ 3: 檢查合格率 ≥ 90% 並落實分區  ｜ 1: 生熟食堆疊</div></div>
+                        <div class="standard-card"><div><span class="standard-label">出餐品質</span><span class="standard-desc">掌握精確熟度與視覺呈現比例</span></div><div class="score-hint">● 5: 確保每份皆為品質標竿 ｜ 3: 熟度、位置與比例穩定一致  ｜ 1: 熟度不穩憑感覺 </div></div>
+                        <div class="standard-card"><div><span class="standard-label">出餐速度</span><span class="standard-desc">優化操作動線，爆單時維持高產出</span></div><div class="score-hint">● 5: 動作簡潔俐落無廢動作 ｜ 3: 高峰期無嚴重延誤 (40分以上)  ｜ 1: 節奏卡頓</div></div>
+                        <div class="standard-card"><div><span class="standard-label">備料確實</span><span class="standard-desc">根據預估客量精準備料，控管損耗</span></div><div class="score-hint">● 5: 預判精準並將損耗降至最低 ｜ 3: 依客量精準備料且規格正確  ｜ 1: 報廢率高</div></div>
+                        <div class="standard-card"><div><span class="standard-label">出勤信任</span><span class="standard-desc">穩定排班、交接清楚、責任感強</span></div><div class="score-hint">● 5: 關鍵時段主動承擔重責 ｜ 3: 出勤率 ≥ 95% 且交接詳盡  ｜ 1: 責任感低 </div></div>
                     </div>
-                    <div class="sidebar-box"><h5 class="text-brand-gold font-black mb-4">晉升條件</h5><ul class="space-y-3 text-sm md:text-base font-bold text-slate-600"><li>● 累積時數 ≥ 600小時</li><li>● 平均評分 ≥ 4.25</li><li><li>● 能支援兩區以上</li><li>● 無品質重大錯誤</li></ul></div>
+                    <div class="sidebar-box"><h5 class="text-brand-gold font-black mb-4">晉升條件</h5><ul class="space-y-3 text-sm md:text-base font-bold text-slate-600"><li>● 累積時數 ≥ 600小時 </li><li>● 平均評分 ≥ 4.25 </li><li>● 能支援兩區以上 </li><li>● 無品質重大錯誤 </li></ul></div>
                 </div>
             </section>
 
             <section class="level-box level-box-premium">
                 <div class="level-top flex justify-between items-center" style="border-top: 8px solid #1A202C;">
-                    <div><h2 class="text-2xl md:text-3xl font-black text-slate-800 mb-2">Level 3：資深 (專家)</h2><p class="text-sm md:text-base text-slate-400 font-bold">負責站區：生魚片台</p><span class="mt-4 px-3 py-1 bg-slate-900 text-white rounded-full text-xs font-black inline-block shadow-sm">1000H 評核 ｜ 每 500H 定期覆核 ｜ 月標時：100H</span></div>
-                    <div class="text-3xl md:text-4xl font-black text-brand-gold">$250<span class="text-xl font-normal text-slate-300">/hr</span></div>
+                    <div><h2 class="text-2xl md:text-3xl font-black text-slate-800 mb-2">Level 3：資深 (專家)</h2><p class="text-sm md:text-base text-slate-400 font-bold">負責站區：生魚片台</p><span class="mt-4 px-3 py-1 bg-slate-900 text-white rounded-full text-xs font-black inline-block shadow-sm">1000H 評核 ｜ 每 500H 定期覆核 ｜ 月標時：100H </span></div>
+                    <div class="text-3xl md:text-4xl font-black text-brand-gold">$250<span class="text-xl font-normal text-slate-300">/hr</span> </div>
                 </div>
                 <div class="p-5 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
                     <div class="md:col-span-2">
-                        <div class="standard-card"><div><span class="standard-label">食材保存</span><span class="standard-desc">最高規冷鏈鮮度鑑定與庫存管理</span></div><div class="score-hint">● 5: 具備感官專家鑑定力零缺失 ｜ 3: 嚴控生熟食鏈品質與保存溫度 ｜ 1: 鮮度判斷失誤</div></div>
-                        <div class="standard-card"><div><span class="standard-label">出餐品質</span><span class="standard-desc">冷台刀工美學、比例克數與捏製手感</span></div><div class="score-hint">● 5: 魚片紋理色澤展現職人標竿 ｜ 3: 刀工、比例與克數誤差極低 ｜ 1: 規格隨意</div></div>
-                        <div class="standard-card"><div><span class="standard-label">出餐速度</span><span class="standard-desc">掌控內場節奏，帶領單量流暢不回堵</span></div><div class="score-hint">● 5: 高峰期帶領全場出餐節奏 ｜ 3: 同時應對多筆訂單維持冷靜 ｜ 1: 效率回落</div></div>
-                        <div class="standard-card"><div><span class="standard-label">備料確實</span><span class="standard-desc">高單價魚料庫存總控，極大化食材價值</span></div><div class="score-hint">● 5: 主動優化流程極小化隱形成本 ｜ 3: 精確掌握高價食材庫存與處理 ｜ 1: 耗損異常</div></div>
-                        <div class="standard-card"><div><span class="standard-label">出勤信任</span><span class="standard-desc">主動回報問題、帶領團隊穩定運作</span></div><div class="score-hint">● 5: 團隊靈魂定心丸、主動調度 ｜ 3: 出勤紀錄完美且具主動行為 ｜ 1: 配合度低</div></div>
+                        <div class="standard-card"><div><span class="standard-label">食材保存</span><span class="standard-desc">最高規冷鏈鮮度鑑定與庫存管理</span></div><div class="score-hint">● 5: 具備感官專家鑑定力零缺失 ｜ 3: 嚴控生食保鮮與存放溫度  ｜ 1: 鮮度判斷失誤</div></div>
+                        <div class="standard-card"><div><span class="standard-label">出餐品質</span><span class="standard-desc">冷台刀工美學、比例克數與捏製手感</span></div><div class="score-hint">● 5: 魚片紋理色澤展現職人標竿 ｜ 3: 出餐比例美觀一致  ｜ 1: 規格隨意 </div></div>
+                        <div class="standard-card"><div><span class="standard-label">出餐速度</span><span class="standard-desc">掌控內場節奏，帶領單量流暢不回堵</span></div><div class="score-hint">● 5: 高峰期帶領全場出餐節奏 ｜ 3: 同時應對多筆訂單維持冷靜  ｜ 1: 效率回落</div></div>
+                        <div class="standard-card"><div><span class="standard-label">備料確實</span><span class="standard-desc">高單價魚料庫存總控，極大化食材價值</span></div><div class="score-hint">● 5: 主動優化流程極小化隱形成本 ｜ 3: 確保備料完善收班達標  ｜ 1: 耗損異常</div></div>
+                        <div class="standard-card"><div><span class="standard-label">出勤信任</span><span class="standard-desc">主動回報問題、帶領團隊穩定運作</span></div><div class="score-hint">● 5: 團隊靈魂定心丸、主動調度 ｜ 3: 主動支援缺口且具主動紀錄  ｜ 1: 配合度低</div></div>
                     </div>
-                    <div class="sidebar-box"><h5 class="text-slate-800 font-black mb-4">維持條件</h5><ul class="space-y-3 text-sm md:text-base font-bold text-slate-600"><li class="text-brand-red">● 平均評分 < 3.75 觀察期</li><li class="text-brand-red">● 出勤或品質不穩即降級</li><li>● 具教導與協調跨區支援能力</li></ul></div>
+                    <div class="sidebar-box"><h5 class="text-slate-800 font-black mb-4">維持條件</h5><ul class="space-y-3 text-sm md:text-base font-bold text-slate-600"><li class="text-brand-red">● 平均評分 < 3.75 觀察期 </li><li class="text-brand-red">● 出勤或品質不穩即降級 </li><li>● 具教導與協調跨區支援能力 </li></ul></div>
                 </div>
             </section>
         </div>
