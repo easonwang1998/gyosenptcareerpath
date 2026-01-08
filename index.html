@@ -11,6 +11,7 @@
         :root { 
             --brand-red: #B21F2C; 
             --brand-gold: #B29A1F; 
+            --brand-blue: #3B82F6;
             --ui-gray: #F8F9FA;
             --text-main: #2D3436;
             --text-muted: #94A3B8;
@@ -23,16 +24,15 @@
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; 
             line-height: 1.7; 
         }
-        /* Dashboard 專用動畫 */
         .loading-spinner { animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* 原本的樣式保持不變 */
-        .hero-header { background: #ffffff; padding: 60px 20px 100px; text-align: center; }
+        .hero-header { background: #ffffff; padding: 60px 20px 40px; text-align: center; }
         .hero-title { font-size: clamp(2.2rem, 8vw, 3.5rem); font-weight: 900; letter-spacing: -0.02em; color: #1A202C; margin-bottom: 2rem; }
+        
         .timeline-container {
             background: white; border-radius: 28px; padding: 48px;
-            margin-top: -60px; margin-bottom: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+            margin-top: 20px; margin-bottom: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.06);
             border: 1px solid #edf2f7; position: relative; z-index: 10;
         }
         .schedule-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
@@ -43,45 +43,23 @@
         }
         .step-label { font-size: 0.75rem; font-weight: 900; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 8px; }
         
-        /* 修改 Tab 容器以容納三個按鈕 */
-        .tab-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+        .tab-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab-btn { flex: 1; min-width: 140px; max-width: 200px; padding: 14px 24px; border-radius: 50px; font-weight: 800; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; text-align: center;}
-        
         .tab-btn.active { background-color: var(--brand-red); color: white; box-shadow: 0 4px 15px rgba(178, 31, 44, 0.3); }
         .tab-btn.inactive { background-color: white; color: var(--text-muted); border-color: #EEF2F7; }
-
-        /* Dashboard 按鈕特別色 */
         .tab-btn.dashboard-active { background-color: var(--brand-gold); color: white; box-shadow: 0 4px 15px rgba(178, 154, 31, 0.3); }
 
-        /* 內容區塊切換邏輯 */
-        .standard-card { background: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 18px; border: 1px solid #EEF2F7; }
-        .standard-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .standard-label { font-weight: 800; color: #1A202C; font-size: 1.2rem; flex-shrink: 0; padding-right: 15px; }
-        .standard-divider { height: 1px; flex-grow: 1; background: #E2E8F0; }
-        .standard-desc { color: #4A5568; font-weight: 600; font-size: 1.05rem; padding-left: 15px; text-align: right; }
-        .score-hint { font-size: 0.95rem; color: var(--text-muted); background: #F8FAFC; padding: 12px 16px; border-radius: 8px; margin-top: 12px; }
-        
-        .level-box-premium { background: var(--level3-dark-gray) !important; border: 2px solid var(--brand-gold) !important; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2) !important; position: relative; }
-        .level-box-premium h2, .level-box-premium .premium-price { color: white !important; }
-        .level-box-premium .text-slate-400 { color: #CBD5E1 !important; }
-        .level-box-premium .standard-card { background: #475569 !important; border-color: #64748B !important; }
-        .level-box-premium .standard-label { color: #F1F5F9 !important; }
-        .level-box-premium .standard-divider { background: #64748B !important; }
-        .level-box-premium .standard-desc { color: #E2E8F0 !important; }
-        .level-box-premium .score-hint { background: #334155 !important; color: #94A3B8 !important; }
-        .level-box-premium .sidebar-box { background: #475569 !important; color: #E2E8F0 !important; border: 1px solid #64748B; }
-        .level-box-premium .sidebar-box h5 { color: var(--brand-gold) !important; }
-        .premium-tag { position: absolute; top: -15px; right: 30px; background: var(--brand-gold); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        
         .content-section { display: none; }
         .content-section.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .sidebar-box { background: #F8FAFC; padding: 30px; border-radius: 20px; height: fit-content; }
+
         .footer-info { background: var(--level3-dark-gray); color: #CBD5E1; padding: 60px 20px; margin-top: 80px; }
         .footer-info h4 { color: var(--brand-gold); font-weight: 900; margin-bottom: 1.5rem; font-size: 1.3rem; }
         .footer-divider { height: 1px; background: #475569; margin: 40px 0; }
         .footer-highlight { color: var(--brand-gold); font-weight: bold; }
+
+        /* 進度條動畫 */
+        .progress-bar-fill { transition: width 1s ease-in-out; }
     </style>
 </head>
 <body>
@@ -95,6 +73,25 @@
     </header>
 
     <div class="max-w-[1150px] mx-auto px-4">
+        <div id="dashboard-controls" class="hidden mb-6">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                
+                <div class="relative w-full md:w-auto flex-1 max-w-md">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+                    </div>
+                    <input type="text" id="searchInput" placeholder="搜尋姓名、等級 (例如: L3)..." 
+                        class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-brand-gold focus:border-transparent transition duration-150 ease-in-out sm:text-sm"
+                        onkeyup="filterData()">
+                </div>
+
+                <div class="text-xs text-slate-400 text-right w-full md:w-auto">
+                    <div id="data-cutoff-display" class="font-bold text-slate-600 mb-1">統計截止日：載入中...</div>
+                    <div id="last-update">系統連線時間：載入中...</div>
+                </div>
+            </div>
+        </div>
+
         <div id="common-timeline" class="timeline-container">
             <div class="schedule-grid">
                 <div class="schedule-card"><span class="step-label">Step 01</span><h5 class="font-black text-lg">時數結算</h5><p class="text-slate-400 font-bold">每月月底</p></div>
@@ -115,7 +112,15 @@
 
         <div id="front-house-content" class="content-section active">載入中...</div>
         <div id="back-house-content" class="content-section">載入中...</div>
-        <div id="dashboard-content" class="content-section">載入中...</div>
+        
+        <div id="dashboard-content" class="content-section min-h-[400px] relative">
+            <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-20">
+                <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
+                <p class="text-slate-400 font-bold">正在讀取資料庫...</p>
+            </div>
+            
+            <div id="data-container" class="opacity-0 transition-opacity duration-500"></div>
+        </div>
     </div>
 
     <footer class="footer-info">
@@ -136,18 +141,27 @@
     </footer>
 
     <script>
-        // 設定 CSV 連結
+        // ================= 設定區 =================
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSPKyIVGlT4rmWEOUPwSdccHGWEaGPF3QhMm0rXnh7g_0kJx9iXFzIGVoY_uWOUHN9La8KjZOp5BMAv/pub?gid=1617552127&single=true&output=csv';
+        
+        // ★ 手動設定：統計截止日 (請在這裡修改日期)
+        const DATA_CUTOFF_DATE = "2026/01/31"; 
+        
+        // ================= 邏輯區 =================
         let isDashboardLoaded = false;
+        let globalDashboardData = []; // 儲存原始資料供搜尋用
 
         window.onload = function() {
-            // 載入所有區塊，載入 Dashboard 後自動執行 initDashboard
             loadPart('front-house-content', 'front-house.html');
             loadPart('back-house-content', 'back-house.html');
-            loadPart('dashboard-content', 'dashboard-content.html', initDashboard);
+            // Dashboard 不需載入外部 HTML，直接由 JS 渲染
+            
+            // 檢查是否直接進入 Dashboard 分頁 (例如網址有 #dashboard)
+            if(window.location.hash === '#dashboard') {
+                switchTab('dash');
+            }
         };
 
-        // 修改 loadPart 支援 Callback
         function loadPart(id, file, callback) {
             fetch(file)
                 .then(res => res.text())
@@ -158,7 +172,6 @@
                 .catch(err => console.error('無法載入檔案:', file));
         }
 
-        // 分頁切換邏輯
         function switchTab(type) {
             const fBtn = document.getElementById('tab-front');
             const bBtn = document.getElementById('tab-back');
@@ -169,7 +182,9 @@
             const dContent = document.getElementById('dashboard-content');
             
             const timeline = document.getElementById('common-timeline');
+            const dashControls = document.getElementById('dashboard-controls');
 
+            // Reset
             fBtn.className = 'tab-btn inactive';
             bBtn.className = 'tab-btn inactive';
             dBtn.className = 'tab-btn inactive';
@@ -177,6 +192,9 @@
             fContent.className = 'content-section';
             bContent.className = 'content-section';
             dContent.className = 'content-section';
+            
+            // 隱藏 Dashboard 控制列
+            dashControls.classList.add('hidden');
 
             if (type === 'front') {
                 fBtn.className = 'tab-btn active';
@@ -190,14 +208,23 @@
                 dBtn.className = 'tab-btn dashboard-active'; 
                 dContent.className = 'content-section active';
                 timeline.style.display = 'none'; 
+                
+                // 顯示 Dashboard 控制列
+                dashControls.classList.remove('hidden');
+                
+                // 啟動 Dashboard 邏輯
+                initDashboard();
             }
         }
 
-        // --- Dashboard 邏輯 (支援招募模式) ---
+        // --- Dashboard 核心邏輯 ---
         function initDashboard() {
             if (isDashboardLoaded) return; 
 
-            // ★ 偵測網址參數，如果有 ?demo=1 則進入招募模式
+            // 顯示設定的統計日期
+            document.getElementById('data-cutoff-display').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：${DATA_CUTOFF_DATE}`;
+
+            // 招募模式偵測
             const urlParams = new URLSearchParams(window.location.search);
             const isRecruitmentMode = urlParams.get('demo') === '1';
 
@@ -207,45 +234,40 @@
             const container = document.getElementById('data-container');
 
             if(timeDisplay) {
-                timeDisplay.innerText = '更新時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+                timeDisplay.innerText = '系統連線時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
             }
 
-            // --- 情境 A：招募/展示模式 (顯示範例假資料) ---
             if (isRecruitmentMode) {
-                // 設定完美的範例資料
+                // 招募模式假資料
                 const demoData = [
                     { "姓名": "新進夥伴 (範例)", "等級": "L1", "本職級累積時數": "45", "狀態": "累積中" },
-                    { "姓名": "資深夥伴 (範例)", "等級": "L2", "本職級累積時數": "295", "狀態": "可考核" }, // L2 藍色
-                    { "姓名": "核心幹部 (範例)", "等級": "L3", "本職級累積時數": "120", "狀態": "累積中" }, // L3 金色
-                    { "姓名": "儲備幹部 (範例)", "等級": "L2", "本職級累積時數": "150", "狀態": "覆核中" }, // 覆核狀態
-                    { "姓名": "L1 夥伴 (範例)", "等級": "L1", "本職級累積時數": "155", "狀態": "需評核" }  // 可晉升
+                    { "姓名": "資深夥伴 (範例)", "等級": "L2", "本職級累積時數": "295", "狀態": "可考核" }, 
+                    { "姓名": "核心幹部 (範例)", "等級": "L3", "本職級累積時數": "120", "狀態": "累積中" }, 
+                    { "姓名": "儲備幹部 (範例)", "等級": "L2", "本職級累積時數": "150", "狀態": "覆核中" }, 
+                    { "姓名": "L1 夥伴 (範例)", "等級": "L1", "本職級累積時數": "155", "狀態": "需評核" }  
                 ];
-
-                // 渲染範例表格
-                renderTable(demoData);
+                
+                globalDashboardData = demoData; // 存入全域變數
+                renderDashboard(demoData);
                 
                 if(loader) loader.style.display = 'none';
                 if(container) container.classList.remove('opacity-0');
                 
-                // 加上醒目的提示字樣
                 if(timeDisplay) {
                     timeDisplay.innerHTML += ' <span class="bg-[#B29A1F] text-white px-2 py-0.5 rounded text-xs ml-2 font-bold">招募展示模式</span>';
                 }
-                
                 isDashboardLoaded = true;
-                return; // 直接結束，不去連線 Google Sheet
+                return;
             }
 
-            // --- 情境 B：正常內部模式 (連線真實資料) ---
+            // 真實資料連線
             const freshCsvUrl = csvUrl + "&nocache=" + Date.now();
-
             Papa.parse(freshCsvUrl, {
-                download: true,
-                header: true, 
-                skipEmptyLines: true,
+                download: true, header: true, skipEmptyLines: true,
                 complete: function(results) {
                     if (results.data && results.data.length > 0) {
-                        renderTable(results.data);
+                        globalDashboardData = results.data; // 存入全域變數
+                        renderDashboard(results.data);
                         if(loader) loader.style.display = 'none';
                         if(container) container.classList.remove('opacity-0');
                         isDashboardLoaded = true;
@@ -260,10 +282,35 @@
             });
         }
 
-        // ▼▼▼ renderTable (L3 金底白字 + 無 Emoji) ▼▼▼
-        function renderTable(data) {
+        // --- 搜尋過濾功能 ---
+        function filterData() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toUpperCase();
+            
+            if(!globalDashboardData.length) return;
+
+            // 簡單過濾：檢查每個物件的所有值
+            const filteredData = globalDashboardData.filter(row => {
+                return Object.values(row).some(val => 
+                    String(val).toUpperCase().includes(filter)
+                );
+            });
+
+            renderDashboard(filteredData);
+        }
+
+        // --- 渲染 Dashboard (包含電腦版表格與手機版卡片) ---
+        function renderDashboard(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
+            
+            if (data.length === 0) {
+                container.innerHTML = `<div class="p-10 text-center text-slate-400 bg-white rounded-xl border border-dashed border-slate-300">
+                    <i class="fa-regular fa-folder-open text-4xl mb-3 block opacity-20"></i>
+                    沒有找到符合的資料
+                </div>`;
+                return;
+            }
 
             const headers = Object.keys(data[0]);
             const colName = headers.find(h => h.includes('姓名') || h.includes('Name')) || headers[0];
@@ -271,12 +318,14 @@
             const colHours = headers.find(h => h.includes('本職級累積時數') || h.includes('時數')) || '時數';
             const colStatus = headers.find(h => h.includes('狀態') || h.includes('Status')) || '狀態';
 
-            let html = `
+            // 1. 建立電腦版表格 (md 以上顯示)
+            let tableHtml = `
+                <div class="hidden md:block bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden">
                 <table class="min-w-full text-left text-sm whitespace-nowrap border-collapse">
                     <thead class="bg-slate-50 border-b border-slate-200 font-black text-slate-600 uppercase tracking-wider sticky top-0 z-10">
                         <tr>
                             <th class="px-6 py-5 pl-8">夥伴姓名</th>
-                            <th class="px-6 py-5">目前等級</th>
+                            <th class="px-6 py-5">目前等級 / 進度</th>
                             <th class="px-6 py-5 text-right text-brand-red">累積時數</th>
                             <th class="px-6 py-5 text-center">考核狀態</th>
                         </tr>
@@ -284,76 +333,114 @@
                     <tbody class="divide-y divide-slate-100">
             `;
 
-            let hasData = false;
+            // 2. 建立手機版卡片容器 (md 以下顯示)
+            let cardsHtml = `<div class="grid grid-cols-1 gap-4 md:hidden">`;
+
             data.forEach(row => {
                 if (!row[colName] || row[colName] === '姓名') return;
-                hasData = true;
                 
                 const name = row[colName];
                 const level = row[colLevel] ? row[colLevel].trim() : 'New'; 
                 const hours = row[colHours] || '0';
                 const status = row[colStatus] || '-';
+                const numHours = parseFloat(hours.replace(/,/g, '')) || 0;
                 
-                // --- 定義樣式 (L3金, L2藍, 無Emoji) ---
-                let rowClass = "hover:bg-slate-50 transition-colors bg-white"; // 預設 L1
+                // --- 樣式邏輯 ---
+                let rowClass = "hover:bg-slate-50 transition-colors bg-white";
                 let levelBadgeClass = "bg-slate-100 text-slate-500 border-slate-200"; 
                 let nameColorClass = "text-slate-700"; 
+                let progressBarColor = "bg-brand-red"; // L1 紅
+                let targetHours = 150; // L1 目標
 
-                // L3 樣式 (實心金底 + 白字)
                 if (level === 'L3') {
                     rowClass = "bg-amber-50/60 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]"; 
                     levelBadgeClass = "bg-[#B29A1F] text-white border-[#B29A1F] shadow-sm"; 
                     nameColorClass = "text-slate-900"; 
-                } 
-                // L2 樣式 (淡藍背景 + 左側藍線 + 藍白標籤)
-                else if (level === 'L2') {
+                    progressBarColor = "bg-[#B29A1F]"; // L3 金
+                    targetHours = 600;
+                } else if (level === 'L2') {
                     rowClass = "bg-slate-50/80 hover:bg-blue-50 transition-colors border-l-4 border-l-blue-400"; 
                     levelBadgeClass = "bg-blue-500 text-white border-blue-500 shadow-sm"; 
                     nameColorClass = "text-slate-800";
+                    progressBarColor = "bg-blue-500"; // L2 藍
+                    targetHours = 300;
                 }
 
-                // --- 狀態燈號 ---
+                // 覆核狀態目標調整 (如果需要更細緻可以打開，這裡先用標準目標做視覺)
+                // if(status.includes('覆核')) targetHours = (level==='L3'?300:100);
+
+                // 計算進度條 %
+                let progressPercent = Math.min((numHours / targetHours) * 100, 100);
+                if (numHours < 0) progressPercent = 0; // 防呆
+
+                // 狀態燈號
                 let statusHtml = '';
                 if (status.includes('需評核') || status.includes('可考核') || status.includes('可晉升')) {
-                    statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 ring-1 ring-green-600/20">
-                        <span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full animate-pulse"></span>考核中
-                    </span>`;
+                    statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 ring-1 ring-green-600/20"><span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full animate-pulse"></span>考核中</span>`;
                 } else if (status.includes('觀察') || status.includes('覆核') || status.includes('維持')) {
-                    statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 ring-1 ring-orange-600/20">
-                        覆核中
-                    </span>`;
+                    statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 ring-1 ring-orange-600/20">覆核中</span>`;
                 } else {
                     statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-400">累積中</span>`;
                 }
 
-                html += `
+                // --- 組合：電腦版表格列 ---
+                tableHtml += `
                     <tr class="${rowClass} group">
-                        <td class="px-6 py-4 pl-8 font-bold text-base ${nameColorClass}">
-                            ${name}
-                        </td>
+                        <td class="px-6 py-4 pl-8 font-bold text-base ${nameColorClass}">${name}</td>
                         <td class="px-6 py-4">
-                            <span class="inline-block px-3 py-1 rounded-md border text-xs font-black tracking-wide ${levelBadgeClass}">
-                                ${level}
-                            </span>
+                            <div class="flex flex-col gap-1.5">
+                                <div><span class="inline-block px-3 py-0.5 rounded-md border text-xs font-black tracking-wide ${levelBadgeClass}">${level}</span></div>
+                                <div class="w-24 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                                    <div class="h-full ${progressBarColor} progress-bar-fill" style="width: ${progressPercent}%"></div>
+                                </div>
+                            </div>
                         </td>
                         <td class="px-6 py-4 text-right">
                             <span class="font-mono font-black text-xl text-[#B21F2C] tracking-tight">${hours}</span>
-                            <span class="text-xs text-slate-400 ml-1">H</span>
+                            <span class="text-xs text-slate-400 ml-1">/ ${targetHours}</span>
                         </td>
-                        <td class="px-6 py-4 text-center">
-                            ${statusHtml}
-                        </td>
+                        <td class="px-6 py-4 text-center">${statusHtml}</td>
                     </tr>
+                `;
+
+                // --- 組合：手機版卡片 ---
+                cardsHtml += `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden">
+                        ${level === 'L3' ? '<div class="absolute top-0 left-0 w-1 h-full bg-[#B29A1F]"></div>' : ''}
+                        ${level === 'L2' ? '<div class="absolute top-0 left-0 w-1 h-full bg-blue-400"></div>' : ''}
+                        
+                        <div class="flex justify-between items-start mb-4 pl-2">
+                            <div>
+                                <h3 class="font-bold text-lg ${nameColorClass}">${name}</h3>
+                                <span class="inline-block mt-1 px-2 py-0.5 rounded text-xs font-black ${levelBadgeClass}">${level}</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-mono font-black text-2xl text-[#B21F2C]">${hours}</div>
+                                <div class="text-xs text-slate-400">目標 ${targetHours} H</div>
+                            </div>
+                        </div>
+                        
+                        <div class="pl-2">
+                            <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                <span>達成率</span>
+                                <span>${Math.round(progressPercent)}%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden mb-4">
+                                <div class="h-full ${progressBarColor} progress-bar-fill" style="width: ${progressPercent}%"></div>
+                            </div>
+                            <div class="flex justify-end">
+                                ${statusHtml}
+                            </div>
+                        </div>
+                    </div>
                 `;
             });
 
-            if (!hasData) {
-                    html += `<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 bg-white">
-                    表格中沒有有效的人員資料</td></tr>`;
-            }
+            tableHtml += `</tbody></table></div>`;
+            cardsHtml += `</div>`;
 
-            html += `</tbody></table>`;
-            container.innerHTML = html;
+            // 將兩個區塊都放入容器
+            container.innerHTML = tableHtml + cardsHtml;
         }
 
         function showError(msg) {
