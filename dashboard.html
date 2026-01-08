@@ -1,181 +1,26 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>夥伴時數儀表板 ｜ 魚鮮會社</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* 保持與主頁一致的色調 */
-        :root { 
-            --brand-red: #B21F2C; 
-            --brand-gold: #B29A1F; 
-            --ui-gray: #F8F9FA;
-        }
-        body { background-color: var(--ui-gray); font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; color: #2D3436; }
-        .loading-spinner { animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-</head>
-<body>
+<div class="max-w-5xl mx-auto py-6">
+    <header class="text-center mb-10">
+        <h2 class="text-3xl font-black text-slate-800 mb-3">
+            <i class="fa-solid fa-clock text-brand-red mr-3"></i>夥伴時數儀表板
+        </h2>
+        <p class="text-slate-500 font-bold">即時同步 Google 試算表數據</p>
+    </header>
 
-    <nav class="bg-white border-b border-slate-200 px-4 py-4 sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-slate-500 hover:text-slate-800 font-bold transition-colors">
-                <i class="fa-solid fa-chevron-left mr-2"></i>返回職能地圖
-            </a>
-            <div class="text-xs text-slate-400 font-mono" id="last-update">更新時間：載入中...</div>
-        </div>
-    </nav>
-
-    <div class="max-w-5xl mx-auto px-4 py-10">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl md:text-4xl font-black text-slate-800 mb-3">
-                <i class="fa-solid fa-clock text-brand-red mr-3"></i>夥伴時數儀表板
-            </h1>
-            <p class="text-slate-500 font-bold">即時同步 Google 試算表數據</p>
-        </header>
-
-        <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden relative min-h-[400px]">
-            
-            <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10">
-                <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
-                <p class="text-slate-400 font-bold">正在連線至資料庫...</p>
-            </div>
-
-            <div id="data-container" class="overflow-x-auto opacity-0 transition-opacity duration-500">
-                </div>
-        </div>
+    <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden relative min-h-[400px]">
         
-        <div class="mt-6 text-center">
-            <p class="text-xs text-slate-400">
-                <i class="fa-solid fa-circle-info mr-1"></i>資料來源：GYOSEN PT MASTER SHEET (唯讀)
-            </p>
+        <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10">
+            <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
+            <p class="text-slate-400 font-bold">正在連線至資料庫...</p>
         </div>
+
+        <div id="data-container" class="overflow-x-auto opacity-0 transition-opacity duration-500">
+            </div>
     </div>
-
-    <script>
-        // 您提供的專屬 CSV 連結
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSPKyIVGlT4rmWEOUPwSdccHGWEaGPF3QhMm0rXnh7g_0kJx9iXFzIGVoY_uWOUHN9La8KjZOp5BMAv/pub?gid=1617552127&single=true&output=csv';
-
-        window.onload = function() {
-            // 更新時間顯示
-            const now = new Date();
-            document.getElementById('last-update').innerText = '更新時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-
-            Papa.parse(csvUrl, {
-                download: true,
-                header: true, // 重要：使用第一列作為標題
-                skipEmptyLines: true,
-                complete: function(results) {
-                    const loader = document.getElementById('loader');
-                    const container = document.getElementById('data-container');
-                    
-                    if (results.data && results.data.length > 0) {
-                        renderTable(results.data);
-                        // 隱藏讀取動畫，顯示表格
-                        loader.style.display = 'none';
-                        container.classList.remove('opacity-0');
-                    } else {
-                        showError('讀取成功但沒有資料，請確認試算表是否有內容');
-                    }
-                },
-                error: function(err) {
-                    console.error("Error:", err);
-                    showError('無法讀取資料，請確認網路連線');
-                }
-            });
-        };
-
-        function renderTable(data) {
-            // 1. 取得所有標題
-            const headers = Object.keys(data[0]);
-
-            // 2. 智慧欄位對應 (防止您的標題名稱有微小差異)
-            // 尋找包含關鍵字的欄位名稱
-            const colName = headers.find(h => h.includes('姓名') || h.includes('Name')) || headers[0];
-            const colLevel = headers.find(h => h.includes('等級') || h.includes('職級') || h.includes('Level')) || '等級';
-            // 優先找「本職級累積時數」，找不到才找「時數」
-            const colHours = headers.find(h => h.includes('本職級累積時數') || h.includes('時數')) || '時數';
-            const colStatus = headers.find(h => h.includes('狀態') || h.includes('Status')) || '狀態';
-
-            let html = `
-                <table class="min-w-full text-left text-sm whitespace-nowrap">
-                    <thead class="bg-slate-50 border-b border-slate-200 font-black text-slate-600 uppercase tracking-wider">
-                        <tr>
-                            <th class="px-6 py-5 pl-8">夥伴姓名</th>
-                            <th class="px-6 py-5">目前等級</th>
-                            <th class="px-6 py-5 text-right text-brand-red">累積時數</th>
-                            <th class="px-6 py-5 text-center">考核狀態</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-            `;
-
-            let hasData = false;
-
-            data.forEach(row => {
-                // 如果姓名是空的，或是標題列重複，就跳過
-                if (!row[colName] || row[colName] === '姓名') return;
-                
-                hasData = true;
-                const name = row[colName];
-                const level = row[colLevel] || 'New';
-                const hours = row[colHours] || '0';
-                const status = row[colStatus] || '-';
-
-                // 時數轉為數字以便判斷樣式
-                const numHours = parseFloat(hours.replace(/,/g, '')) || 0;
-                
-                // 狀態標籤樣式邏輯
-                let statusHtml = '';
-                if (status.includes('可考核') || numHours >= 150) {
-                    statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800">
-                        <span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full"></span>可考核
-                    </span>`;
-                } else if (status.includes('觀察')) {
-                    statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800">觀察期</span>`;
-                } else {
-                    statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500">累積中</span>`;
-                }
-
-                html += `
-                    <tr class="hover:bg-slate-50 transition-colors group">
-                        <td class="px-6 py-4 pl-8 font-bold text-slate-700 text-base group-hover:text-brand-red transition-colors">
-                            ${name}
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="inline-block px-3 py-1 rounded-md border border-slate-200 text-slate-600 text-xs font-bold bg-white shadow-sm">
-                                ${level}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right font-mono font-black text-xl text-[#B21F2C]">
-                            ${hours}
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            ${statusHtml}
-                        </td>
-                    </tr>
-                `;
-            });
-
-            if (!hasData) {
-                 html += `<tr><td colspan="4" class="px-6 py-10 text-center text-slate-400">表格中沒有有效的人員資料</td></tr>`;
-            }
-
-            html += `</tbody></table>`;
-            document.getElementById('data-container').innerHTML = html;
-        }
-
-        function showError(msg) {
-            document.getElementById('loader').innerHTML = 
-                `<div class="text-center text-red-500 font-bold px-4">
-                    <i class="fas fa-exclamation-triangle text-3xl mb-3 block"></i>
-                    ${msg}
-                </div>`;
-        }
-    </script>
-</body>
-</html>
+    
+    <div class="mt-6 text-center">
+        <p class="text-xs text-slate-400">
+            <i class="fa-solid fa-circle-info mr-1"></i>資料來源：GYOSEN PT MASTER SHEET (唯讀)
+        </p>
+        <div class="text-xs text-slate-300 mt-2 font-mono" id="last-update">更新時間：載入中...</div>
+    </div>
+</div>
