@@ -265,15 +265,16 @@
                 const hours = row[colHours] || '0';
                 const status = row[colStatus] || '-';
                 
-                // --- 定義樣式 (L3金, L2藍, 無Emoji) ---
+                // --- 定義樣式 ---
                 let rowClass = "hover:bg-slate-50 transition-colors bg-white"; // 預設 L1
                 let levelBadgeClass = "bg-slate-100 text-slate-500 border-slate-200"; 
                 let nameColorClass = "text-slate-700"; 
 
-                // L3 樣式 (淡金背景 + 左側金線 + 黑金標籤)
+                // L3 樣式 (修正為：實心金底 + 白字，解決不清楚的問題)
                 if (level === 'L3') {
                     rowClass = "bg-amber-50/60 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]"; 
-                    levelBadgeClass = "bg-slate-800 text-[#B29A1F] border-slate-800 shadow-sm ring-1 ring-[#B29A1F]/50"; 
+                    // 改成 #B29A1F 底色配白字，這跟 L2 的設計語言一致，且最清楚
+                    levelBadgeClass = "bg-[#B29A1F] text-white border-[#B29A1F] shadow-sm"; 
                     nameColorClass = "text-slate-900"; 
                 } 
                 // L2 樣式 (淡藍背景 + 左側藍線 + 藍白標籤)
@@ -322,6 +323,10 @@
                     html += `<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 bg-white">
                     表格中沒有有效的人員資料</td></tr>`;
             }
+
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
 
             html += `</tbody></table>`;
             container.innerHTML = html;
