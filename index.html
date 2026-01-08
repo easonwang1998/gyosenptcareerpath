@@ -281,7 +281,7 @@
             renderDashboard(filteredData);
         }
 
-        // ▼▼▼ 進度條優化版 (灰色底 + 強制顯色 + 視覺居中) ▼▼▼
+        // ▼▼▼ 進度條優化版 (灰色底 + 強制顯色 + 視覺居中 + 變大) ▼▼▼
         function renderDashboard(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
@@ -325,7 +325,6 @@
                 let rowClass = "hover:bg-slate-50 transition-colors bg-white";
                 let levelBadgeClass = "bg-slate-100 text-slate-500 border-slate-200"; 
                 let nameColorClass = "text-slate-700"; 
-                // ★ 修正：強制使用色碼，解決 Tailwind 變數抓不到顏色的問題
                 let progressBarColor = "bg-[#B21F2C]"; 
                 let targetHours = 150; 
 
@@ -339,7 +338,7 @@
                     rowClass = "bg-slate-50/80 hover:bg-blue-50 transition-colors border-l-4 border-l-blue-400"; 
                     levelBadgeClass = "bg-blue-500 text-white border-blue-500 shadow-sm"; 
                     nameColorClass = "text-slate-800";
-                    progressBarColor = "bg-[#3B82F6]"; // 修正為 Blue 500 色碼
+                    progressBarColor = "bg-[#3B82F6]"; 
                     targetHours = 300;
                 }
 
@@ -355,17 +354,17 @@
                     statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-400">累積中</span>`;
                 }
 
-                // ★ 電腦版：進度條加大 (w-full max-w-[180px]) + 加高 (h-3) + 底色灰 (bg-slate-200)
+                // ★ 電腦版：進度條加大 (w-full max-w-[220px]) + 加高 (h-4) + 灰色底
                 tableHtml += `
                     <tr class="${rowClass} group">
                         <td class="px-6 py-4 pl-8 font-bold text-base ${nameColorClass}">${name}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <span class="inline-block px-3 py-0.5 rounded-md border text-xs font-black tracking-wide ${levelBadgeClass}">${level}</span>
-                                <div class="w-full max-w-[180px] h-3 bg-slate-200 rounded-full overflow-hidden">
-                                    <div class="h-full ${progressBarColor} progress-bar-fill" style="width: ${progressPercent}%"></div>
+                                <div class="w-full max-w-[220px] h-4 bg-slate-200 rounded-full overflow-hidden shadow-inner">
+                                    <div class="h-full ${progressBarColor} progress-bar-fill shadow-sm" style="width: ${progressPercent}%"></div>
                                 </div>
-                                <span class="text-xs text-slate-400 font-bold">${Math.round(progressPercent)}%</span>
+                                <span class="text-xs text-slate-400 font-bold w-10">${Math.round(progressPercent)}%</span>
                             </div>
                         </td>
                         <td class="px-6 py-4 text-right">
@@ -376,7 +375,7 @@
                     </tr>
                 `;
 
-                // ★ 手機版：進度條同步加高
+                // ★ 手機版：同步加高
                 cardsHtml += `
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden">
                         ${level === 'L3' ? '<div class="absolute top-0 left-0 w-1 h-full bg-[#B29A1F]"></div>' : ''}
@@ -393,7 +392,7 @@
                         </div>
                         <div class="pl-2">
                             <div class="flex justify-between text-xs text-slate-400 mb-1"><span>達成率</span><span>${Math.round(progressPercent)}%</span></div>
-                            <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden mb-4"><div class="h-full ${progressBarColor} progress-bar-fill" style="width: ${progressPercent}%"></div></div>
+                            <div class="w-full h-4 bg-slate-200 rounded-full overflow-hidden mb-4 shadow-inner"><div class="h-full ${progressBarColor} progress-bar-fill shadow-sm" style="width: ${progressPercent}%"></div></div>
                             <div class="flex justify-end">${statusHtml}</div>
                         </div>
                     </div>
