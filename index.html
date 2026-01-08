@@ -231,6 +231,7 @@
             });
         }
 
+        // ▼▼▼ 更新後的 renderTable (L2/L3 有顏色變化，無 Emoji) ▼▼▼
         function renderTable(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
@@ -242,8 +243,8 @@
             const colStatus = headers.find(h => h.includes('狀態') || h.includes('Status')) || '狀態';
 
             let html = `
-                <table class="min-w-full text-left text-sm whitespace-nowrap">
-                    <thead class="bg-slate-50 border-b border-slate-200 font-black text-slate-600 uppercase tracking-wider">
+                <table class="min-w-full text-left text-sm whitespace-nowrap border-collapse">
+                    <thead class="bg-slate-50 border-b border-slate-200 font-black text-slate-600 uppercase tracking-wider sticky top-0 z-10">
                         <tr>
                             <th class="px-6 py-5 pl-8">夥伴姓名</th>
                             <th class="px-6 py-5">目前等級</th>
@@ -260,32 +261,66 @@
                 hasData = true;
                 
                 const name = row[colName];
-                const level = row[colLevel] || 'New';
+                const level = row[colLevel] ? row[colLevel].trim() : 'New'; 
                 const hours = row[colHours] || '0';
                 const status = row[colStatus] || '-';
-                const numHours = parseFloat(hours.replace(/,/g, '')) || 0;
                 
+                // --- 定義樣式 (L3金, L2藍, 無Emoji) ---
+                let rowClass = "hover:bg-slate-50 transition-colors bg-white"; // 預設 L1
+                let levelBadgeClass = "bg-slate-100 text-slate-500 border-slate-200"; 
+                let nameColorClass = "text-slate-700"; 
+
+                // L3 樣式 (淡金背景 + 左側金線 + 黑金標籤)
+                if (level === 'L3') {
+                    rowClass = "bg-amber-50/60 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]"; 
+                    levelBadgeClass = "bg-slate-800 text-[#B29A1F] border-slate-800 shadow-sm ring-1 ring-[#B29A1F]/50"; 
+                    nameColorClass = "text-slate-900"; 
+                } 
+                // L2 樣式 (淡藍背景 + 左側藍線 + 藍白標籤)
+                else if (level === 'L2') {
+                    rowClass = "bg-slate-50/80 hover:bg-blue-50 transition-colors border-l-4 border-l-blue-400"; 
+                    levelBadgeClass = "bg-blue-500 text-white border-blue-500 shadow-sm"; 
+                    nameColorClass = "text-slate-800";
+                }
+
+                // --- 狀態燈號 ---
                 let statusHtml = '';
-                if (status.includes('可考核') || numHours >= 150) {
-                    statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800"><span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full"></span>可考核</span>`;
-                } else if (status.includes('觀察')) {
-                    statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800">觀察期</span>`;
+                if (status.includes('需評核') || status.includes('可考核') || status.includes('可晉升')) {
+                    statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 ring-1 ring-green-600/20">
+                        <span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full animate-pulse"></span>考核中
+                    </span>`;
+                } else if (status.includes('觀察') || status.includes('覆核') || status.includes('維持')) {
+                    statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700 ring-1 ring-orange-600/20">
+                        覆核中
+                    </span>`;
                 } else {
-                    statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500">累積中</span>`;
+                    statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-400">累積中</span>`;
                 }
 
                 html += `
-                    <tr class="hover:bg-slate-50 transition-colors group">
-                        <td class="px-6 py-4 pl-8 font-bold text-slate-700 text-base group-hover:text-brand-red transition-colors">${name}</td>
-                        <td class="px-6 py-4"><span class="inline-block px-3 py-1 rounded-md border border-slate-200 text-slate-600 text-xs font-bold bg-white shadow-sm">${level}</span></td>
-                        <td class="px-6 py-4 text-right font-mono font-black text-xl text-[#B21F2C]">${hours}</td>
-                        <td class="px-6 py-4 text-center">${statusHtml}</td>
+                    <tr class="${rowClass} group">
+                        <td class="px-6 py-4 pl-8 font-bold text-base ${nameColorClass}">
+                            ${name}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="inline-block px-3 py-1 rounded-md border text-xs font-black tracking-wide ${levelBadgeClass}">
+                                ${level}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <span class="font-mono font-black text-xl text-[#B21F2C] tracking-tight">${hours}</span>
+                            <span class="text-xs text-slate-400 ml-1">H</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            ${statusHtml}
+                        </td>
                     </tr>
                 `;
             });
 
             if (!hasData) {
-                 html += `<tr><td colspan="4" class="px-6 py-10 text-center text-slate-400">表格中沒有有效的人員資料</td></tr>`;
+                    html += `<tr><td colspan="4" class="px-6 py-12 text-center text-slate-400 bg-white">
+                    表格中沒有有效的人員資料</td></tr>`;
             }
 
             html += `</tbody></table>`;
