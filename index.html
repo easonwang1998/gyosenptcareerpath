@@ -55,7 +55,7 @@
         .content-section.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ▼▼▼ [補回來的遺失樣式] 外場/內場卡片樣式 ▼▼▼ */
+        /* 外場/內場卡片樣式 */
         .standard-card { background: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 18px; border: 1px solid #EEF2F7; }
         .standard-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .standard-label { font-weight: 800; color: #1A202C; font-size: 1.2rem; flex-shrink: 0; padding-right: 15px; }
@@ -77,7 +77,6 @@
         .premium-tag { position: absolute; top: -15px; right: 30px; background: var(--brand-gold); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
         .sidebar-box { background: #F8FAFC; padding: 30px; border-radius: 20px; height: fit-content; }
-        /* ▲▲▲ 補救結束 ▲▲▲ */
 
         .footer-info { background: var(--level3-dark-gray); color: #CBD5E1; padding: 60px 20px; margin-top: 80px; }
         .footer-info h4 { color: var(--brand-gold); font-weight: 900; margin-bottom: 1.5rem; font-size: 1.3rem; }
@@ -177,10 +176,7 @@
         window.onload = function() {
             loadPart('front-house-content', 'front-house.html');
             loadPart('back-house-content', 'back-house.html');
-            
-            if(window.location.hash === '#dashboard') {
-                switchTab('dash');
-            }
+            if(window.location.hash === '#dashboard') switchTab('dash');
         };
 
         function loadPart(id, file, callback) {
@@ -197,11 +193,9 @@
             const fBtn = document.getElementById('tab-front');
             const bBtn = document.getElementById('tab-back');
             const dBtn = document.getElementById('tab-dash');
-            
             const fContent = document.getElementById('front-house-content');
             const bContent = document.getElementById('back-house-content');
             const dContent = document.getElementById('dashboard-content');
-            
             const timeline = document.getElementById('common-timeline');
             const dashControls = document.getElementById('dashboard-controls');
 
@@ -209,26 +203,17 @@
             fBtn.className = 'tab-btn inactive';
             bBtn.className = 'tab-btn inactive';
             dBtn.className = 'tab-btn inactive';
-            
             fContent.className = 'content-section';
             bContent.className = 'content-section';
             dContent.className = 'content-section';
-            
             dashControls.classList.add('hidden');
 
             if (type === 'front') {
-                fBtn.className = 'tab-btn active';
-                fContent.className = 'content-section active';
-                timeline.style.display = 'block';
+                fBtn.className = 'tab-btn active'; fContent.className = 'content-section active'; timeline.style.display = 'block';
             } else if (type === 'back') {
-                bBtn.className = 'tab-btn active';
-                bContent.className = 'content-section active';
-                timeline.style.display = 'block';
+                bBtn.className = 'tab-btn active'; bContent.className = 'content-section active'; timeline.style.display = 'block';
             } else if (type === 'dash') {
-                dBtn.className = 'tab-btn dashboard-active'; 
-                dContent.className = 'content-section active';
-                timeline.style.display = 'none'; 
-                
+                dBtn.className = 'tab-btn dashboard-active'; dContent.className = 'content-section active'; timeline.style.display = 'none';
                 dashControls.classList.remove('hidden');
                 initDashboard();
             }
@@ -241,15 +226,12 @@
 
             const urlParams = new URLSearchParams(window.location.search);
             const isRecruitmentMode = urlParams.get('demo') === '1';
-
             const now = new Date();
             const timeDisplay = document.getElementById('last-update');
             const loader = document.getElementById('loader');
             const container = document.getElementById('data-container');
 
-            if(timeDisplay) {
-                timeDisplay.innerText = '系統連線時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-            }
+            if(timeDisplay) timeDisplay.innerText = '系統連線時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
 
             if (isRecruitmentMode) {
                 const demoData = [
@@ -263,9 +245,7 @@
                 renderDashboard(demoData);
                 if(loader) loader.style.display = 'none';
                 if(container) container.classList.remove('opacity-0');
-                if(timeDisplay) {
-                    timeDisplay.innerHTML += ' <span class="bg-[#B29A1F] text-white px-2 py-0.5 rounded text-xs ml-2 font-bold">招募展示模式</span>';
-                }
+                if(timeDisplay) timeDisplay.innerHTML += ' <span class="bg-[#B29A1F] text-white px-2 py-0.5 rounded text-xs ml-2 font-bold">招募展示模式</span>';
                 isDashboardLoaded = true;
                 return;
             }
@@ -301,6 +281,7 @@
             renderDashboard(filteredData);
         }
 
+        // ▼▼▼ 進度條優化版 (灰色底 + 強制顯色 + 視覺居中) ▼▼▼
         function renderDashboard(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
@@ -344,7 +325,8 @@
                 let rowClass = "hover:bg-slate-50 transition-colors bg-white";
                 let levelBadgeClass = "bg-slate-100 text-slate-500 border-slate-200"; 
                 let nameColorClass = "text-slate-700"; 
-                let progressBarColor = "bg-brand-red"; 
+                // ★ 修正：強制使用色碼，解決 Tailwind 變數抓不到顏色的問題
+                let progressBarColor = "bg-[#B21F2C]"; 
                 let targetHours = 150; 
 
                 if (level === 'L3') {
@@ -357,7 +339,7 @@
                     rowClass = "bg-slate-50/80 hover:bg-blue-50 transition-colors border-l-4 border-l-blue-400"; 
                     levelBadgeClass = "bg-blue-500 text-white border-blue-500 shadow-sm"; 
                     nameColorClass = "text-slate-800";
-                    progressBarColor = "bg-blue-500"; 
+                    progressBarColor = "bg-[#3B82F6]"; // 修正為 Blue 500 色碼
                     targetHours = 300;
                 }
 
@@ -373,15 +355,17 @@
                     statusHtml = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-400">累積中</span>`;
                 }
 
+                // ★ 電腦版：進度條加大 (w-full max-w-[180px]) + 加高 (h-3) + 底色灰 (bg-slate-200)
                 tableHtml += `
                     <tr class="${rowClass} group">
                         <td class="px-6 py-4 pl-8 font-bold text-base ${nameColorClass}">${name}</td>
                         <td class="px-6 py-4">
-                            <div class="flex flex-col gap-1.5">
-                                <div><span class="inline-block px-3 py-0.5 rounded-md border text-xs font-black tracking-wide ${levelBadgeClass}">${level}</span></div>
-                                <div class="w-24 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                            <div class="flex items-center gap-3">
+                                <span class="inline-block px-3 py-0.5 rounded-md border text-xs font-black tracking-wide ${levelBadgeClass}">${level}</span>
+                                <div class="w-full max-w-[180px] h-3 bg-slate-200 rounded-full overflow-hidden">
                                     <div class="h-full ${progressBarColor} progress-bar-fill" style="width: ${progressPercent}%"></div>
                                 </div>
+                                <span class="text-xs text-slate-400 font-bold">${Math.round(progressPercent)}%</span>
                             </div>
                         </td>
                         <td class="px-6 py-4 text-right">
@@ -392,6 +376,7 @@
                     </tr>
                 `;
 
+                // ★ 手機版：進度條同步加高
                 cardsHtml += `
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden">
                         ${level === 'L3' ? '<div class="absolute top-0 left-0 w-1 h-full bg-[#B29A1F]"></div>' : ''}
@@ -408,7 +393,7 @@
                         </div>
                         <div class="pl-2">
                             <div class="flex justify-between text-xs text-slate-400 mb-1"><span>達成率</span><span>${Math.round(progressPercent)}%</span></div>
-                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden mb-4"><div class="h-full ${progressBarColor} progress-bar-fill" style="width: ${progressPercent}%"></div></div>
+                            <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden mb-4"><div class="h-full ${progressBarColor} progress-bar-fill" style="width: ${progressPercent}%"></div></div>
                             <div class="flex justify-end">${statusHtml}</div>
                         </div>
                     </div>
@@ -422,9 +407,7 @@
 
         function showError(msg) {
             const loader = document.getElementById('loader');
-            if(loader) {
-                loader.innerHTML = `<div class="text-center text-red-500 font-bold px-4"><i class="fas fa-exclamation-triangle text-3xl mb-3 block"></i>${msg}</div>`;
-            }
+            if(loader) loader.innerHTML = `<div class="text-center text-red-500 font-bold px-4"><i class="fas fa-exclamation-triangle text-3xl mb-3 block"></i>${msg}</div>`;
         }
     </script>
 </body>
