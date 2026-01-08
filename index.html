@@ -93,7 +93,7 @@
         <div class="tab-container">
             <div id="tab-front" class="tab-btn active" onclick="switchTab('front')">外場服務</div>
             <div id="tab-back" class="tab-btn inactive" onclick="switchTab('back')">內場實務</div>
-            <div id="tab-dash" class="tab-btn inactive" onclick="switchTab('dash')">時數儀表板(測試中)</div>
+            <div id="tab-dash" class="tab-btn inactive" onclick="switchTab('dash')">時數儀表板(測試)</div>
         </div>
     </header>
 
@@ -295,10 +295,10 @@
             const colName = headers.find(h => h.includes('姓名') || h.includes('Name')) || headers[0];
             const colLevel = headers.find(h => h.includes('等級') || h.includes('職級') || h.includes('Level')) || '等級';
             const colStatus = headers.find(h => h.includes('狀態') || h.includes('Status')) || '狀態';
-
+            
             // ★★★ 關鍵修正：嚴格尋找「本職級」且排除「總時數」 ★★★
             let colHours = headers.find(h => h.includes('本職級') || h.includes('累積') && !h.includes('總'));
-            if (!colHours) colHours = headers.find(h => h.includes('時數') && !h.includes('總')); // 最後備案，仍要避開「總」
+            if (!colHours) colHours = headers.find(h => h.includes('時數') && !h.includes('總')); 
 
             let tableHtml = `
                 <div class="hidden md:block bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden">
@@ -321,7 +321,7 @@
                 
                 const name = row[colName];
                 const level = row[colLevel] ? row[colLevel].trim() : 'New'; 
-                const hours = row[colHours] || '0'; // 使用修正後的欄位名稱
+                const hours = row[colHours] || '0'; 
                 const status = row[colStatus] || '-';
                 const numHours = parseFloat(hours.replace(/,/g, '')) || 0;
                 
@@ -343,6 +343,11 @@
                     nameColorClass = "text-slate-800";
                     progressBarColor = "bg-[#3B82F6]"; 
                     targetHours = 300;
+                }
+
+                // ★★★ 新增邏輯：如果是覆核/維持/觀察狀態，目標降低 ★★★
+                if (status.includes('覆核') || status.includes('維持') || status.includes('觀察')) {
+                    targetHours = (level === 'L3' ? 300 : 100);
                 }
 
                 let progressPercent = Math.min((numHours / targetHours) * 100, 100);
