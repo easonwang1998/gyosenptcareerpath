@@ -1,22 +1,14 @@
-<div id="dashboard-app" class="max-w-5xl mx-auto py-6">
-    <div id="loading-view" class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden relative min-h-[400px] flex flex-col items-center justify-center">
-        <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
-        <p class="text-slate-400 font-bold">正在連線至資料庫...</p>
-    </div>
-</div>
-
-<script>
-    // 1. 定義「匿名展示版」的 HTML 內容 (就是我們剛做的那個表格)
-    const demoHTML = `
+<div class="max-w-5xl mx-auto py-6">
     <header class="text-center mb-10">
         <h2 class="text-3xl font-black text-slate-800 mb-3">
             <i class="fa-solid fa-clock text-brand-red mr-3"></i>夥伴職能儀表板
         </h2>
-        <p class="text-slate-500 font-bold">晉升進度公開透明 (招募展示模式)</p>
+        <p id="page-subtitle" class="text-slate-500 font-bold">晉升進度公開透明 (招募展示模式)</p>
     </header>
 
-    <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden relative">
-        <div class="overflow-x-auto">
+    <div class="bg-white rounded-3xl shadow-lg border border-slate-100 overflow-hidden relative min-h-[400px]">
+        
+        <div id="demo-table-view" class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
@@ -52,46 +44,89 @@
                 </tbody>
             </table>
         </div>
+
+        <div id="loader-view" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 hidden">
+            <i class="fas fa-circle-notch loading-spinner text-4xl text-brand-gold mb-4"></i>
+            <p class="text-slate-400 font-bold">正在同步 Google 試算表...</p>
+        </div>
+        
+        <div id="real-data-container" class="overflow-x-auto hidden">
+            </div>
+
     </div>
-    <div class="mt-6 text-center">
+    
+    <div class="mt-6 text-center" id="footer-note">
         <p class="text-xs text-slate-400"><i class="fa-solid fa-shield-halved mr-1"></i>隱私保護：本頁面為招募展示模式，數據為虛構範例。</p>
     </div>
-    `;
+</div>
 
-    // 2. 判斷網址有沒有 ?demo=1
-    const urlParams = new URLSearchParams(window.location.search);
-    const isDemoMode = urlParams.get('demo') === '1';
+<img src="" onerror="initDashboard()" style="display:none;">
 
-    if (isDemoMode) {
-        // === 模式 A：招募展示模式 ===
-        // 直接把內容換成靜態表格，不執行任何連線
-        document.getElementById('dashboard-app').innerHTML = demoHTML;
-        console.log('目前為 Demo 模式，不連線資料庫');
-
-    } else {
-        // === 模式 B：真實資料模式 ===
-        console.log('目前為正式模式，準備連線資料庫');
+<script>
+    function initDashboard() {
+        const GOOGLE_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPKyIVGlT4rmWEOUPwSdccHGWEaGPF3QhMm0rXnh7g_OkJx9iXFzlGVoY_uWOUHN9La8KjZOp5BMAv/pub?gid=1723033779&single=true&output=csv";
         
-        // 【重要！】請將您「原本」連線 Google Sheet 的程式碼區塊 (fetch data) 放在這裡
-        // 必須放在這個 else { } 裡面，這樣 demo 模式才不會誤觸連線
-        
-        loadRealData(); // 假設您的主程式叫做這個，或是直接把 fetch 寫在這裡
-    }
+        // 檢查網址有沒有 ?demo=1
+        const isDemoMode = window.location.search.includes('demo=1');
 
-    // 您原本的連線函式 (範例結構，請用您原本的備份覆蓋這裡)
-    function loadRealData() {
-        // 把原本的 HTML 結構 (有 id="data-container" 的那個) 塞回去
-        document.getElementById('dashboard-app').innerHTML = `
-            <header class="text-center mb-10">
-                <h2 class="text-3xl font-black text-slate-800 mb-3"><i class="fa-solid fa-clock text-brand-red mr-3"></i>夥伴時數儀表板</h2>
-                <p class="text-slate-500 font-bold">即時同步 Google 試算表數據</p>
-            </header>
-            <div id="data-container" class="bg-white rounded-3xl shadow-lg border border-slate-100 min-h-[400px]">
-                 <div class="p-10 text-center text-slate-400">讀取真實資料中...</div>
-            </div>
-        `;
-        
-        // 這裡接著寫 fetch('Google Script URL')... 的程式碼
-        // ...
+        if (!isDemoMode) {
+            // === 進入真實資料模式 ===
+            console.log("切換至真實資料模式...");
+            
+            // 1. 隱藏 Demo 表格，顯示讀取動畫
+            document.getElementById('demo-table-view').classList.add('hidden');
+            document.getElementById('loader-view').classList.remove('hidden');
+            document.getElementById('page-subtitle').innerText = "即時同步 Google 試算表數據";
+            document.getElementById('footer-note').innerHTML = '<p class="text-xs text-slate-400"><i class="fa-solid fa-circle-info mr-1"></i>資料來源：GYOSEN PT MASTER SHEET</p>';
+
+            // 2. 開始抓資料
+            fetch(GOOGLE_CSV_URL)
+                .then(r => r.text())
+                .then(csvText => {
+                    const rows = csvText.trim().replace(/\r/g, '').split('\n');
+                    const headers = rows[0].split(',');
+                    const data = rows.slice(1).map(row => {
+                        const v = row.split(',');
+                        return headers.reduce((acc, h, i) => ({...acc, [h]: v[i]}), {});
+                    });
+
+                    // 產生真實表格
+                    let html = `
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
+                                <th class="p-4 font-bold">姓名</th>
+                                <th class="p-4 font-bold text-center">職級</th>
+                                <th class="p-4 font-bold text-center">時數</th>
+                                <th class="p-4 font-bold text-center">狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700 font-bold">`;
+
+                    data.forEach(item => {
+                        const name = item['姓名'] || item['Name'] || Object.values(item)[0];
+                        html += `
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="p-4">${name}</td>
+                            <td class="p-4 text-center"><span class="bg-slate-100 px-2 py-1 rounded text-xs">${item['職級']||item['Level']}</span></td>
+                            <td class="p-4 text-center font-mono text-brand-red">${item['時數']||item['Hours']} H</td>
+                            <td class="p-4 text-center text-xs text-slate-400">${item['狀態']||item['Status']}</td>
+                        </tr>`;
+                    });
+                    html += `</tbody></table>`;
+
+                    // 顯示真實資料
+                    document.getElementById('real-data-container').innerHTML = html;
+                    document.getElementById('loader-view').classList.add('hidden');
+                    document.getElementById('real-data-container').classList.remove('hidden');
+                })
+                .catch(err => {
+                    console.error(err);
+                    // 如果連線失敗，自動切換回 Demo 模式（當作備案）
+                    document.getElementById('demo-table-view').classList.remove('hidden');
+                    document.getElementById('loader-view').classList.add('hidden');
+                    alert("連線資料庫失敗，已切換回範例模式。");
+                });
+        }
     }
 </script>
