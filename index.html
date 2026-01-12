@@ -12,14 +12,12 @@
         body { background-color: var(--ui-gray); color: var(--text-main); font-size: 1.1rem; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; line-height: 1.7; }
         .loading-spinner { animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        /* header 與排版 */
         .hero-header { background: #ffffff; padding: 60px 20px 40px; text-align: center; }
         .hero-title { font-size: clamp(2.2rem, 8vw, 3.5rem); font-weight: 900; letter-spacing: -0.02em; color: #1A202C; margin-bottom: 2rem; }
         .timeline-container { background: white; border-radius: 28px; padding: 48px; margin-top: 20px; margin-bottom: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); border: 1px solid #edf2f7; position: relative; z-index: 10; }
         .schedule-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
         .schedule-card { background: white; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border: 1px solid #E2E8F0; padding: 20px; width: 220px; height: 160px; }
         .step-label { font-size: 0.75rem; font-weight: 900; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 8px; }
-        /* 分頁按鈕 */
         .tab-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab-btn { flex: 1; min-width: 140px; max-width: 200px; padding: 14px 24px; border-radius: 50px; font-weight: 800; transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; text-align: center;}
         .tab-btn.active { background-color: var(--brand-red); color: white; box-shadow: 0 4px 15px rgba(178, 31, 44, 0.3); }
@@ -28,25 +26,12 @@
         .content-section { display: none; }
         .content-section.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        /* 外場/內場卡片樣式 */
         .standard-card { background: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 18px; border: 1px solid #EEF2F7; }
         .standard-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .standard-label { font-weight: 800; color: #1A202C; font-size: 1.2rem; flex-shrink: 0; padding-right: 15px; }
         .standard-divider { height: 1px; flex-grow: 1; background: #E2E8F0; }
         .standard-desc { color: #4A5568; font-weight: 600; font-size: 1.05rem; padding-left: 15px; text-align: right; }
         .score-hint { font-size: 0.95rem; color: var(--text-muted); background: #F8FAFC; padding: 12px 16px; border-radius: 8px; margin-top: 12px; }
-        /* L3 黑金卡片專用樣式 (用於外場職能頁面) */
-        .level-box-premium { background: var(--level3-dark-gray) !important; border: 2px solid var(--brand-gold) !important; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2) !important; position: relative; }
-        .level-box-premium h2, .level-box-premium .premium-price { color: white !important; }
-        .level-box-premium .text-slate-400 { color: #CBD5E1 !important; }
-        .level-box-premium .standard-card { background: #475569 !important; border-color: #64748B !important; }
-        .level-box-premium .standard-label { color: #F1F5F9 !important; }
-        .level-box-premium .standard-divider { background: #64748B !important; }
-        .level-box-premium .standard-desc { color: #E2E8F0 !important; }
-        .level-box-premium .score-hint { background: #334155 !important; color: #94A3B8 !important; }
-        .level-box-premium .sidebar-box { background: #475569 !important; color: #E2E8F0 !important; border: 1px solid #64748B; }
-        .level-box-premium .sidebar-box h5 { color: var(--brand-gold) !important; }
-        .premium-tag { position: absolute; top: -15px; right: 30px; background: var(--brand-gold); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.1em; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .sidebar-box { background: #F8FAFC; padding: 30px; border-radius: 20px; height: fit-content; }
         .footer-info { background: var(--level3-dark-gray); color: #CBD5E1; padding: 60px 20px; margin-top: 80px; }
         .footer-info h4 { color: var(--brand-gold); font-weight: 900; margin-bottom: 1.5rem; font-size: 1.3rem; }
@@ -105,12 +90,7 @@
             <div class="p-10 text-center"><i class="fas fa-circle-notch loading-spinner text-brand-gold mr-2"></i>正在載入外場資訊...</div>
         </div>
 
-        <div id="back-house-content" class="content-section">
-             <div class="p-10 text-center text-slate-400 bg-white rounded-xl border border-dashed border-slate-300">
-                <i class="fa-solid fa-utensils text-4xl mb-3 block opacity-20"></i>
-                內場內容載入中... (或尚未設定)
-            </div>
-        </div>
+        <div id="back-house-content" class="content-section"></div>
         
         <div id="dashboard-content" class="content-section min-h-[400px] relative">
             <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 z-20">
@@ -147,7 +127,6 @@
         let globalDashboardData = [];
 
         window.onload = function() {
-            // 注意：外場內容已經在 front-house.html，這裡只是載入
             loadPart('front-house-content', 'front-house.html');
             loadPart('back-house-content', 'back-house.html');
             if(window.location.hash === '#dashboard') switchTab('dash');
@@ -176,7 +155,6 @@
             const timeline = document.getElementById('common-timeline');
             const dashControls = document.getElementById('dashboard-controls');
 
-            // Reset
             fBtn.className = 'tab-btn inactive';
             bBtn.className = 'tab-btn inactive';
             dBtn.className = 'tab-btn inactive';
@@ -192,45 +170,34 @@
             } else if (type === 'dash') {
                 dBtn.className = 'tab-btn dashboard-active'; dContent.className = 'content-section active'; timeline.style.display = 'none';
                 
-                // Demo 模式下隱藏控制列，正式版才顯示
                 if (window.location.href.indexOf('demo') === -1) {
                     dashControls.classList.remove('hidden');
                 }
-                
                 initDashboard();
             }
         }
         
         function initDashboard() {
             if (isDashboardLoaded) return; 
-
             document.getElementById('data-cutoff-display').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：${DATA_CUTOFF_DATE}`;
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const isRecruitmentMode = urlParams.get('demo') === '1';
-            const now = new Date();
             const timeDisplay = document.getElementById('last-update');
-            const loader = document.getElementById('loader');
-            const container = document.getElementById('data-container');
-
-            if(timeDisplay) timeDisplay.innerText = '系統連線時間：' + now.toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-
-            // ================= Demo 模式資料 (使用王Ｏ明版本) =================
-            if (isRecruitmentMode) {
-                // 修正 UI
+            if(timeDisplay) timeDisplay.innerText = '系統連線時間：' + new Date().toLocaleString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+            
+            // ================= Demo 模式資料 (王Ｏ明版本) =================
+            if (window.location.href.indexOf('demo') !== -1) {
                 document.getElementById('tab-dash').innerText = "時數儀表板";
                 if(timeDisplay) timeDisplay.innerHTML = "";
                 if(document.getElementById('data-cutoff-display')) document.getElementById('data-cutoff-display').innerHTML = `<i class="fa-regular fa-clock mr-1"></i>資料統計至：範例數據`;
 
                 const demoData = [
-                    { "姓名": "王Ｏ明 (店長範例)", "等級": "L3", "本職級累積時數": "1,280", "狀態": "可考核" }, // 對應綠燈
-                    { "姓名": "陳Ｏ豪 (資深範例)", "等級": "L2", "本職級累積時數": "425", "狀態": "覆核中" }, // 對應橘燈
-                    { "姓名": "林Ｏ婷 (新人範例)", "等級": "L1", "本職級累積時數": "86", "狀態": "累積中" }  // 對應灰燈
+                    { "姓名": "王Ｏ明 (店長範例)", "等級": "L3", "本職級累積時數": "1,280", "狀態": "可考核" },
+                    { "姓名": "陳Ｏ豪 (資深範例)", "等級": "L2", "本職級累積時數": "425", "狀態": "覆核中" },
+                    { "姓名": "林Ｏ婷 (新人範例)", "等級": "L1", "本職級累積時數": "86", "狀態": "累積中" }
                 ];
                 globalDashboardData = demoData;
                 renderDashboard(demoData);
-                if(loader) loader.style.display = 'none';
-                if(container) container.classList.remove('opacity-0');
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('data-container').classList.remove('opacity-0');
                 isDashboardLoaded = true;
                 return;
             }
@@ -243,17 +210,12 @@
                     if (results.data && results.data.length > 0) {
                         globalDashboardData = results.data;
                         renderDashboard(results.data);
-                        if(loader) loader.style.display = 'none';
-                        if(container) container.classList.remove('opacity-0');
+                        document.getElementById('loader').style.display = 'none';
+                        document.getElementById('data-container').classList.remove('opacity-0');
                         isDashboardLoaded = true;
-                    } else {
-                        showError('讀取成功但沒有資料');
-                    }
+                    } else { showError('讀取成功但沒有資料'); }
                 },
-                error: function(err) {
-                    console.error("Error:", err);
-                    showError('無法讀取資料，請確認網路連線');
-                }
+                error: function(err) { showError('無法讀取資料'); }
             });
         }
 
@@ -267,7 +229,6 @@
             renderDashboard(filteredData);
         }
 
-        // ================= 渲染邏輯 (含樣式修正) =================
         function renderDashboard(data) {
             const container = document.getElementById('data-container');
             if(!container) return;
@@ -281,8 +242,6 @@
             const colName = headers.find(h => h.includes('姓名') || h.includes('Name')) || headers[0];
             const colLevel = headers.find(h => h.includes('等級') || h.includes('職級') || h.includes('Level')) || '等級';
             const colStatus = headers.find(h => h.includes('狀態') || h.includes('Status')) || '狀態';
-            
-            // 嚴格尋找時數欄位
             let colHours = headers.find(h => h.includes('本職級') || (h.includes('累積') && !h.includes('總')));
             if (!colHours) colHours = headers.find(h => h.includes('時數') && !h.includes('總')); 
 
@@ -318,7 +277,6 @@
                 let targetHours = 150; 
 
                 if (level === 'L3') {
-                    // L3 修正：保留排版一致性，僅用邊框色區分
                     rowClass = "bg-amber-50/60 hover:bg-amber-100 transition-colors border-l-4 border-l-[#B29A1F]"; 
                     levelBadgeClass = "bg-[#B29A1F] text-white border-[#B29A1F] shadow-sm"; 
                     nameColorClass = "text-slate-900"; 
@@ -332,7 +290,6 @@
                     targetHours = 300;
                 }
 
-                // 特殊狀態調整目標
                 if (status.includes('覆核') || status.includes('維持') || status.includes('觀察')) {
                     targetHours = (level === 'L3' ? 300 : 100);
                 }
