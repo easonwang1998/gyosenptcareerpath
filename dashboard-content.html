@@ -34,7 +34,7 @@
                         <td class="p-4 text-center text-xs text-slate-400">目標 450 H<div class="w-24 h-1.5 bg-slate-100 rounded-full mx-auto mt-1 overflow-hidden"><div class="h-full bg-brand-gold" style="width: 94%"></div></div></td>
                         <td class="p-4 text-center text-green-600 text-sm"><i class="fa-solid fa-arrow-trend-up mr-1"></i>即將晉升</td>
                     </tr>
-                     <tr class="hover:bg-slate-50 transition-colors">
+                    <tr class="hover:bg-slate-50 transition-colors">
                         <td class="p-4 text-center"><span class="bg-slate-400 text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 1</span></td>
                         <td class="p-4 flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs">林</div><span>林Ｏ婷 (新人範例)</span></td>
                         <td class="p-4 text-center font-mono text-slate-600">86 H</td>
@@ -64,69 +64,89 @@
 
 <script>
     function initDashboard() {
-        const GOOGLE_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPKyIVGlT4rmWEOUPwSdccHGWEaGPF3QhMm0rXnh7g_OkJx9iXFzlGVoY_uWOUHN9La8KjZOp5BMAv/pub?gid=1723033779&single=true&output=csv";
+        // 設定區：您的 Google Sheet CSV 網址
+        // 請注意：網址裡的 0kJx9 是數字0還是英文O，請確認您的原始連結，這裡先依照您提供的貼上
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPKyIVGlT4rmWEOUPwSdccHGWEaGPF3QhMm0rXnh7g_0kJx9iXFzIGVoY_uWOUHN9La8KjZOp5BMAv/pub?gid=1723033779&single=true&output=csv";
         
-        // 檢查網址有沒有 ?demo=1
-        const isDemoMode = window.location.search.includes('demo=1');
+        // 核心邏輯：檢查網址有沒有 "demo"
+        // 只要網址裡出現 "demo" (例如 ?demo=1)，就當作是 Demo 模式
+        const isDemoMode = window.location.href.indexOf('demo') !== -1;
 
-        if (!isDemoMode) {
-            // === 進入真實資料模式 ===
-            console.log("切換至真實資料模式...");
-            
-            // 1. 隱藏 Demo 表格，顯示讀取動畫
-            document.getElementById('demo-table-view').classList.add('hidden');
-            document.getElementById('loader-view').classList.remove('hidden');
-            document.getElementById('page-subtitle').innerText = "即時同步 Google 試算表數據";
-            document.getElementById('footer-note').innerHTML = '<p class="text-xs text-slate-400"><i class="fa-solid fa-circle-info mr-1"></i>資料來源：GYOSEN PT MASTER SHEET</p>';
-
-            // 2. 開始抓資料
-            fetch(GOOGLE_CSV_URL)
-                .then(r => r.text())
-                .then(csvText => {
-                    const rows = csvText.trim().replace(/\r/g, '').split('\n');
-                    const headers = rows[0].split(',');
-                    const data = rows.slice(1).map(row => {
-                        const v = row.split(',');
-                        return headers.reduce((acc, h, i) => ({...acc, [h]: v[i]}), {});
-                    });
-
-                    // 產生真實表格
-                    let html = `
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
-                                <th class="p-4 font-bold">姓名</th>
-                                <th class="p-4 font-bold text-center">職級</th>
-                                <th class="p-4 font-bold text-center">時數</th>
-                                <th class="p-4 font-bold text-center">狀態</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 text-slate-700 font-bold">`;
-
-                    data.forEach(item => {
-                        const name = item['姓名'] || item['Name'] || Object.values(item)[0];
-                        html += `
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="p-4">${name}</td>
-                            <td class="p-4 text-center"><span class="bg-slate-100 px-2 py-1 rounded text-xs">${item['職級']||item['Level']}</span></td>
-                            <td class="p-4 text-center font-mono text-brand-red">${item['時數']||item['Hours']} H</td>
-                            <td class="p-4 text-center text-xs text-slate-400">${item['狀態']||item['Status']}</td>
-                        </tr>`;
-                    });
-                    html += `</tbody></table>`;
-
-                    // 顯示真實資料
-                    document.getElementById('real-data-container').innerHTML = html;
-                    document.getElementById('loader-view').classList.add('hidden');
-                    document.getElementById('real-data-container').classList.remove('hidden');
-                })
-                .catch(err => {
-                    console.error(err);
-                    // 如果連線失敗，自動切換回 Demo 模式（當作備案）
-                    document.getElementById('demo-table-view').classList.remove('hidden');
-                    document.getElementById('loader-view').classList.add('hidden');
-                    alert("連線資料庫失敗，已切換回範例模式。");
-                });
+        if (isDemoMode) {
+            // === 情況 1：如果是招募模式 ===
+            // 什麼都不做！直接結束程式 (return)。
+            // 因為 HTML 本身就是範例表格，所以畫面會停在安全的狀態。
+            console.log("偵測到 Demo 模式，停止連線，顯示範例。");
+            return; 
         }
+
+        // === 情況 2：只有網址乾淨時，才執行連線 ===
+        console.log("準備連線 Google Sheet...");
+
+        // 切換畫面：隱藏範例 -> 顯示讀取中
+        document.getElementById('demo-table-view').classList.add('hidden');
+        document.getElementById('loader-view').classList.remove('hidden');
+        document.getElementById('page-subtitle').innerText = "即時同步 Google 試算表數據";
+        document.getElementById('footer-note').innerHTML = '<p class="text-xs text-slate-400"><i class="fa-solid fa-circle-info mr-1"></i>資料來源：GYOSEN PT MASTER SHEET</p>';
+
+        // 開始抓資料
+        fetch(CSV_URL)
+            .then(response => response.text())
+            .then(csvText => {
+                const rows = csvText.trim().replace(/\r/g, '').split('\n');
+                const headers = rows[0].split(',');
+                
+                // 轉換 CSV 資料
+                const data = rows.slice(1).map(row => {
+                    const values = row.split(',');
+                    return headers.reduce((obj, header, index) => {
+                        obj[header] = values[index];
+                        return obj;
+                    }, {});
+                });
+
+                // 產生真實表格 HTML
+                let html = `
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
+                            <th class="p-4 font-bold">姓名</th>
+                            <th class="p-4 font-bold text-center">職級</th>
+                            <th class="p-4 font-bold text-center">時數</th>
+                            <th class="p-4 font-bold text-center">狀態</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700 font-bold">`;
+
+                data.forEach(item => {
+                    // 自動抓取對應欄位 (防呆機制)
+                    const name = item['姓名'] || item['Name'] || Object.values(item)[0] || 'Unknown';
+                    const level = item['職級'] || item['Level'] || '';
+                    const hours = item['時數'] || item['Hours'] || '0';
+                    const status = item['狀態'] || item['Status'] || '';
+
+                    html += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-4">${name}</td>
+                        <td class="p-4 text-center"><span class="bg-slate-100 px-2 py-1 rounded text-xs">${level}</span></td>
+                        <td class="p-4 text-center font-mono text-brand-red">${hours} H</td>
+                        <td class="p-4 text-center text-xs text-slate-400">${status}</td>
+                    </tr>`;
+                });
+
+                html += `</tbody></table>`;
+
+                // 顯示結果
+                document.getElementById('real-data-container').innerHTML = html;
+                document.getElementById('loader-view').classList.add('hidden');
+                document.getElementById('real-data-container').classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error("連線失敗:", error);
+                // 萬一連線失敗，為了安全，切換回範例
+                alert("無法讀取資料，將顯示範例模式");
+                document.getElementById('loader-view').classList.add('hidden');
+                document.getElementById('demo-table-view').classList.remove('hidden');
+            });
     }
 </script>
