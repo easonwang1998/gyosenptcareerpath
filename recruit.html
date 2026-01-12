@@ -4,124 +4,171 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>魚鮮會社夥伴職能地圖 (招募展示)</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script>
         tailwind.config = {
             theme: {
-                extend: {
-                    colors: {
-                        'brand-red': '#dc2626',
-                        'brand-gold': '#d97706',
-                    }
-                }
+                extend: { colors: { 'brand-red': '#dc2626', 'brand-gold': '#d97706', } }
             }
         }
     </script>
     <style>
-        body { background-color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: #f8fafc; font-family: system-ui, sans-serif; }
+        .tab-btn.active { background-color: #d97706; color: white; border-color: #d97706; }
+        .tab-btn { transition: all 0.2s; }
     </style>
 </head>
 <body class="p-4 md:p-10 flex justify-center items-start min-h-screen">
 
     <div class="w-full max-w-5xl">
         
-        <header class="text-center mb-10">
-            <h1 class="text-3xl font-black text-slate-800 mb-3 tracking-wider">
-                魚鮮會社夥伴職能地圖
-            </h1>
-            <div class="inline-block bg-brand-gold/10 text-brand-gold px-4 py-1 rounded-full text-sm font-bold mb-4">
-                時數儀表板 (招募展示範例)
-            </div>
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-black text-slate-800 mb-3 tracking-wider">魚鮮會社夥伴職能地圖</h1>
+            <p class="text-slate-500 font-bold">公開透明的晉升與考核標準 (招募展示)</p>
         </header>
 
-        <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden relative">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
-                            <th class="p-4 pl-6 font-bold text-center">職級 (Level)</th>
-                            <th class="p-4 font-bold">夥伴姓名</th>
-                            <th class="p-4 font-bold text-center">累積時數</th>
-                            <th class="p-4 font-bold text-center">下階段目標</th>
-                            <th class="p-4 font-bold text-center">目前狀態</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 text-slate-700 font-bold">
-                        
-                        <tr class="hover:bg-red-50 transition-colors bg-red-50/30">
-                            <td class="p-4 pl-6 text-center">
-                                <span class="bg-brand-red text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 3</span>
-                            </td>
-                            <td class="p-4 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-brand-red text-white flex items-center justify-center text-xs font-bold">王</div>
-                                <span>王Ｏ明 (店長範例)</span>
-                            </td>
-                            <td class="p-4 text-center font-mono text-brand-red text-lg">1,280 H</td>
-                            <td class="p-4 text-center text-xs text-slate-400">已達最高職級</td>
-                            <td class="p-4 text-center">
-                                <span class="text-brand-red text-xs border border-brand-red px-2 py-1 rounded bg-white">Core Partner</span>
-                            </td>
-                        </tr>
+        <div class="flex justify-center gap-2 mb-8 overflow-x-auto pb-2">
+            <button onclick="switchTab('foh')" id="btn-foh" class="tab-btn px-6 py-2 rounded-full border border-slate-200 text-slate-500 font-bold hover:bg-slate-100 whitespace-nowrap">
+                <i class="fa-solid fa-bell-concierge mr-2"></i>外場服務標準
+            </button>
+            <button onclick="switchTab('boh')" id="btn-boh" class="tab-btn px-6 py-2 rounded-full border border-slate-200 text-slate-500 font-bold hover:bg-slate-100 whitespace-nowrap">
+                <i class="fa-solid fa-fire-burner mr-2"></i>內場實務標準
+            </button>
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn active px-6 py-2 rounded-full border border-slate-200 text-slate-500 font-bold hover:bg-slate-100 whitespace-nowrap">
+                <i class="fa-solid fa-chart-line mr-2"></i>時數儀表板
+            </button>
+        </div>
 
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="p-4 pl-6 text-center">
-                                <span class="bg-brand-gold text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 2</span>
-                            </td>
-                            <td class="p-4 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center text-xs font-bold">陳</div>
-                                <span>陳Ｏ豪 (資深範例)</span>
-                            </td>
-                            <td class="p-4 text-center font-mono text-slate-600">425 H</td>
-                            <td class="p-4 text-center text-xs text-slate-400">
-                                目標 450 H
-                                <div class="w-24 h-1.5 bg-slate-100 rounded-full mx-auto mt-1 overflow-hidden">
-                                    <div class="h-full bg-brand-gold" style="width: 94%"></div>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center text-green-600 text-sm">
-                                <i class="fa-solid fa-arrow-trend-up mr-1"></i>即將晉升
-                            </td>
-                        </tr>
-
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="p-4 pl-6 text-center">
-                                <span class="bg-slate-400 text-white px-3 py-1 rounded-full text-xs shadow-sm">Level 1</span>
-                            </td>
-                            <td class="p-4 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-bold">林</div>
-                                <span>林Ｏ婷 (新人範例)</span>
-                            </td>
-                            <td class="p-4 text-center font-mono text-slate-600">86 H</td>
-                            <td class="p-4 text-center text-xs text-slate-400">
-                                目標 150 H
-                                <div class="w-24 h-1.5 bg-slate-100 rounded-full mx-auto mt-1 overflow-hidden">
-                                    <div class="h-full bg-slate-400" style="width: 57%"></div>
-                                </div>
-                            </td>
-                            <td class="p-4 text-center text-slate-400 text-sm">
-                                培訓中
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div id="tab-dashboard" class="tab-content block">
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                <div class="p-6 bg-yellow-50 border-b border-yellow-100 text-yellow-800 text-sm mb-0 text-center">
+                    <i class="fa-solid fa-circle-info mr-1"></i> 以下為範例數據，正式員工可隨時登入查看自己的累積進度。
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-sm uppercase tracking-wider">
+                                <th class="p-4 pl-6 font-bold text-center">職級</th>
+                                <th class="p-4 font-bold">夥伴姓名</th>
+                                <th class="p-4 font-bold text-center">累積時數</th>
+                                <th class="p-4 font-bold text-center">下階段目標</th>
+                                <th class="p-4 font-bold text-center">狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700 font-bold">
+                            <tr class="hover:bg-red-50 transition-colors bg-red-50/30">
+                                <td class="p-4 pl-6 text-center"><span class="bg-brand-red text-white px-3 py-1 rounded-full text-xs">Level 3</span></td>
+                                <td class="p-4">王Ｏ明 (店長範例)</td>
+                                <td class="p-4 text-center text-brand-red">1,280 H</td>
+                                <td class="p-4 text-center text-xs text-slate-400">已達最高職級</td>
+                                <td class="p-4 text-center"><span class="text-brand-red text-xs border border-brand-red px-2 py-1 rounded bg-white">Core</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 pl-6 text-center"><span class="bg-brand-gold text-white px-3 py-1 rounded-full text-xs">Level 2</span></td>
+                                <td class="p-4">陳Ｏ豪 (資深範例)</td>
+                                <td class="p-4 text-center text-slate-600">425 H</td>
+                                <td class="p-4 text-center text-xs text-slate-400">目標 450 H<div class="w-24 h-1.5 bg-slate-100 rounded-full mx-auto mt-1"><div class="h-full bg-brand-gold" style="width: 94%"></div></div></td>
+                                <td class="p-4 text-center text-green-600 text-sm">即將晉升</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-4 pl-6 text-center"><span class="bg-slate-400 text-white px-3 py-1 rounded-full text-xs">Level 1</span></td>
+                                <td class="p-4">林Ｏ婷 (新人範例)</td>
+                                <td class="p-4 text-center text-slate-600">86 H</td>
+                                <td class="p-4 text-center text-xs text-slate-400">目標 150 H<div class="w-24 h-1.5 bg-slate-100 rounded-full mx-auto mt-1"><div class="h-full bg-slate-400" style="width: 57%"></div></div></td>
+                                <td class="p-4 text-center text-slate-400 text-sm">培訓中</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
+
+        <div id="tab-foh" class="tab-content hidden">
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8">
+                <h3 class="text-2xl font-black text-slate-800 mb-6 border-b pb-4">
+                    <i class="fa-solid fa-bell-concierge text-brand-gold mr-3"></i>外場服務職能地圖
+                </h3>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-700 mb-2"><span class="bg-slate-400 text-white px-2 py-1 rounded text-sm mr-2">Level 1</span> 基礎服務</h4>
+                        <ul class="list-disc pl-5 text-slate-600 space-y-1">
+                            <li>熟悉菜單內容與點餐系統操作。</li>
+                            <li>具備基礎桌面清潔與擺盤能力。</li>
+                            <li>能以標準話術接待顧客並引導入座。</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-700 mb-2"><span class="bg-brand-gold text-white px-2 py-1 rounded text-sm mr-2">Level 2</span> 進階應對</h4>
+                        <ul class="list-disc pl-5 text-slate-600 space-y-1">
+                            <li>能獨立處理顧客客訴與突發狀況。</li>
+                            <li>具備酒水推薦與餐酒搭配知識。</li>
+                            <li>協助新人進行基礎崗位訓練。</li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+        </div>
+
+        <div id="tab-boh" class="tab-content hidden">
+             <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8">
+                <h3 class="text-2xl font-black text-slate-800 mb-6 border-b pb-4">
+                    <i class="fa-solid fa-fire-burner text-brand-red mr-3"></i>內場實務職能地圖
+                </h3>
+                
+                 <div class="space-y-6">
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-700 mb-2"><span class="bg-slate-400 text-white px-2 py-1 rounded text-sm mr-2">Level 1</span> 備料與衛生</h4>
+                        <ul class="list-disc pl-5 text-slate-600 space-y-1">
+                            <li>掌握洗切與食材前置處理流程。</li>
+                            <li>落實冰箱溫度記錄與食材先進先出。</li>
+                            <li>維持工作站清潔與刀具保養。</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-700 mb-2"><span class="bg-brand-gold text-white px-2 py-1 rounded text-sm mr-2">Level 2</span> 獨立出餐</h4>
+                        <ul class="list-disc pl-5 text-slate-600 space-y-1">
+                            <li>能獨立負責烤台或炸台之出餐作業。</li>
+                            <li>精準控制出餐份量與擺盤美感。</li>
+                            <li>協助盤點每日食材庫存。</li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
         </div>
 
         <div class="mt-8 text-center border-t border-slate-200 pt-6">
-            <p class="text-xs text-slate-400 mb-2">
-                <i class="fa-solid fa-shield-halved mr-1"></i>隱私保護聲明
-            </p>
-            <p class="text-xs text-slate-400">
-                本頁面僅為招募系統功能展示，上述顯示之姓名、職級與數據均為虛構範例。<br>
-                實際員工資料僅限內部網路存取。
-            </p>
+            <p class="text-xs text-slate-400">本頁面為招募展示用途，實際考核內容以內部公告為準。</p>
         </div>
-
     </div>
 
+    <script>
+        function switchTab(tabName) {
+            // 1. 隱藏所有內容
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('block'));
+            
+            // 2. 取消所有按鈕的 active 樣式
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active', 'bg-brand-gold', 'text-white', 'border-brand-gold');
+                el.classList.add('text-slate-500');
+            });
+
+            // 3. 顯示選中的內容
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            document.getElementById('tab-' + tabName).classList.add('block');
+
+            // 4. 點亮選中的按鈕
+            const activeBtn = document.getElementById('btn-' + tabName);
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('text-slate-500');
+        }
+        
+        // 預設開啟時數儀表板
+        switchTab('dashboard');
+    </script>
 </body>
 </html>
