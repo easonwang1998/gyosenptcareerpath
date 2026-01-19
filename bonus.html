@@ -7,48 +7,108 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --brand-red: #B21F2C; 
             --brand-dark: #8a1822;
             --brand-light: #fff0f1;
-            --gray-bg: #fdfbfb;
+            --gold-main: #d4af37;
+            --gold-light: #f3e5ab;
+            --gray-bg: #f8fafc;
         }
         body { 
             font-family: 'Noto Sans TC', sans-serif; 
             background-color: var(--gray-bg);
-            color: #4a4a4a;
+            color: #334155;
         }
-        .brand-card {
+        
+        /* 基礎卡片設定 */
+        .base-card {
             background-color: white;
+            border-radius: 12px;
+            transition: all 0.5s ease;
+        }
+
+        /* Level 0: 未達標 (灰階) */
+        .tier-0 {
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Level 1: 達標 (品牌紅) */
+        .tier-1 {
+            border: 1px solid #fee2e2;
             border-top: 4px solid var(--brand-red);
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(178, 31, 44, 0.05), 0 2px 4px -1px rgba(178, 31, 44, 0.03);
+            box-shadow: 0 10px 15px -3px rgba(178, 31, 44, 0.1);
         }
-        .simple-card {
-            background-color: white;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+        /* Level 2: 優異 (香檳金) */
+        .tier-2 {
+            border: 1px solid #fef3c7;
+            border-top: 4px solid var(--gold-main);
+            background: linear-gradient(to bottom right, #fff, #fffbf0);
+            box-shadow: 0 10px 20px -3px rgba(212, 175, 55, 0.15);
         }
+
+        /* Level 3: 巔峰 (黑金奢華) */
+        .tier-3 {
+            border: 1px solid #1e293b;
+            border-top: 4px solid #0f172a;
+            background: linear-gradient(to bottom right, #ffffff, #f1f5f9);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        /* 黃金漸層文字特效 (L3專用) */
+        .text-gradient-gold {
+            background: linear-gradient(45deg, #b45309, #d97706, #b45309);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* 進度條流光動畫 */
+        .progress-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-shimmer::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+
         .tab-btn {
             padding: 12px 24px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
-            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+            opacity: 0.6;
         }
         .tab-btn.active {
             color: var(--brand-red);
             border-bottom-color: var(--brand-red);
-            background-color: var(--brand-light);
+            opacity: 1;
+            font-weight: 700;
         }
-        .tab-btn:hover:not(.active) {
-            color: var(--brand-red);
-            opacity: 0.7;
-        }
+        
         .loading-overlay { background: rgba(255, 255, 255, 0.98); }
     </style>
 </head>
@@ -58,154 +118,186 @@
         
         <div v-if="isLoading" class="fixed inset-0 z-50 flex flex-col items-center justify-center loading-overlay">
             <div class="w-12 h-12 border-4 border-gray-200 border-t-[#B21F2C] rounded-full animate-spin mb-4"></div>
-            <p class="text-sm font-medium tracking-widest text-gray-500">正在同步雲端數據...</p>
+            <p class="text-sm font-medium tracking-widest text-gray-500">SYSTEM SYNCING...</p>
         </div>
 
-        <header class="bg-[#B21F2C] text-white shadow-lg">
+        <header class="bg-[#B21F2C] text-white shadow-lg sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <span class="text-xl">🐟</span>
-                    <h1 class="text-lg font-bold tracking-wider">魚鮮會社 | 績效管理系統</h1>
+                    <div class="h-5 w-1 bg-white/80"></div>
+                    <h1 class="text-lg font-bold tracking-widest">魚鮮會社 | 績效管理系統</h1>
                 </div>
-                <div class="text-xs opacity-80 bg-black/20 px-3 py-1 rounded">
-                    數據來源：Google Sheet
+                <div class="text-[10px] tracking-wide opacity-80 border border-white/30 px-3 py-1">
+                    LIVE DATA
                 </div>
             </div>
         </header>
 
-        <div class="max-w-7xl mx-auto px-6 mt-6">
-            <div class="flex space-x-2 border-b border-gray-200">
-                <button @click="currentStore = 'zhubei'" class="tab-btn text-lg" :class="{ 'active': currentStore === 'zhubei' }">竹北店</button>
-                <button @click="currentStore = 'jingguo'" class="tab-btn text-lg" :class="{ 'active': currentStore === 'jingguo' }">經國門市</button>
+        <div class="bg-white shadow-sm mb-8">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex space-x-4">
+                    <button @click="currentStore = 'zhubei'" class="tab-btn text-lg" :class="{ 'active': currentStore === 'zhubei' }">竹北店</button>
+                    <button @click="currentStore = 'jingguo'" class="tab-btn text-lg" :class="{ 'active': currentStore === 'jingguo' }">經國門市</button>
+                </div>
             </div>
         </div>
 
-        <main class="max-w-7xl mx-auto px-6 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8" v-if="!isLoading">
+        <main class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8" v-if="!isLoading">
             
             <div class="lg:col-span-4 space-y-6">
                 
-                <div class="brand-card p-6">
-                    <div class="flex justify-between items-center mb-6 pb-2 border-b border-gray-100">
-                        <h2 class="text-base font-bold text-gray-800">{{ currentStoreName }}營運數據</h2>
-                        <button @click="fetchData" class="text-xs text-[#B21F2C] hover:underline font-medium">↻ 更新</button>
+                <div class="base-card p-8" :class="tierCardClass">
+                    <div class="flex justify-between items-center mb-8">
+                        <div>
+                            <h2 class="text-sm font-bold tracking-widest uppercase text-gray-400">Monthly Revenue</h2>
+                            <div class="text-xs text-gray-400 mt-1">Target: {{ formatNumber(activeData.target) }}</div>
+                        </div>
+                        <div class="px-3 py-1 rounded text-xs font-bold tracking-wider uppercase border" :class="badgeClass">
+                            {{ tierBadgeText }}
+                        </div>
                     </div>
                     
-                    <div class="space-y-8">
-                        <div>
-                            <div class="flex justify-between items-end mb-1">
-                                <label class="text-xs font-medium text-gray-500">本月實際業績</label>
-                                <span class="text-xs text-gray-400">目標: {{ formatNumber(activeData.target) }}</span>
-                            </div>
-                            <div class="flex items-baseline">
-                                <span class="text-3xl font-bold text-[#B21F2C] mr-2">{{ formatNumber(activeData.revenue) }}</span>
-                                <span class="text-sm text-gray-500">元</span>
-                            </div>
-                            <div class="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                <div class="h-full bg-[#B21F2C] transition-all duration-1000" :style="{ width: Math.min((activeData.revenue / activeData.target) * 100, 100) + '%' }"></div>
-                            </div>
-                            <div class="text-[10px] text-right mt-1 text-gray-400">達成率 {{ ((activeData.revenue / activeData.target) * 100).toFixed(1) }}%</div>
+                    <div class="text-center mb-8">
+                        <div class="text-5xl font-black tracking-tighter" :class="revenueTextClass">
+                            <span class="text-2xl align-top opacity-60 mr-1">$</span>{{ formatNumber(activeData.revenue) }}
                         </div>
-
-                        <div>
-                            <div class="flex justify-between text-xs mb-2">
-                                <span class="font-medium text-gray-600">食材成本率</span>
-                                <span :class="activeData.foodCostRate > 40 ? 'text-red-600 font-bold' : 'text-gray-500'">
-                                    {{ activeData.foodCostRate }}% <span class="text-gray-300">/ 40%</span>
-                                </span>
-                            </div>
-                            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                                <div class="h-full transition-all duration-700" :style="{ width: Math.min(activeData.foodCostRate, 100) + '%' }" :class="activeData.foodCostRate > 40 ? 'bg-red-500' : 'bg-[#B21F2C]'"></div>
-                            </div>
+                        <div class="mt-2 text-sm font-medium" :class="revenueSubTextClass">
+                            達成率 {{ ((activeData.revenue / activeData.target) * 100).toFixed(1) }}%
                         </div>
+                    </div>
 
-                        <div>
-                            <div class="flex justify-between text-xs mb-2">
-                                <span class="font-medium text-gray-600">人事成本率</span>
-                                <span :class="activeData.laborCostRate > 28 ? 'text-red-600 font-bold' : 'text-gray-500'">
-                                    {{ activeData.laborCostRate }}% <span class="text-gray-300">/ 28%</span>
-                                </span>
-                            </div>
-                            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                                <div class="h-full transition-all duration-700" :style="{ width: Math.min(activeData.laborCostRate, 100) + '%' }" :class="activeData.laborCostRate > 28 ? 'bg-red-500' : 'bg-[#B21F2C]'"></div>
-                            </div>
+                    <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden mb-6">
+                        <div class="h-full transition-all duration-1000 ease-out" 
+                             :class="progressBarClass"
+                             :style="{ width: Math.min((activeData.revenue / activeData.target) * 100, 100) + '%' }">
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-gray-400 tracking-widest">CURRENT TIER</span>
+                            <span class="text-sm font-bold" :class="tierTextClass">{{ tierName }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-gray-400 tracking-widest">BONUS RATE</span>
+                            <span class="text-xl font-black" :class="tierTextClass">{{ (currentRate * 100).toFixed(0) }}%</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="simple-card p-6 text-center">
-                    <h3 class="text-xs font-bold text-gray-400 mb-2 tracking-widest">目前獎金級距</h3>
-                    <div class="py-3 rounded bg-[#fff0f1] border border-[#B21F2C]/20 mb-2">
-                        <div class="text-xl font-bold text-[#B21F2C]">{{ tierName }}</div>
+                <div class="base-card p-6 border border-gray-200">
+                    <h3 class="text-xs font-bold text-gray-400 tracking-widest uppercase mb-6">Cost Control</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="font-medium text-gray-600">食材成本率 (Food)</span>
+                                <span class="font-bold" :class="activeData.foodCostRate > foodLimit ? 'text-red-600' : 'text-gray-400'">
+                                    {{ activeData.foodCostRate }}% <span class="text-gray-300 font-normal">/ {{ foodLimit }}%</span>
+                                </span>
+                            </div>
+                            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-500"
+                                     :class="activeData.foodCostRate > foodLimit ? 'bg-red-500' : 'bg-slate-600'" 
+                                     :style="{ width: Math.min((activeData.foodCostRate / foodLimit) * 100, 100) + '%' }"></div>
+                            </div>
+                            <div v-if="activeData.foodCostRate > foodLimit" class="mt-2 text-[11px] text-red-600 bg-red-50 px-2 py-1 rounded border border-red-100 flex justify-between">
+                                <span>⚠️ 超標扣款</span>
+                                <span class="font-bold">-{{ formatCurrency(calculatePenalty(activeData.revenue, activeData.foodCostRate, foodLimit)) }}</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="font-medium text-gray-600">人事成本率 (Labor)</span>
+                                <span class="font-bold" :class="activeData.laborCostRate > laborLimit ? 'text-red-600' : 'text-gray-400'">
+                                    {{ activeData.laborCostRate }}% <span class="text-gray-300 font-normal">/ {{ laborLimit }}%</span>
+                                </span>
+                            </div>
+                            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-500"
+                                     :class="activeData.laborCostRate > laborLimit ? 'bg-red-500' : 'bg-slate-600'" 
+                                     :style="{ width: Math.min((activeData.laborCostRate / laborLimit) * 100, 100) + '%' }"></div>
+                            </div>
+                            <div v-if="activeData.laborCostRate > laborLimit" class="mt-2 text-[11px] text-red-600 bg-red-50 px-2 py-1 rounded border border-red-100 flex justify-between">
+                                <span>⚠️ 超標扣款</span>
+                                <span class="font-bold">-{{ formatCurrency(calculatePenalty(activeData.revenue, activeData.laborCostRate, laborLimit)) }}</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-sm text-gray-500">超額提撥比例：<span class="font-bold">{{ (currentRate * 100).toFixed(0) }}%</span></div>
-                    <p class="text-[10px] text-gray-400 mt-2">註：級距隨目標動態調整 (目標/110%/120%)</p>
                 </div>
             </div>
 
             <div class="lg:col-span-8 space-y-6">
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="simple-card p-5 flex flex-col justify-between hover:shadow-md transition-shadow">
-                        <span class="text-xs font-medium text-gray-400 tracking-wide">初始獎金池</span>
-                        <div class="mt-2 text-2xl font-medium text-gray-800">{{ formatCurrency(initialPool) }}</div>
-                        <div class="mt-1 text-[10px] text-gray-400">(業績 - 目標) × {{ (currentRate * 100).toFixed(0) }}%</div>
+                    <div class="base-card p-6 border border-gray-100 hover:border-gray-300">
+                        <span class="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Initial Pool</span>
+                        <div class="mt-2 text-2xl font-light text-gray-800">{{ formatCurrency(initialPool) }}</div>
+                        <div class="mt-3 w-8 h-1 bg-gray-200"></div>
                     </div>
 
-                    <div class="simple-card p-5 flex flex-col justify-between hover:shadow-md transition-shadow">
-                        <span class="text-xs font-medium text-gray-400 tracking-wide">成本超標扣減</span>
-                        <div class="mt-2 text-2xl font-medium" :class="totalPenalty > 0 ? 'text-red-600' : 'text-gray-300'">
+                    <div class="base-card p-6 border border-gray-100 hover:border-red-200">
+                        <span class="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Deductions</span>
+                        <div class="mt-2 text-2xl font-light" :class="totalPenalty > 0 ? 'text-red-600' : 'text-gray-300'">
                             -{{ formatCurrency(totalPenalty) }}
                         </div>
-                        <div class="mt-2 h-1 w-8 rounded" :class="totalPenalty > 0 ? 'bg-red-600' : 'bg-gray-200'"></div>
+                        <div class="mt-3 w-8 h-1" :class="totalPenalty > 0 ? 'bg-red-600' : 'bg-gray-200'"></div>
                     </div>
 
-                    <div class="simple-card p-5 bg-[#B21F2C] text-white border-[#B21F2C] flex flex-col justify-between shadow-lg transform hover:-translate-y-1 transition-transform">
-                        <span class="text-xs font-medium text-red-100 tracking-wide">最終發放獎金總額</span>
-                        <div class="mt-1 text-3xl font-bold tracking-tight">{{ formatCurrency(finalPool) }}</div>
-                        <div class="mt-2 text-[11px] text-red-100 bg-black/10 inline-block px-2 py-1 rounded self-start">
+                    <div class="base-card p-6 bg-[#1e293b] text-white border-0 shadow-xl transform hover:-translate-y-1 transition-transform duration-300">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Net Bonus</span>
+                            <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-white/80">Total</span>
+                        </div>
+                        <div class="mt-2 text-3xl font-bold tracking-tight text-white">{{ formatCurrency(finalPool) }}</div>
+                        <div class="mt-4 text-[11px] text-slate-400 flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-green-400 mr-2"></span>
                             1 點 = {{ formatCurrency(valuePerPoint) }}
                         </div>
                     </div>
                 </div>
 
-                <div class="simple-card overflow-hidden">
+                <div class="base-card overflow-hidden border border-gray-200">
                     <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
-                        <h3 class="font-bold text-gray-700">獎金分配試算表</h3>
-                        <span class="text-xs text-gray-400 bg-white border px-2 py-1 rounded">{{ currentStoreName }}編制</span>
+                        <h3 class="text-sm font-bold text-gray-700 tracking-wide">獎金分配 Distribution</h3>
+                        <span class="text-[10px] text-gray-400 bg-white border px-2 py-1 rounded font-mono">{{ currentStoreName }}</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-100">
                             <thead class="bg-white">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-400">職稱</th>
-                                    <th class="px-6 py-3 text-center text-xs font-bold text-gray-400">人數</th>
-                                    <th class="px-6 py-3 text-center text-xs font-bold text-gray-400">權重</th>
-                                    <th class="px-6 py-3 text-right text-xs font-bold text-gray-400">個人實領</th>
-                                    <th class="px-6 py-3 text-right text-xs font-bold text-gray-400">部門小計</th>
+                                    <th class="px-6 py-4 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider">Title</th>
+                                    <th class="px-6 py-4 text-center text-[11px] font-bold text-gray-400 uppercase tracking-wider">Count</th>
+                                    <th class="px-6 py-4 text-center text-[11px] font-bold text-gray-400 uppercase tracking-wider">Weight</th>
+                                    <th class="px-6 py-4 text-right text-[11px] font-bold text-gray-400 uppercase tracking-wider">Individual</th>
+                                    <th class="px-6 py-4 text-right text-[11px] font-bold text-gray-400 uppercase tracking-wider">Total</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-50 text-sm">
-                                <tr v-for="(staff, index) in activeStaffList" :key="index" class="hover:bg-red-50/50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-700">
-                                        <span class="inline-block w-2 h-2 rounded-full mr-2" :class="staff.dept === '內場' ? 'bg-[#B21F2C]' : 'bg-gray-400'"></span>
-                                        {{ staff.title }}
+                                <tr v-for="(staff, index) in activeStaffList" :key="index" class="hover:bg-slate-50 transition-colors duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-700">
+                                        <div class="flex items-center">
+                                            <div class="w-1.5 h-1.5 rounded-full mr-3" :class="staff.dept === '內場' ? 'bg-[#B21F2C]' : 'bg-slate-400'"></div>
+                                            {{ staff.title }}
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-gray-500">{{ staff.count }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
-                                        <span class="bg-gray-100 px-2 py-0.5 rounded text-xs">{{ staff.weight.toFixed(1) }}</span>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-slate-400 font-light">{{ staff.count }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-slate-400 font-light">
+                                        <span class="bg-slate-100 px-2 py-0.5 rounded text-xs text-slate-600">{{ staff.weight.toFixed(1) }}</span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right font-bold text-[#B21F2C]">
+                                    <td class="px-6 py-4 whitespace-nowrap text-right font-bold text-[#B21F2C] tracking-wide">
                                         {{ formatCurrency(staff.weight * valuePerPoint) }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-gray-400">
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-slate-400 font-light">
                                         {{ formatCurrency(staff.weight * valuePerPoint * staff.count) }}
                                     </td>
                                 </tr>
                             </tbody>
-                            <tfoot class="bg-gray-50">
+                            <tfoot class="bg-gray-50/50">
                                 <tr>
-                                    <td colspan="4" class="px-6 py-4 text-right text-xs font-bold text-gray-500">總計</td>
-                                    <td class="px-6 py-4 text-right text-sm font-bold text-gray-800">{{ formatCurrency(totalDistributed) }}</td>
+                                    <td colspan="4" class="px-6 py-4 text-right text-[11px] font-bold text-gray-400 uppercase tracking-widest">Total Distributed</td>
+                                    <td class="px-6 py-4 text-right text-sm font-bold text-slate-800">{{ formatCurrency(totalDistributed) }}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -226,7 +318,6 @@
                 const isLoading = ref(true);
                 const currentStore = ref('zhubei');
 
-                // 資料結構：每間店現在都有自己的 target
                 const storeData = reactive({
                     zhubei: { name: '竹北店', revenue: 0, target: 2100000, foodCostRate: 0, laborCostRate: 0 },
                     jingguo: { name: '經國門市', revenue: 0, target: 1500000, foodCostRate: 0, laborCostRate: 0 }
@@ -257,7 +348,6 @@
                         header: false,
                         complete: function(results) {
                             const rows = results.data;
-                            // 不歸零 target，只更新讀取到的數值
                             storeData.zhubei.revenue = 0;
                             storeData.jingguo.revenue = 0;
 
@@ -268,15 +358,13 @@
                                 const val = parseFloat(valString);
                                 if (isNaN(val)) return;
 
-                                // 竹北
                                 if (key.includes('竹北業績') || key === 'Revenue') storeData.zhubei.revenue = val;
-                                if (key.includes('竹北目標')) storeData.zhubei.target = val; // 動態更新目標
+                                if (key.includes('竹北目標')) storeData.zhubei.target = val;
                                 if (key.includes('竹北食材') || key === 'Food') storeData.zhubei.foodCostRate = val;
                                 if (key.includes('竹北人事') || key === 'Labor') storeData.zhubei.laborCostRate = val;
 
-                                // 經國
                                 if (key.includes('經國業績')) storeData.jingguo.revenue = val;
-                                if (key.includes('經國目標')) storeData.jingguo.target = val; // 動態更新目標
+                                if (key.includes('經國目標')) storeData.jingguo.target = val;
                                 if (key.includes('經國食材')) storeData.jingguo.foodCostRate = val;
                                 if (key.includes('經國人事')) storeData.jingguo.laborCostRate = val;
                             });
@@ -288,12 +376,10 @@
 
                 onMounted(() => { fetchData(); });
 
-                // 計算核心：使用 activeData.value.target 而不是固定數字
+                // Level logic: 100%, 110%, 120%
                 const currentTier = computed(() => {
                     const r = activeData.value.revenue;
                     const t = activeData.value.target;
-                    // 邏輯改為：達成目標=L1, 達成110%=L2, 達成120%=L3
-                    // 這樣比較符合不同店規模的彈性
                     if (r >= t * 1.2) return 3; 
                     if (r >= t * 1.1) return 2;
                     if (r >= t) return 1;
@@ -307,25 +393,92 @@
                     return 0;
                 });
 
+                // ============ 視覺風格動態切換邏輯 ============
+                
                 const tierName = computed(() => {
-                    if (currentTier.value === 3) return "Level 3 - 超級旺季";
-                    if (currentTier.value === 2) return "Level 2 - 表現優異";
-                    if (currentTier.value === 1) return "Level 1 - 達標門檻";
-                    return "未達標";
+                    if (currentTier.value === 3) return "卓越巔峰 (Level 3)";
+                    if (currentTier.value === 2) return "表現優異 (Level 2)";
+                    if (currentTier.value === 1) return "目標達成 (Level 1)";
+                    return "尚未達標";
                 });
+
+                // 卡片樣式
+                const tierCardClass = computed(() => {
+                    if (currentTier.value === 3) return "tier-3";
+                    if (currentTier.value === 2) return "tier-2";
+                    if (currentTier.value === 1) return "tier-1";
+                    return "tier-0";
+                });
+
+                // 業績數字樣式
+                const revenueTextClass = computed(() => {
+                    if (currentTier.value === 3) return "text-gradient-gold";
+                    if (currentTier.value === 2) return "text-yellow-600";
+                    if (currentTier.value === 1) return "text-[#B21F2C]";
+                    return "text-gray-400";
+                });
+
+                // 副標題樣式
+                const revenueSubTextClass = computed(() => {
+                    if (currentTier.value >= 2) return "text-yellow-700";
+                    if (currentTier.value === 1) return "text-[#B21F2C]";
+                    return "text-gray-400";
+                });
+
+                // 進度條樣式
+                const progressBarClass = computed(() => {
+                    if (currentTier.value === 3) return "bg-gray-800 progress-shimmer"; // 黑金流光
+                    if (currentTier.value === 2) return "bg-yellow-500 progress-shimmer"; // 金色流光
+                    if (currentTier.value === 1) return "bg-[#B21F2C]"; // 品牌紅
+                    return "bg-gray-300"; // 未達標灰
+                });
+
+                // 徽章樣式
+                const badgeClass = computed(() => {
+                    if (currentTier.value === 3) return "bg-black text-yellow-500 border-yellow-600";
+                    if (currentTier.value === 2) return "bg-yellow-50 text-yellow-700 border-yellow-200";
+                    if (currentTier.value === 1) return "bg-red-50 text-[#B21F2C] border-red-100";
+                    return "bg-gray-100 text-gray-400 border-gray-200";
+                });
+
+                const tierBadgeText = computed(() => {
+                    if (currentTier.value === 3) return "Elite";
+                    if (currentTier.value === 2) return "Premium";
+                    if (currentTier.value === 1) return "Standard";
+                    return "Basic";
+                });
+                
+                // 下方文字樣式
+                const tierTextClass = computed(() => {
+                    if (currentTier.value === 3) return "text-gray-800";
+                    if (currentTier.value === 2) return "text-yellow-700";
+                    if (currentTier.value === 1) return "text-[#B21F2C]";
+                    return "text-gray-400";
+                });
+
+                // ============================================
 
                 const initialPool = computed(() => {
                     const excess = Math.max(0, activeData.value.revenue - activeData.value.target);
                     return excess * currentRate.value;
                 });
 
+                const calculatePenalty = (rev, rate, limit) => {
+                    if (rate > limit) {
+                        return rev * ((rate - limit) / 100);
+                    }
+                    return 0;
+                };
+
                 const totalPenalty = computed(() => {
                     let penalty = 0;
                     const r = activeData.value.revenue;
                     const f = activeData.value.foodCostRate;
                     const l = activeData.value.laborCostRate;
-                    if (f > foodLimit) penalty += r * ((f - foodLimit) / 100);
-                    if (l > laborLimit) penalty += r * ((l - laborLimit) / 100);
+                    
+                    penalty += calculatePenalty(r, f, foodLimit);
+                    penalty += calculatePenalty(r, l, laborLimit);
+                    
                     return penalty;
                 });
 
@@ -354,7 +507,11 @@
                 return {
                     currentStore, currentStoreName, activeData, activeStaffList,
                     tierName, currentRate, initialPool, totalPenalty, finalPool, 
-                    valuePerPoint, totalDistributed, formatCurrency, formatNumber, isLoading, fetchData
+                    valuePerPoint, totalDistributed, foodLimit, laborLimit,
+                    formatCurrency, formatNumber, isLoading, fetchData, calculatePenalty,
+                    // Style bindings
+                    tierCardClass, revenueTextClass, revenueSubTextClass, progressBarClass, 
+                    badgeClass, tierBadgeText, tierTextClass
                 };
             }
         }).mount('#app');
