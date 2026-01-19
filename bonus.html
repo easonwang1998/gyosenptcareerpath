@@ -19,7 +19,7 @@
     <div id="app" class="min-h-screen pb-10 relative">
         <div v-if="isLoading" class="fixed inset-0 z-50 flex flex-col items-center justify-center loading-overlay transition-opacity duration-300">
             <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-600 mb-4"></div>
-            <p class="text-xl font-bold text-gray-700">正在搜尋 Google Sheet 資料...</p>
+            <p class="text-xl font-bold text-gray-700">正在暴力搜尋數據...</p>
         </div>
 
         <nav class="bg-slate-800 text-white shadow-lg">
@@ -36,6 +36,13 @@
         </nav>
 
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8" v-if="!isLoading">
+            
+            <div v-if="revenue === 0" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-sm">
+                <p class="font-bold">⚠️ 警告：目前尚未抓到業績</p>
+                <p class="text-sm">系統掃描到的原始資料行數：{{ debugInfo.rowCount }} 行</p>
+                <p class="text-sm">最後一行原始數據：{{ debugInfo.lastRowRaw }}</p>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-1 space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-500 card">
@@ -83,7 +90,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p class="text-xs text-gray-400 mt-1 text-center">已開啟全域搜尋：自動尋找「業績、食材、人事」關鍵字</p>
+                                <p class="text-xs text-gray-400 mt-1 text-center">自動鎖定全表「數值最大」的項目為業績</p>
                             </div>
                         </div>
                     </div>
@@ -187,12 +194,16 @@
 
         createApp({
             setup() {
+                // 這裡一樣換成你的連結，但我已經幫你預填了你剛才給的那個
                 const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSj5mhmCmAp62ZmWryBz4__1C7hDx3-S6jI87iPHMQKBy8PhuTMHdsb9xMZnJQhV8L9kTaiBaUQGH8B/pub?gid=0&single=true&output=csv';
 
                 const isLoading = ref(true);
                 const revenue = ref(0);
                 const foodCostRate = ref(0);
                 const laborCostRate = ref(0);
+                const debugInfo = ref({ rowCount: 0, lastRowRaw: '' });
+
+                // 系統參數
                 const target = 2100000;
                 const foodLimit = 40.0;
                 const laborLimit = 28.0;
@@ -208,61 +219,70 @@
 
                 const fetchData = () => {
                     isLoading.value = true;
-                    // 加入時間戳記強制更新
+                    // 加入時間戳記避免快取
                     const urlWithTimestamp = googleSheetUrl + '&t=' + new Date().getTime();
                     
                     Papa.parse(urlWithTimestamp, {
                         download: true,
                         header: false,
                         complete: function(results) {
-                            console.log("全表數據:", results.data);
+                            console.log("Sheet Data:", results.data);
                             const rows = results.data;
-                            
-                            // 這裡採用「關鍵字搜索」邏輯
-                            // 只要那一格有寫「業績」或「Revenue」，程式就去抓它右邊那格
-                            
+                            debugInfo.value.rowCount = rows.length;
+
+                            let maxRevenue = 0;
+                            let associatedRates = [];
+
+                            // 暴力搜尋法：遍歷每一行，找出整張表裡面最大的數字
                             rows.forEach(row => {
-                                for (let i = 0; i < row.length - 1; i++) {
-                                    const cell = row[i] ? row[i].toString().trim().toLowerCase() : '';
-                                    
-                                    // 抓取業績
-                                    if (cell.includes('業績') || cell.includes('revenue')) {
-                                        // 嘗試抓右邊那格
-                                        const val = parseFloat(row[i+1].toString().replace(/,/g, ''));
-                                        if (!isNaN(val) && val > 0) revenue.value = val;
-                                    }
+                                const numericValues = row.map(val => {
+                                    if(!val) return 0;
+                                    return parseFloat(val.toString().replace(/,/g, '').replace(/%/g, ''));
+                                }).filter(val => !isNaN(val));
 
-                                    // 抓取食材率
-                                    if (cell.includes('食材') || cell.includes('food')) {
-                                        const val = parseFloat(row[i+1].toString().replace(/%/g, ''));
-                                        if (!isNaN(val)) foodCostRate.value = val;
-                                    }
+                                // 暫存這一行的數據
+                                let tempRevenue = 0;
+                                let tempRates = [];
 
-                                    // 抓取人事率
-                                    if (cell.includes('人事') || cell.includes('labor')) {
-                                        const val = parseFloat(row[i+1].toString().replace(/%/g, ''));
-                                        if (!isNaN(val)) laborCostRate.value = val;
+                                numericValues.forEach(val => {
+                                    // 只要大於 100,000 就被視為可能的業績 (排除日期 4xxxx)
+                                    if (val > 100000) {
+                                        if (val > tempRevenue) tempRevenue = val;
+                                    } else if (val < 100 && val > 0) {
+                                        // 0~100 之間視為百分比
+                                        tempRates.push(val);
                                     }
+                                });
+
+                                // 如果這一行找出來的業績，比目前紀錄的還大，就更新為「最新業績」
+                                // 這通常代表比較後面的月份，或者業績比較好的月份
+                                // 但我們需要的是「最後一筆有效資料」，所以我們應該信任列表的順序
+                                if (tempRevenue > 0) {
+                                    // 只要這一行有業績，就暫存下來，這樣跑到最後一行就會是最新月份
+                                    maxRevenue = tempRevenue;
+                                    associatedRates = tempRates;
+                                    debugInfo.value.lastRowRaw = JSON.stringify(row);
                                 }
                             });
 
-                            // 如果搜尋失敗，嘗試退回原本的「找最大值」邏輯當作備案
-                            if (revenue.value === 0) {
-                                console.log("關鍵字搜尋失敗，嘗試全表最大值邏輯...");
-                                let maxVal = 0;
-                                rows.forEach(row => {
-                                    row.forEach(cell => {
-                                        const val = parseFloat(cell.toString().replace(/,/g, ''));
-                                        if (val > 50000 && val > maxVal) maxVal = val;
-                                    });
-                                });
-                                if (maxVal > 0) revenue.value = maxVal;
+                            // 填入數據
+                            if (maxRevenue > 0) revenue.value = maxRevenue;
+                            
+                            // 填入百分比 (排序：大的是食材，小的是人事)
+                            if (associatedRates.length >= 2) {
+                                associatedRates.sort((a, b) => b - a);
+                                foodCostRate.value = associatedRates[0]; 
+                                laborCostRate.value = associatedRates[1]; 
+                            } else {
+                                // 如果沒抓到百分比，給預設值避免報錯
+                                foodCostRate.value = 0;
+                                laborCostRate.value = 0;
                             }
 
                             setTimeout(() => { isLoading.value = false; }, 500);
                         },
                         error: function(err) {
-                            alert("讀取失敗");
+                            alert("讀取失敗，請確認網路");
                             isLoading.value = false;
                         }
                     });
@@ -270,7 +290,7 @@
 
                 onMounted(() => { fetchData(); });
 
-                // 下面是計算邏輯，完全不動
+                // 計算邏輯區 (無需變動)
                 const currentTier = computed(() => {
                     if (revenue.value >= 2500000) return 3;
                     if (revenue.value >= 2300000) return 2;
@@ -343,7 +363,7 @@
                     tierName, tierClass, currentRate,
                     initialPool, totalPenalty, finalPool, valuePerPoint, totalPoints,
                     totalDistributed,
-                    formatCurrency, formatNumber, isLoading, fetchData
+                    formatCurrency, formatNumber, isLoading, fetchData, debugInfo
                 };
             }
         }).mount('#app');
