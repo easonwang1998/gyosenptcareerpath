@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魚鮮會社 | 績效獎金自動儀表板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f3f4f6; }
+        .card { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .loading-overlay { background: rgba(255, 255, 255, 0.95); }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen pb-10 relative">
+        
+        <div v-if="isLoading" class="fixed inset-0 z-50 flex flex-col items-center justify-center loading-overlay transition-opacity duration-300">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-600 mb-4"></div>
+            <p class="text-xl font-bold text-gray-700">正在同步 Google Sheet 數據...</p>
+        </div>
+
+        <nav class="bg-slate-800 text-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold tracking-wider">🐟 魚鮮會社 | 雲端同步版</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button @click="fetchData" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm transition shadow-md flex items-center">
+                            <span class="mr-1">🔄</span> 重新整理
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8" v-if="!isLoading">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-500 card">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">📊 當月雲端數據</h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">本月實際業績 (Revenue)</label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                    </div>
+                                    <input type="text" :value="formatNumber(revenue)" class="block w-full pl-7 pr-12 py-3 border-gray-300 rounded-md bg-gray-50 text-lg font-bold text-gray-900" readonly>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">食材成本率 (紅線 40%)</label>
+                                <div class="relative pt-1">
+                                    <div class="flex mb-2 items-center justify-between">
+                                        <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full" 
+                                              :class="foodCostRate > 40 ? 'text-red-600 bg-red-200' : 'text-green-600 bg-green-200'">
+                                            {{ foodCostRate }}%
+                                        </span>
+                                    </div>
+                                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                                        <div :style="{ width: Math.min(foodCostRate, 100) + '%' }" 
+                                             class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500"
+                                             :class="foodCostRate > 40 ? 'bg-red-500' : 'bg-indigo-500'">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">人事成本率 (紅線 28%)</label>
+                                <div class="relative pt-1">
+                                    <div class="flex mb-2 items-center justify-between">
+                                        <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full"
+                                              :class="laborCostRate > 28 ? 'text-red-600 bg-red-200' : 'text-green-600 bg-green-200'">
+                                            {{ laborCostRate }}%
+                                        </span>
+                                    </div>
+                                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                                        <div :style="{ width: Math.min(laborCostRate, 100) + '%' }" 
+                                             class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500"
+                                             :class="laborCostRate > 28 ? 'bg-red-500' : 'bg-indigo-500'">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t border-gray-100 text-center">
+                                <a :href="googleSheetUrl" target="_blank" class="text-xs text-indigo-500 hover:text-indigo-700 underline">
+                                    檢查 Google Sheet 原始資料
+                                </a>
+                                <p class="text-xs text-gray-400 mt-1">目前抓取的是：試算表中的「最後一行」數據</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-md card opacity-90">
+                         <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">當前級距狀態</h3>
+                         <div class="text-center py-3 rounded-lg font-bold text-lg border-2" :class="tierClass">
+                             {{ tierName }}
+                             <div class="text-sm font-normal mt-1 opacity-75">提撥比例: {{ (currentRate * 100).toFixed(0) }}%</div>
+                         </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                            <div class="text-sm font-medium text-gray-500">初始獎金池</div>
+                            <div class="mt-2 text-2xl font-bold text-gray-800">{{ formatCurrency(initialPool) }}</div>
+                            <div class="mt-1 text-xs text-gray-400">超額部分的 {{ (currentRate * 100).toFixed(0) }}%</div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 relative overflow-hidden">
+                            <div class="text-sm font-medium text-gray-500">成本超標扣減</div>
+                            <div class="mt-2 text-2xl font-bold" :class="totalPenalty > 0 ? 'text-red-600' : 'text-gray-300'">
+                                -{{ formatCurrency(totalPenalty) }}
+                            </div>
+                            <div v-if="totalPenalty > 0" class="mt-1 text-xs text-red-500 font-bold">⚠️ 利潤被成本吃掉了</div>
+                            <div v-else class="mt-1 text-xs text-green-500">✅ 成本控制完美</div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-indigo-600 to-blue-700 p-5 rounded-xl shadow-lg text-white transform hover:scale-105 transition duration-300 border-2 border-indigo-400">
+                            <div class="text-sm font-medium opacity-80">最終可發放獎金</div>
+                            <div class="mt-2 text-3xl font-black tracking-tight">
+                                {{ formatCurrency(finalPool) }}
+                            </div>
+                             <div class="mt-1 text-xs opacity-70">全店總點數：{{ totalPoints }} 點</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden card">
+                        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                            <h3 class="font-bold text-gray-800 flex items-center">
+                                👥 團隊獎金分配試算
+                            </h3>
+                            <span class="text-xs font-mono bg-indigo-100 text-indigo-700 px-2 py-1 rounded">1 點 = {{ formatCurrency(valuePerPoint) }}</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">職稱</th>
+                                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">人數</th>
+                                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">權重</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">個人預估獎金</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">小計</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr v-for="(staff, index) in staffList" :key="index" class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center font-bold text-xs shadow-sm" 
+                                                     :class="staff.dept === '內場' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'">
+                                                    {{ staff.dept[0] }}
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">{{ staff.title }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                                            {{ staff.count }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm">
+                                            <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-600">
+                                                {{ staff.weight.toFixed(1) }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-indigo-600">
+                                            {{ formatCurrency(staff.weight * valuePerPoint) }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-400">
+                                            {{ formatCurrency(staff.weight * valuePerPoint * staff.count) }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="bg-gray-50 font-bold border-t border-gray-200">
+                                    <tr>
+                                        <td colspan="4" class="px-6 py-4 text-right text-gray-600 text-xs uppercase tracking-wide">總發放金額核對</td>
+                                        <td class="px-6 py-4 text-right text-indigo-700">{{ formatCurrency(totalDistributed) }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                // 你的 Google Sheet CSV 連結
+                const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSj5mhmCmAp62ZmWryBz4__1C7hDx3-S6jI87iPHMQKBy8PhuTMHdsb9xMZnJQhV8L9kTaiBaUQGH8B/pub?gid=0&single=true&output=csv';
+
+                const isLoading = ref(true);
+                const revenue = ref(0);
+                const foodCostRate = ref(0);
+                const laborCostRate = ref(0);
+
+                // 系統參數
+                const target = 2100000;
+                const foodLimit = 40.0;
+                const laborLimit = 28.0;
+
+                const staffList = ref([
+                    { dept: '內場', title: '料理長', count: 1, weight: 3.0 },
+                    { dept: '內場', title: '副料理長', count: 1, weight: 2.0 },
+                    { dept: '內場', title: '正職人員', count: 4, weight: 1.0 },
+                    { dept: '外場', title: '店長', count: 1, weight: 3.0 },
+                    { dept: '外場', title: '副店長', count: 1, weight: 2.0 },
+                    { dept: '外場', title: '正職人員', count: 1, weight: 1.0 },
+                ]);
+
+                // 核心邏輯：自動抓取最後一筆資料
+                const fetchData = () => {
+                    isLoading.value = true;
+                    const urlWithTimestamp = googleSheetUrl + '&t=' + new Date().getTime();
+                    
+                    Papa.parse(urlWithTimestamp, {
+                        download: true,
+                        header: false,
+                        complete: function(results) {
+                            console.log("Sheet Data:", results.data);
+                            const rows = results.data;
+                            
+                            // 1. 找到最後一個有效的行（去除空行）
+                            let lastRow = null;
+                            for (let i = rows.length - 1; i >= 0; i--) {
+                                // 判斷這一行是否有數據 (假設至少有3個欄位有值)
+                                if (rows[i] && rows[i].length >= 3 && rows[i].some(cell => cell && cell.trim() !== '')) {
+                                    lastRow = rows[i];
+                                    break;
+                                }
+                            }
+
+                            if (lastRow) {
+                                console.log("抓到最後一行數據:", lastRow);
+                                // 2. 智慧欄位對應 (假設格式: 日期, 業績, 食材, 人事)
+                                // 如果你有標題列，我們也可以寫得更聰明，但這裡先假設你的順序
+                                // 這裡假設你的 CSV 最後一行是： [日期, 業績, 食材率, 人事率]
+                                // 我們嘗試解析最後三個數字欄位
+                                
+                                const numericValues = lastRow.map(val => parseFloat(val.replace(/,/g, '').replace(/%/g, ''))).filter(val => !isNaN(val));
+                                
+                                // 根據數值大小來猜測 (業績通常很大，百分比通常很小)
+                                // 這是一個防呆機制
+                                let foundRevenue = 0;
+                                let foundRates = [];
+
+                                numericValues.forEach(val => {
+                                    if (val > 10000) { // 業績通常大於 1萬
+                                        foundRevenue = val;
+                                    } else if (val < 100) { // 百分比通常小於 100
+                                        foundRates.push(val);
+                                    }
+                                });
+
+                                // 更新介面數據
+                                if (foundRevenue > 0) revenue.value = foundRevenue;
+                                
+                                // 處理百分比 (如果抓到兩個，第一個當食材，第二個當人事)
+                                if (foundRates.length >= 2) {
+                                    foodCostRate.value = foundRates[0]; // 假設前一個是食材
+                                    laborCostRate.value = foundRates[1]; // 假設後一個是人事
+                                } else {
+                                    // 如果智慧判斷失敗，則退回到「固定位置」讀取
+                                    // 假設你的表格是： A(日期) B(業績) C(食材) D(人事)
+                                    // CSV 索引是： 0, 1, 2, 3
+                                    if(lastRow[1]) revenue.value = parseFloat(lastRow[1].replace(/,/g, ''));
+                                    if(lastRow[2]) foodCostRate.value = parseFloat(lastRow[2].replace(/%/g, ''));
+                                    if(lastRow[3]) laborCostRate.value = parseFloat(lastRow[3].replace(/%/g, ''));
+                                }
+                            }
+
+                            setTimeout(() => { isLoading.value = false; }, 500);
+                        },
+                        error: function(err) {
+                            alert("讀取失敗，請檢查網路");
+                            isLoading.value = false;
+                        }
+                    });
+                };
+
+                onMounted(() => {
+                    fetchData();
+                });
+
+                // (計算邏輯保持不變)
+                const currentTier = computed(() => {
+                    if (revenue.value >= 2500000) return 3;
+                    if (revenue.value >= 2300000) return 2;
+                    if (revenue.value > 2100000) return 1;
+                    return 0;
+                });
+
+                const currentRate = computed(() => {
+                    if (currentTier.value === 3) return 0.20;
+                    if (currentTier.value === 2) return 0.15;
+                    if (currentTier.value === 1) return 0.10;
+                    return 0;
+                });
+
+                const tierName = computed(() => {
+                    if (currentTier.value === 3) return "Level 3 - 超級旺季";
+                    if (currentTier.value === 2) return "Level 2 - 表現優異";
+                    if (currentTier.value === 1) return "Level 1 - 剛過門檻";
+                    return "未達標";
+                });
+
+                const tierClass = computed(() => {
+                    if (currentTier.value === 3) return "text-indigo-600 bg-indigo-50 border-indigo-200";
+                    if (currentTier.value === 2) return "text-green-600 bg-green-50 border-green-200";
+                    if (currentTier.value === 1) return "text-yellow-600 bg-yellow-50 border-yellow-200";
+                    return "text-gray-400 bg-gray-100 border-gray-200";
+                });
+
+                const initialPool = computed(() => {
+                    const excess = Math.max(0, revenue.value - target);
+                    return excess * currentRate.value;
+                });
+
+                const totalPenalty = computed(() => {
+                    let penalty = 0;
+                    if (foodCostRate.value > foodLimit) penalty += revenue.value * ((foodCostRate.value - foodLimit) / 100);
+                    if (laborCostRate.value > laborLimit) penalty += revenue.value * ((laborCostRate.value - laborLimit) / 100);
+                    return penalty;
+                });
+
+                const finalPool = computed(() => {
+                    return Math.max(0, initialPool.value - totalPenalty.value);
+                });
+
+                const totalPoints = computed(() => {
+                    return staffList.value.reduce((sum, staff) => sum + (staff.count * staff.weight), 0);
+                });
+
+                const valuePerPoint = computed(() => {
+                    if (totalPoints.value === 0) return 0;
+                    return finalPool.value / totalPoints.value;
+                });
+
+                const totalDistributed = computed(() => {
+                    return staffList.value.reduce((sum, staff) => {
+                        return sum + (staff.weight * valuePerPoint.value * staff.count);
+                    }, 0);
+                });
+
+                const formatCurrency = (val) => {
+                    return new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', maximumFractionDigits: 0 }).format(val);
+                };
+                
+                const formatNumber = (val) => {
+                    return new Intl.NumberFormat('zh-TW').format(val);
+                }
+
+                return {
+                    revenue, foodCostRate, laborCostRate, staffList,
+                    tierName, tierClass, currentRate,
+                    initialPool, totalPenalty, finalPool, valuePerPoint, totalPoints,
+                    totalDistributed,
+                    formatCurrency, formatNumber, isLoading, fetchData, googleSheetUrl
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
