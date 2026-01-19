@@ -11,7 +11,6 @@
     
     <style>
         :root {
-            /* 品牌色定義 */
             --brand-red: #B21F2C; 
             --brand-dark: #8a1822;
             --brand-light: #fff0f1;
@@ -22,7 +21,6 @@
             background-color: var(--gray-bg);
             color: #4a4a4a;
         }
-        /* 品牌風格卡片 */
         .brand-card {
             background-color: white;
             border-top: 4px solid var(--brand-red);
@@ -35,16 +33,6 @@
             border-radius: 8px;
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
-        /* 品牌按鈕 */
-        .btn-brand {
-            background-color: var(--brand-red);
-            color: white;
-            transition: all 0.3s;
-        }
-        .btn-brand:hover {
-            background-color: var(--brand-dark);
-        }
-        /* 分頁標籤 */
         .tab-btn {
             padding: 12px 24px;
             font-weight: 500;
@@ -87,18 +75,8 @@
 
         <div class="max-w-7xl mx-auto px-6 mt-6">
             <div class="flex space-x-2 border-b border-gray-200">
-                <button 
-                    @click="currentStore = 'zhubei'" 
-                    class="tab-btn text-lg" 
-                    :class="{ 'active': currentStore === 'zhubei' }">
-                    竹北店
-                </button>
-                <button 
-                    @click="currentStore = 'jingguo'" 
-                    class="tab-btn text-lg" 
-                    :class="{ 'active': currentStore === 'jingguo' }">
-                    經國門市
-                </button>
+                <button @click="currentStore = 'zhubei'" class="tab-btn text-lg" :class="{ 'active': currentStore === 'zhubei' }">竹北店</button>
+                <button @click="currentStore = 'jingguo'" class="tab-btn text-lg" :class="{ 'active': currentStore === 'jingguo' }">經國門市</button>
             </div>
         </div>
 
@@ -108,21 +86,24 @@
                 
                 <div class="brand-card p-6">
                     <div class="flex justify-between items-center mb-6 pb-2 border-b border-gray-100">
-                        <h2 class="text-base font-bold text-gray-800">
-                            {{ currentStoreName }}營運數據
-                        </h2>
-                        <button @click="fetchData" class="text-xs text-[#B21F2C] hover:text-[#8a1822] hover:underline font-medium">
-                            ↻ 更新數據
-                        </button>
+                        <h2 class="text-base font-bold text-gray-800">{{ currentStoreName }}營運數據</h2>
+                        <button @click="fetchData" class="text-xs text-[#B21F2C] hover:underline font-medium">↻ 更新</button>
                     </div>
                     
                     <div class="space-y-8">
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">本月實際業績</label>
+                            <div class="flex justify-between items-end mb-1">
+                                <label class="text-xs font-medium text-gray-500">本月實際業績</label>
+                                <span class="text-xs text-gray-400">目標: {{ formatNumber(activeData.target) }}</span>
+                            </div>
                             <div class="flex items-baseline">
                                 <span class="text-3xl font-bold text-[#B21F2C] mr-2">{{ formatNumber(activeData.revenue) }}</span>
                                 <span class="text-sm text-gray-500">元</span>
                             </div>
+                            <div class="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                <div class="h-full bg-[#B21F2C] transition-all duration-1000" :style="{ width: Math.min((activeData.revenue / activeData.target) * 100, 100) + '%' }"></div>
+                            </div>
+                            <div class="text-[10px] text-right mt-1 text-gray-400">達成率 {{ ((activeData.revenue / activeData.target) * 100).toFixed(1) }}%</div>
                         </div>
 
                         <div>
@@ -133,9 +114,7 @@
                                 </span>
                             </div>
                             <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                                <div class="h-full rounded-full transition-all duration-700 ease-out" 
-                                     :style="{ width: Math.min(activeData.foodCostRate, 100) + '%' }" 
-                                     :class="activeData.foodCostRate > 40 ? 'bg-red-500' : 'bg-[#B21F2C]'"></div>
+                                <div class="h-full transition-all duration-700" :style="{ width: Math.min(activeData.foodCostRate, 100) + '%' }" :class="activeData.foodCostRate > 40 ? 'bg-red-500' : 'bg-[#B21F2C]'"></div>
                             </div>
                         </div>
 
@@ -147,9 +126,7 @@
                                 </span>
                             </div>
                             <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                                <div class="h-full rounded-full transition-all duration-700 ease-out" 
-                                     :style="{ width: Math.min(activeData.laborCostRate, 100) + '%' }" 
-                                     :class="activeData.laborCostRate > 28 ? 'bg-red-500' : 'bg-[#B21F2C]'"></div>
+                                <div class="h-full transition-all duration-700" :style="{ width: Math.min(activeData.laborCostRate, 100) + '%' }" :class="activeData.laborCostRate > 28 ? 'bg-red-500' : 'bg-[#B21F2C]'"></div>
                             </div>
                         </div>
                     </div>
@@ -161,6 +138,7 @@
                         <div class="text-xl font-bold text-[#B21F2C]">{{ tierName }}</div>
                     </div>
                     <div class="text-sm text-gray-500">超額提撥比例：<span class="font-bold">{{ (currentRate * 100).toFixed(0) }}%</span></div>
+                    <p class="text-[10px] text-gray-400 mt-2">註：級距隨目標動態調整 (目標/110%/120%)</p>
                 </div>
             </div>
 
@@ -170,7 +148,7 @@
                     <div class="simple-card p-5 flex flex-col justify-between hover:shadow-md transition-shadow">
                         <span class="text-xs font-medium text-gray-400 tracking-wide">初始獎金池</span>
                         <div class="mt-2 text-2xl font-medium text-gray-800">{{ formatCurrency(initialPool) }}</div>
-                        <div class="mt-2 h-1 w-8 bg-gray-200 rounded"></div>
+                        <div class="mt-1 text-[10px] text-gray-400">(業績 - 目標) × {{ (currentRate * 100).toFixed(0) }}%</div>
                     </div>
 
                     <div class="simple-card p-5 flex flex-col justify-between hover:shadow-md transition-shadow">
@@ -193,7 +171,7 @@
                 <div class="simple-card overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
                         <h3 class="font-bold text-gray-700">獎金分配試算表</h3>
-                        <span class="text-xs text-gray-400 bg-white border px-2 py-1 rounded">{{ currentStoreName }}人員編制</span>
+                        <span class="text-xs text-gray-400 bg-white border px-2 py-1 rounded">{{ currentStoreName }}編制</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-100">
@@ -209,17 +187,12 @@
                             <tbody class="bg-white divide-y divide-gray-50 text-sm">
                                 <tr v-for="(staff, index) in activeStaffList" :key="index" class="hover:bg-red-50/50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-700">
-                                        <span class="inline-block w-2 h-2 rounded-full mr-2" 
-                                              :class="staff.dept === '內場' ? 'bg-[#B21F2C]' : 'bg-gray-400'"></span>
+                                        <span class="inline-block w-2 h-2 rounded-full mr-2" :class="staff.dept === '內場' ? 'bg-[#B21F2C]' : 'bg-gray-400'"></span>
                                         {{ staff.title }}
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-gray-500">{{ staff.count }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
-                                        {{ staff.count }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
-                                        <span class="bg-gray-100 px-2 py-0.5 rounded text-xs">
-                                            {{ staff.weight.toFixed(1) }}
-                                        </span>
+                                        <span class="bg-gray-100 px-2 py-0.5 rounded text-xs">{{ staff.weight.toFixed(1) }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right font-bold text-[#B21F2C]">
                                         {{ formatCurrency(staff.weight * valuePerPoint) }}
@@ -231,7 +204,7 @@
                             </tbody>
                             <tfoot class="bg-gray-50">
                                 <tr>
-                                    <td colspan="4" class="px-6 py-4 text-right text-xs font-bold text-gray-500">發放總額核對</td>
+                                    <td colspan="4" class="px-6 py-4 text-right text-xs font-bold text-gray-500">總計</td>
                                     <td class="px-6 py-4 text-right text-sm font-bold text-gray-800">{{ formatCurrency(totalDistributed) }}</td>
                                 </tr>
                             </tfoot>
@@ -248,36 +221,20 @@
 
         createApp({
             setup() {
-                // ==========================================
-                // CSV 連結
-                // ==========================================
                 const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSj5mhmCmAp62ZmWryBz4__1C7hDx3-S6jI87iPHMQKBy8PhuTMHdsb9xMZnJQhV8L9kTaiBaUQGH8B/pub?gid=1958911966&single=true&output=csv';
 
                 const isLoading = ref(true);
-                const currentStore = ref('zhubei'); // 預設顯示竹北店
+                const currentStore = ref('zhubei');
 
-                // 儲存兩間店的數據
+                // 資料結構：每間店現在都有自己的 target
                 const storeData = reactive({
-                    zhubei: {
-                        name: '竹北店',
-                        revenue: 0,
-                        foodCostRate: 0,
-                        laborCostRate: 0
-                    },
-                    jingguo: {
-                        name: '經國門市',
-                        revenue: 0,
-                        foodCostRate: 0,
-                        laborCostRate: 0
-                    }
+                    zhubei: { name: '竹北店', revenue: 0, target: 2100000, foodCostRate: 0, laborCostRate: 0 },
+                    jingguo: { name: '經國門市', revenue: 0, target: 1500000, foodCostRate: 0, laborCostRate: 0 }
                 });
 
-                // 系統參數
-                const target = 2100000;
                 const foodLimit = 40.0;
                 const laborLimit = 28.0;
 
-                // 人員配置 (目前假設兩間店結構相同，如果不同可以分開設定)
                 const staffList = ref([
                     { dept: '內場', title: '料理長', count: 1, weight: 3.0 },
                     { dept: '內場', title: '副料理長', count: 1, weight: 2.0 },
@@ -287,12 +244,10 @@
                     { dept: '外場', title: '正職人員', count: 1, weight: 1.0 },
                 ]);
 
-                // 取得目前選中店舖的資料
                 const activeData = computed(() => storeData[currentStore.value]);
                 const currentStoreName = computed(() => activeData.value.name);
                 const activeStaffList = computed(() => staffList.value);
 
-                // 抓取數據
                 const fetchData = () => {
                     isLoading.value = true;
                     const urlWithTimestamp = googleSheetUrl + '&t=' + new Date().getTime();
@@ -302,37 +257,29 @@
                         header: false,
                         complete: function(results) {
                             const rows = results.data;
-                            
-                            // 重置數據
+                            // 不歸零 target，只更新讀取到的數值
                             storeData.zhubei.revenue = 0;
                             storeData.jingguo.revenue = 0;
 
                             rows.forEach(row => {
                                 if (row.length < 2) return;
-                                
                                 const key = row[0] ? row[0].toString().trim() : '';
                                 const valString = row[1] ? row[1].toString().replace(/,/g, '').replace(/%/g, '') : '0';
                                 const val = parseFloat(valString);
                                 if (isNaN(val)) return;
 
-                                // 判斷是哪間店的數據
-                                // 1. 竹北 (關鍵字：竹北 或 預設Revenue)
-                                if (key.includes('竹北業績') || key === 'Revenue' || key === '業績') storeData.zhubei.revenue = val;
-                                if (key.includes('竹北食材') || key === 'Food' || key === '食材') storeData.zhubei.foodCostRate = val;
-                                if (key.includes('竹北人事') || key === 'Labor' || key === '人事') storeData.zhubei.laborCostRate = val;
+                                // 竹北
+                                if (key.includes('竹北業績') || key === 'Revenue') storeData.zhubei.revenue = val;
+                                if (key.includes('竹北目標')) storeData.zhubei.target = val; // 動態更新目標
+                                if (key.includes('竹北食材') || key === 'Food') storeData.zhubei.foodCostRate = val;
+                                if (key.includes('竹北人事') || key === 'Labor') storeData.zhubei.laborCostRate = val;
 
-                                // 2. 經國 (關鍵字：經國)
+                                // 經國
                                 if (key.includes('經國業績')) storeData.jingguo.revenue = val;
+                                if (key.includes('經國目標')) storeData.jingguo.target = val; // 動態更新目標
                                 if (key.includes('經國食材')) storeData.jingguo.foodCostRate = val;
                                 if (key.includes('經國人事')) storeData.jingguo.laborCostRate = val;
                             });
-                            
-                            // 如果試算表只有一套數據，先暫時讓兩間店顯示一樣，避免顯示 0
-                            if (storeData.jingguo.revenue === 0 && storeData.zhubei.revenue > 0) {
-                                // 這裡不自動填入，讓使用者知道經國店資料沒抓到
-                                // console.log("未偵測到經國店資料");
-                            }
-
                             setTimeout(() => { isLoading.value = false; }, 600);
                         },
                         error: function() { isLoading.value = false; }
@@ -341,12 +288,15 @@
 
                 onMounted(() => { fetchData(); });
 
-                // --- 計算核心 (根據 activeData 計算) ---
+                // 計算核心：使用 activeData.value.target 而不是固定數字
                 const currentTier = computed(() => {
                     const r = activeData.value.revenue;
-                    if (r >= 2500000) return 3;
-                    if (r >= 2300000) return 2;
-                    if (r > 2100000) return 1;
+                    const t = activeData.value.target;
+                    // 邏輯改為：達成目標=L1, 達成110%=L2, 達成120%=L3
+                    // 這樣比較符合不同店規模的彈性
+                    if (r >= t * 1.2) return 3; 
+                    if (r >= t * 1.1) return 2;
+                    if (r >= t) return 1;
                     return 0;
                 });
 
@@ -365,7 +315,7 @@
                 });
 
                 const initialPool = computed(() => {
-                    const excess = Math.max(0, activeData.value.revenue - target);
+                    const excess = Math.max(0, activeData.value.revenue - activeData.value.target);
                     return excess * currentRate.value;
                 });
 
@@ -374,7 +324,6 @@
                     const r = activeData.value.revenue;
                     const f = activeData.value.foodCostRate;
                     const l = activeData.value.laborCostRate;
-
                     if (f > foodLimit) penalty += r * ((f - foodLimit) / 100);
                     if (l > laborLimit) penalty += r * ((l - laborLimit) / 100);
                     return penalty;
@@ -399,24 +348,13 @@
                     }, 0);
                 });
 
-                const formatCurrency = (val) => {
-                    return new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', maximumFractionDigits: 0 }).format(val);
-                };
-                
-                const formatNumber = (val) => {
-                    return new Intl.NumberFormat('zh-TW').format(val);
-                }
+                const formatCurrency = (val) => new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', maximumFractionDigits: 0 }).format(val);
+                const formatNumber = (val) => new Intl.NumberFormat('zh-TW').format(val);
 
                 return {
-                    currentStore,
-                    currentStoreName,
-                    activeData,
-                    activeStaffList,
-                    
-                    tierName, currentRate,
-                    initialPool, totalPenalty, finalPool, valuePerPoint,
-                    totalDistributed,
-                    formatCurrency, formatNumber, isLoading, fetchData
+                    currentStore, currentStoreName, activeData, activeStaffList,
+                    tierName, currentRate, initialPool, totalPenalty, finalPool, 
+                    valuePerPoint, totalDistributed, formatCurrency, formatNumber, isLoading, fetchData
                 };
             }
         }).mount('#app');
